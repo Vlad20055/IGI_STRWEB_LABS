@@ -1,0 +1,92 @@
+{% extends 'main/base.html' %}
+{% block title %}
+    Страница про нас
+{% endblock %}
+
+{% block content %}
+    <style>
+        /* General body styling */
+        body {
+            background-color: yellow; /* Set the background color to yellow */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            color: black; /* Set text color to black for better contrast */
+            font-family: Arial, sans-serif;
+            position: relative; /* Ensure absolute positioning works correctly */
+        }
+
+        /* Navigation menu styling */
+        nav {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Position the menu at the top-right corner */
+        }
+
+        nav ul {
+            list-style-type: none; /* Remove bullet points */
+            margin: 0;
+            padding: 0;
+            display: flex; /* Arrange menu items horizontally */
+            gap: 20px; /* Add space between menu items */
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+
+        nav ul li a {
+            text-decoration: none; /* Remove underline from links */
+            color: black; /* Set text color */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            background-color: #ffcc80; /* Light yellow background for buttons */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+
+        nav ul li a:hover {
+            background-color: #ffb74d; /* Darker yellow on hover */
+        }
+
+        /* Content styling */
+        .content {
+            text-align: center;
+            background-color: #ffffcc; /* Light yellow for the content box */
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+            max-width: 600px;
+            margin-top: 60px; /* Add margin to prevent overlap with the menu */
+        }
+
+        h1 {
+            color: #cc9900; /* Dark yellow for the heading */
+        }
+    </style>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="{% url 'about' %}">О нас</a></li>
+            <li><a href="{% url 'create' %}">Добавить заказ</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <h1>О нас</h1>
+        <p>
+            Добро пожаловать в наш интернет-магазин! Мы специализируемся на предоставлении высококачественных товаров 
+            по доступным ценам. У нас вы найдете широкий ассортимент продукции: от электроники и бытовой техники до 
+            модной одежды и аксессуаров. Мы работаем с проверенными поставщиками, чтобы гарантировать качество каждого 
+            товара. Наша цель — сделать ваш шопинг удобным, быстрым и приятным. Мы доставляем заказы по всему миру 
+            и предлагаем гибкие условия оплаты. Спасибо, что выбираете нас!
+        </p> <!-- Generated description of the internet shop -->
+    </div>
+{% endblock %}
