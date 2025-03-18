@@ -1,0 +1,36 @@
+version: "3"
+
+services:
+  postgresdb:
+    image: postgres
+    restart: always
+    environment:
+      - POSTGRES_DB=fsd_db
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=devpass
+    volumes:
+      - ./docker/pg_data:/var/lib/postgresql/data
+    ports:
+      - "5432:5432"
+
+  web:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    volumes:
+      - ./:/myapp
+    depends_on:
+      - postgresdb
+    expose:
+      - 32777
+
+  nginx:
+    build:
+      context: ./docker/nginx
+      dockerfile: Dockerfile
+    depends_on:
+      - web
+    ports:
+      - "80:80"
+    volumes:
+      - ./static:/static
