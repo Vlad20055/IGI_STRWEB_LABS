@@ -1,0 +1,94 @@
+{% extends 'main/base.html' %}
+{% block title %}
+    Главная страница
+{% endblock %}
+
+{% block content %}
+    <style>
+        /* General body styling */
+        body {
+            background-color: orange;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            flex-direction: column;
+            position: relative;
+            font-family: Arial, sans-serif;
+        }
+
+        /* Navigation menu styling */
+        nav {
+            position: absolute;
+            top: 20px;
+            right: 20px; /* Position the menu at the top-right corner */
+        }
+
+        nav ul {
+            list-style-type: none; /* Remove bullet points */
+            margin: 0;
+            padding: 0;
+            display: flex; /* Arrange menu items horizontally */
+            gap: 20px; /* Add space between menu items */
+        }
+
+        nav ul li {
+            display: inline-block;
+        }
+
+        nav ul li a {
+            text-decoration: none; /* Remove underline from links */
+            color: black; /* Set text color */
+            font-size: 18px;
+            font-weight: bold;
+            padding: 10px 15px;
+            background-color: #ffcc80; /* Light orange background for buttons */
+            border-radius: 5px; /* Rounded corners */
+            transition: background-color 0.3s ease; /* Smooth hover effect */
+        }
+
+        nav ul li a:hover {
+            background-color: #ffb74d; /* Darker orange on hover */
+        }
+
+        /* Content styling */
+        .content {
+            text-align: center;
+            margin-top: 60px; /* Add margin to prevent overlap with the menu */
+        }
+
+        .alert-warning {
+            background-color: #ffcc80;
+            padding: 10px;
+            margin: 10px;
+            border-radius: 5px;
+        }
+    </style>
+
+    <!-- Navigation Menu -->
+    <nav>
+        <ul>
+            <li><a href="{% url 'home' %}">Главная</a></li>
+            <li><a href="{% url 'about' %}">О нас</a></li>
+            <li><a href="{% url 'create' %}">Добавить заказ</a></li>
+        </ul>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="content">
+        <p>Добро пожаловать! Для добавления заказа нажмите Добавить заказ!</p>
+        
+        {% if tasks %}
+            <h2>Мои заказы:</h2>
+            {% for el in tasks %}
+                <div class="alert-warning mt-2">
+                    <h3>{{ el.title }}</h3>
+                    <p>{{ el.task }}</p>
+                </div>
+            {% endfor %}
+        {% else %}
+            <p>Записей нет</p>
+        {% endif %}
+    </div>
+{% endblock %}
