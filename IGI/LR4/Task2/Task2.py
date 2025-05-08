@@ -2,6 +2,8 @@ import re
 import statistics as st
 
 class TextAnalizer:
+    name = "Maksimenkov_Text_Analizer" # example of static attribute
+
     def __init__(self):
         self.text = self.read_text(filename="Task2/Task2.txt")
 

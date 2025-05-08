@@ -57,14 +57,14 @@ class ArcsinEvaluator(SequenceStatisticMixed):
 
     def display(self, seq):
         fig, ax = plt.subplots()
-        plt.subplots_adjust(bottom=0.25)
+        # plt.subplots_adjust(bottom=0.25)
         
         x_points = list(range(1, len(seq) + 1))
-        line_seq, = ax.plot(x_points, seq, 'b-', label='Последовательность')
+        ax.plot(x_points, seq, 'b-', label='Последовательность')
         
         x_math = [i/100 for i in range(-100, 101)]
         y_math = [math.asin(x) for x in x_math]
-        line_arcsin, = ax.plot(x_math, y_math, 'r--', label='arcsin(x)')
+        ax.plot(x_math, y_math, 'r--', label='arcsin(x)')
         
         ax.set_aspect('equal')
         ax.grid(True)
@@ -80,7 +80,7 @@ class ArcsinEvaluator(SequenceStatisticMixed):
             fontsize=10,
             bbox=dict(facecolor='white', alpha=0.8))
         
-        # Аннотация конца последовательности
+        
         if len(seq) > 0:
             last_x = len(seq)  # Последний индекс последовательности
             last_y = seq[-1]   # Последнее значение
@@ -92,15 +92,14 @@ class ArcsinEvaluator(SequenceStatisticMixed):
                 textcoords='offset points',
                 arrowprops=dict(
                     arrowstyle="->",
-                    connectionstyle="arc3,rad=.3",
                     color="green"
                 ),
                 fontsize=9,
-                backgroundcolor='white',
-                ha='left'  # Горизонтальное выравнивание текста
+                backgroundcolor='white'
             )
         
         # Слайдер
+        # 
         slider_ax = plt.axes([0.2, 0.1, 0.6, 0.03])
         slider = Slider(slider_ax, 'Прокрутка', 0, len(seq), valinit=0, valstep=1)
         

@@ -51,7 +51,7 @@ class NumpyTester:
     @staticmethod
     def calculate_correlation(arr1: np.ndarray, arr2: np.ndarray):
         """Вычисление корреляционной матрицы"""
-        return np.corrcoef(arr1, arr2)
+        return np.corrcoef(arr1, arr2)[0, 1]
 
     @staticmethod
     def calculate_variance(arr: np.ndarray, axis=None) -> float:
