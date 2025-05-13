@@ -2,6 +2,8 @@ import re
 import statistics as st
 
 class TextAnalizer:
+    name = "Maksimenkov_Text_Analizer" # example of static attribute
+
     def __init__(self):
         self.text = self.read_text(filename="Task2/Task2.txt")
 
@@ -71,13 +73,15 @@ class TextAnalizer:
         print(f"Words with odd number of letters = {[word for word in words if len(word) % 2 == 1]}")
         return len(words)
     
-    def find_shortest_word_started_with_i(self):
+    def find_shortest_word_started_with_i(self): # pattern = r"\s[iI]\w*"
         words = re.findall("\w+", self.text)
         return min([word for word in words if word[0] == "i" or word[0] == "I"], key=lambda x : len(x))
 
-    def find_repeted_words(self):
+    def find_repeted_words(self):   # pattern = r"(\w+).+\1"
         words = list(map(lambda x : x.lower(), re.findall("\w+", self.text)))
         return list(set([word for word in words if words.count(word) > 1]))
-
     
+    
+
+
 
