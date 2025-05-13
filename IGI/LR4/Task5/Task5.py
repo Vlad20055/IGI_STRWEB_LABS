@@ -8,7 +8,7 @@ class NumpyTester:
 
     @staticmethod
     def create_from_list(lst: list) -> np.ndarray:
-        """Создание массива из списка (демонстрация np.array())"""
+        """Создание массива из списка"""
         return np.array(lst)
 
     @staticmethod
@@ -51,7 +51,7 @@ class NumpyTester:
     @staticmethod
     def calculate_correlation(arr1: np.ndarray, arr2: np.ndarray):
         """Вычисление корреляционной матрицы"""
-        return np.corrcoef(arr1, arr2)
+        return np.corrcoef(arr1, arr2)[0, 1]
 
     @staticmethod
     def calculate_variance(arr: np.ndarray, axis=None) -> float:
