@@ -1,11 +1,13 @@
 import math as m
 import matplotlib.pyplot as plt
 from matplotlib.patches import Polygon
+from abc import ABC, abstractmethod
 
-class Figure:
+class Figure(ABC):
     def __init__(self, label):
         self.label = label
     
+    @abstractmethod
     def square(self):
         pass
 

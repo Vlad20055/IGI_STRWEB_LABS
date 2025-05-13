@@ -8,7 +8,7 @@ class NumpyTester:
 
     @staticmethod
     def create_from_list(lst: list) -> np.ndarray:
-        """Создание массива из списка (демонстрация np.array())"""
+        """Создание массива из списка"""
         return np.array(lst)
 
     @staticmethod
