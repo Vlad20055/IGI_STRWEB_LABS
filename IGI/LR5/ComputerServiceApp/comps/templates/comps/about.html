@@ -1,0 +1,15 @@
+{% extends "comps/base.html" %}
+
+{% block title %}О компании — Computer Service{% endblock %}
+
+{% block content %}
+    <h1>О компании — Computer Service</h1>
+    {% if info %}
+    <div>
+    {{ info.content|linebreaks }}
+    </div>
+    <p><small>Обновлено: {{ info.updated_at|date:"d/m/Y H:i" }}</small></p>
+    {% else %}
+    <p>Информация о компании ещё не добавлена.</p>
+    {% endif %}
+{% endblock %}

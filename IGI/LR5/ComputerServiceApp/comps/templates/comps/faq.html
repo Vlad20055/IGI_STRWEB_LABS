@@ -1,0 +1,20 @@
+{% extends "comps/base.html" %}
+
+{% block title %}Словарь терминов — Computer Service{% endblock %}
+
+{% block content %}
+    <h1>Словарь терминов — Computer Service</h1>
+    {% if faqs %}
+    <ul>
+    {% for item in faqs %}
+        <li style="margin-bottom:1.5em;">
+        <h2>{{ item.question }}</h2>
+        <p>{{ item.answer|linebreaks }}</p>
+        <p><small>Добавлено: {{ item.created_at|date:"d/m/Y H:i" }}</small></p>
+        </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>Пока нет ни одного термина.</p>
+    {% endif %}
+{% endblock %}

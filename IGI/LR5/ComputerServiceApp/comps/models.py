@@ -7,6 +7,12 @@ from django.utils import timezone
 # Дополнительная информация о клиенте/сотруднике
 class Profile(models.Model):
     user = models.OneToOneField(User, on_delete=models.CASCADE)
+    photo = models.ImageField(
+        upload_to='profiles/',
+        blank=True,
+        null=True,
+        verbose_name='Фото'
+    )
     phone = models.CharField(
         max_length=20,
         validators=[
@@ -25,7 +31,7 @@ class Profile(models.Model):
         return (timezone.now().date() - self.birth_date).days // 365
 
     def __str__(self):
-        return f"{self.user.get_full_name()}"
+        return f"{self.user.username}"
 
 # Специализация сотрудника
 class Specialization(models.Model):
@@ -41,7 +47,7 @@ class Employee(models.Model):
     specializations = models.ManyToManyField(Specialization, related_name='employees')
     
     def __str__(self):
-        return self.profile.user.get_full_name()
+        return self.profile.user.username
 
 # Тип услуги
 class ServiceType(models.Model):
@@ -99,7 +105,7 @@ class Client(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     
     def __str__(self):
-        return self.profile.user.get_full_name()
+        return self.profile.user.username
 
 # Договор/Заказ
 class Order(models.Model):
@@ -151,3 +157,89 @@ class PromoCode(models.Model):
     
     def __str__(self):
         return self.code
+    
+# Статья
+class Article(models.Model):
+    title = models.CharField(max_length=200)
+    short_description = models.TextField()
+    content = models.TextField()
+    published_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return self.title
+
+# Для страницы "О компании"
+class CompanyInfo(models.Model):
+    """
+    Хранит текстовую информацию «О компании».
+    Можно создавать несколько записей (например, для разных разделов или историй по годам),
+    но сейчас будем брать первую.
+    """
+    title = models.CharField(max_length=200, default="О компании")
+    content = models.TextField(help_text="Основной текст «О компании»")
+    updated_at = models.DateTimeField(auto_now=True)
+
+    class Meta:
+        verbose_name = "Информация о компании"
+        verbose_name_plural = "Информация о компании"
+
+    def __str__(self):
+        return self.title
+
+# Для страницы "Новости"
+class News(models.Model):
+    title = models.CharField("Заголовок", max_length=200)
+    short_description = models.CharField(
+        "Краткое содержание", 
+        max_length=255,
+        help_text="Одно предложение"
+    )
+    content = models.TextField("Полный текст новости")
+    image = models.ImageField(
+        "Изображение",
+        upload_to='news/',
+        blank=True,
+        null=True
+    )
+    published_at = models.DateTimeField(
+        "Дата и время публикации",
+        auto_now_add=True
+    )
+
+    class Meta:
+        verbose_name = "Новость"
+        verbose_name_plural = "Новости"
+        ordering = ['-published_at']
+
+    def __str__(self):
+        return self.title
+
+# Для страницы "FAQ"
+class FAQ(models.Model):
+    question = models.CharField("Вопрос", max_length=255)
+    answer = models.TextField("Ответ")
+    created_at = models.DateTimeField("Дата добавления", auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Термин / Вопрос"
+        verbose_name_plural = "Словарь терминов и понятий"
+        ordering = ['-created_at']
+
+    def __str__(self):
+        # чтобы в админке было понятно
+        return self.question
+
+# Для страницы "Вакансии"
+class Vacancy(models.Model):
+    title = models.CharField("Должность", max_length=200)
+    description = models.TextField("Описание вакансии")
+    posted_at = models.DateTimeField("Дата публикации", auto_now_add=True)
+    is_active = models.BooleanField("Активна", default=True)
+
+    class Meta:
+        verbose_name = "Вакансия"
+        verbose_name_plural = "Вакансии"
+        ordering = ['-posted_at']
+
+    def __str__(self):
+        return self.title
