@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Service, ServiceType, Order, Client, Employee, Specialization, SparePart, SparePartType, Device, DeviceType, Profile
+from .models import Service, ServiceType, Order, Client, Employee, Article, Specialization, SparePart, SparePartType, Device, DeviceType, Profile
 
 #Register your models here
 admin.site.register([ServiceType, Service, Order, Client, Employee,
                      Specialization, SparePartType, SparePart,
-                     DeviceType, Device, Profile])
+                     DeviceType, Device, Profile, Article])
 
 
 from .models import CompanyInfo
