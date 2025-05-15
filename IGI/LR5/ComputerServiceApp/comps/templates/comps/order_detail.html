@@ -1,0 +1,49 @@
+{% extends "comps/base.html" %}
+{% block title %}Заказ {{ order.number }}{% endblock %}
+
+{% block content %}
+  <h2>Заказ {{ order.number }}</h2>
+  <p><strong>Клиент:</strong> {{ order.client.profile.user.get_full_name }}</p>
+  <p><strong>Мастер:</strong> {{ order.employee.profile.user.get_full_name }}</p>
+  <p><strong>Устройство:</strong> {{ order.device }}</p>
+  <p><strong>Дата создания:</strong> {{ order.created_at|date:"d/m/Y" }}</p>
+  <p><strong>Срок выполнения:</strong> {{ order.due_date|date:"d/m/Y" }}</p>
+
+  <h3>Услуги</h3>
+  {% if order.orderservice_set.all %}
+    <table>
+      <tr><th>Название</th><th>Кол-во</th><th>Цена</th><th>Итого</th></tr>
+      {% for os in order.orderservice_set.all %}
+        <tr>
+          <td>{{ os.service.name }}</td>
+          <td>{{ os.quantity }}</td>
+          <td>{{ os.service.price }}</td>
+          <td>{{ os.subtotal }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Услуги не выбраны.</p>
+  {% endif %}
+
+  <h3>Запчасти</h3>
+  {% if order.orderpart_set.all %}
+    <table>
+      <tr><th>Название</th><th>Кол-во</th><th>Цена</th><th>Итого</th></tr>
+      {% for op in order.orderpart_set.all %}
+        <tr>
+          <td>{{ op.part.name }}</td>
+          <td>{{ op.quantity }}</td>
+          <td>{{ op.part.price }}</td>
+          <td>{{ op.subtotal }}</td>
+        </tr>
+      {% endfor %}
+    </table>
+  {% else %}
+    <p>Запчасти не выбраны.</p>
+  {% endif %}
+
+  <p><strong>Общая стоимость:</strong> {{ order.total_cost }} руб.</p>
+
+  <a href="{% url 'order_list' %}">← Вернуться к списку заказов</a>
+{% endblock %}

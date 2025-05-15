@@ -15,7 +15,7 @@
                 style="width:120px; height:120px; object-fit:cover; border-radius:50%; margin-right:1em;">
             {% endif %}
             <div>
-            <h2>{{ emp.profile.user.username }}</h2>
+            <h2>{{ emp.profile.user.get_full_name }}</h2>
             <p><strong>Телефон:</strong> {{ emp.profile.phone }}</p>
             <p><strong>Email:</strong> {{ emp.profile.user.email }}</p>
             <p><strong>Адрес:</strong> {{ emp.profile.address }}</p>
@@ -23,7 +23,7 @@
                 {% for spec in emp.specializations.all %}
                 {{ spec.name }}{% if not forloop.last %}, {% endif %}
                 {% empty %}
-                нет
+                    нет
                 {% endfor %}
             </p>
             </div>

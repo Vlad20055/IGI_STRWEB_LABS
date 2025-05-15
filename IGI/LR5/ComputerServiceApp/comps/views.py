@@ -1,6 +1,7 @@
-from django.shortcuts import render, redirect
+from django.http import HttpResponseForbidden
+from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
-from .forms import MasterSignUpForm, ClientSignUpForm
+from .forms import ClientSignUpForm
 from .models import Article
 from .models import CompanyInfo
 from .models import News
@@ -52,18 +53,6 @@ def vacancy_list(request):
     })
 
 
-def signup_master(request):
-    if request.method == 'POST':
-        form = MasterSignUpForm(request.POST, request.FILES)
-        if form.is_valid():
-            user = form.save()
-            login(request, user)
-            return redirect('home')
-    else:
-        form = MasterSignUpForm()
-    return render(request, 'comps/signup_master.html', {'form': form})
-
-
 def signup_client(request):
     if request.method == 'POST':
         form = ClientSignUpForm(request.POST, request.FILES)
@@ -74,3 +63,67 @@ def signup_client(request):
     else:
         form = ClientSignUpForm()
     return render(request, 'comps/signup_client.html', {'form': form})
+
+
+# Для создания заказов
+from django.contrib.auth.decorators import login_required, user_passes_test
+from .forms import OrderForm, OrderServiceFormSet, OrderPartFormSet
+from .models import Client
+
+def is_client(user):
+    return user.is_authenticated and user.groups.filter(name='Clients').exists()
+
+@login_required
+@user_passes_test(is_client)
+def order_create(request):
+    # Попытка достать клиента через профиль
+    try:
+        client = request.user.profile.client
+    except (AttributeError, Client.DoesNotExist):
+        # если что-то не так с профилем/Client, выдаём 403
+        return HttpResponseForbidden("У вас нет прав создавать заказы.")
+    
+    if request.method == 'POST':
+        form = OrderForm(request.POST)
+        svc_fs = OrderServiceFormSet(request.POST)
+        part_fs = OrderPartFormSet(request.POST)
+        if form.is_valid() and svc_fs.is_valid() and part_fs.is_valid():
+            order = form.save(commit=False)
+            order.client = client
+            order.save()
+            svc_fs.instance = order
+            svc_fs.save()
+            part_fs.instance = order
+            part_fs.save()
+            return redirect('order_list')
+    else:
+        form = OrderForm()
+        svc_fs = OrderServiceFormSet()
+        part_fs = OrderPartFormSet()
+
+    return render(request, 'comps/order_form.html', {
+        'form': form,
+        'svc_fs': svc_fs,
+        'part_fs': part_fs
+    })
+
+
+from .models import Order
+@login_required
+@user_passes_test(lambda u: u.groups.filter(name='Clients').exists())
+def order_list(request):
+    client = request.user.profile.client
+    orders = Order.objects.filter(client=client).order_by('-created_at')
+    return render(request, 'comps/order_list.html', {'orders': orders})
+
+
+@login_required
+@user_passes_test(is_client)
+def order_detail(request, pk):
+    # берём заказ или 404
+    order = get_object_or_404(Order, pk=pk)
+    # проверяем, что текущий пользователь — владелец заказа
+    if order.client.profile.user != request.user:
+        return HttpResponseForbidden("Это не ваш заказ.")
+    # передаём в шаблон
+    return render(request, 'comps/order_detail.html', {'order': order})

@@ -2,6 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import RegexValidator, MinValueValidator, MaxValueValidator
 from django.utils import timezone
+import uuid
 
 # Create your models here.
 # Дополнительная информация о клиенте/сотруднике
@@ -31,7 +32,7 @@ class Profile(models.Model):
         return (timezone.now().date() - self.birth_date).days // 365
 
     def __str__(self):
-        return f"{self.user.username}"
+        return f"{self.user.get_full_name()}"
 
 # Специализация сотрудника
 class Specialization(models.Model):
@@ -47,7 +48,7 @@ class Employee(models.Model):
     specializations = models.ManyToManyField(Specialization, related_name='employees')
     
     def __str__(self):
-        return self.profile.user.username
+        return self.profile.user.get_full_name()
 
 # Тип услуги
 class ServiceType(models.Model):
@@ -109,7 +110,7 @@ class Client(models.Model):
 
 # Договор/Заказ
 class Order(models.Model):
-    number = models.CharField(max_length=50, unique=True)
+    number = models.CharField(max_length=50, unique=True, editable=False)
     client = models.ForeignKey(Client, on_delete=models.PROTECT, related_name='orders')
     employee = models.ForeignKey(Employee, on_delete=models.PROTECT, related_name='orders')
     device = models.ForeignKey(Device, on_delete=models.SET_NULL, null=True)
@@ -117,21 +118,27 @@ class Order(models.Model):
     due_date = models.DateField()
     services = models.ManyToManyField(Service, through='OrderService')
     spare_parts = models.ManyToManyField(SparePart, through='OrderPart')
-    
+
+    def save(self, *args, **kwargs):
+        if not self.number:
+            self.number = f"ORD-{uuid.uuid4().hex[:8].upper()}"
+        super().save(*args, **kwargs)
+
     @property
     def total_cost(self):
         svc = sum(item.subtotal for item in self.orderservice_set.all())
         parts = sum(item.subtotal for item in self.orderpart_set.all())
         return svc + parts
-    
+
     def __str__(self):
         return f"Заказ {self.number} — {self.client}"
+
 
 # Промежуточная модель для услуг в заказе
 class OrderService(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     service = models.ForeignKey(Service, on_delete=models.PROTECT)
-    quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
+    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     
     @property
     def subtotal(self):
@@ -141,7 +148,7 @@ class OrderService(models.Model):
 class OrderPart(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     part = models.ForeignKey(SparePart, on_delete=models.PROTECT)
-    quantity = models.PositiveIntegerField(default=1, validators=[MinValueValidator(1)])
+    quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     
     @property
     def subtotal(self):
