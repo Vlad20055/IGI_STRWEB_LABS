@@ -20,11 +20,26 @@
             <a href="{% url 'privacy_policy' %}">Политика</a>
         </nav>
         <nav>
+          <li>Справочники:
+            <ul>
+              <li><a href="{% url 'service_type_list' %}">Типы услуг</a></li>
+              <li><a href="{% url 'service_list' %}">Услуги</a></li>
+              <li><a href="{% url 'device_type_list' %}">Типы устройств</a></li>
+              <li><a href="{% url 'device_list' %}">Устройства</a></li>
+              <li><a href="{% url 'spareparttype_list' %}">Типы запчастей</a></li>
+              <li><a href="{% url 'sparepart_list' %}">Запчасти</a></li>
+            </ul>
+          </li>
+
           {% if user.is_authenticated %}
           
             {% if user|has_group:"Clients" %}
                 <li><a href="{% url 'order_create' %}">Создать заказ</a></li>
-                <li><a href="{% url 'order_list' %}">Мои заказы</a></li>
+                <li><a href="{% url 'order_list_client' %}">Мои заказы</a></li>
+            {% endif %}
+
+            {% if user|has_group:"Employees" %}
+                <li><a href="{% url 'order_list_employee' %}">Заказы (мастер)</a></li>
             {% endif %}
 
             Привет, {{ user.username }}!
@@ -39,16 +54,16 @@
               <a href="{% url 'signup_client' %}">Регистрация клиента</a>
           {% endif %}
         </nav>
-  </header>
+    </header>
 
-  <main>
-    {% block content %}
-    <!-- здесь будет основное содержимое страниц -->
-    {% endblock %}
-  </main>
+    <main>
+      {% block content %}
+      <!-- здесь будет основное содержимое страниц -->
+      {% endblock %}
+    </main>
 
-  <footer>
-    <p>&copy; {{ now|date:"Y" }} Computer Service</p>
-  </footer>
+    <footer>
+      <p>&copy; {{ now|date:"Y" }} Computer Service</p>
+    </footer>
 </body>
 </html>

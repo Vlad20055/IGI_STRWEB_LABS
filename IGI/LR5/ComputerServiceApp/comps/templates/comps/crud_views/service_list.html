@@ -1,0 +1,26 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Услуги{% endblock %}
+{% block content %}
+  <h2>Услуги</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
+  {% endif %}
+
+  <ul>
+    {% for s in services %}
+        <li>
+            {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
+            
+            {% if user.is_authenticated and user|has_group:"Employees" %}
+                [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
+                [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
+            {% endif %}
+        </li>
+            {% empty %}
+        <li>Услуг ещё нет.</li>
+    {% endfor %}
+    </ul>
+{% endblock %}

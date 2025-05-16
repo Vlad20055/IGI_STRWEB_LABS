@@ -1,0 +1,25 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Типы запчастей{% endblock %}
+{% block content %}
+  <h2>Типы запчастей</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'spareparttype_add' %}">Добавить тип запчасти</a></p>
+  {% endif %}
+
+  <ul>
+    {% for pt in parttypes %}
+      <li>
+        {{ pt.name }}
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'spareparttype_edit' pt.pk %}">изменить</a>]
+          [<a href="{% url 'spareparttype_delete' pt.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Типов запчастей ещё нет.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

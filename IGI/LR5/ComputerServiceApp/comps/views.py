@@ -95,7 +95,7 @@ def order_create(request):
             svc_fs.save()
             part_fs.instance = order
             part_fs.save()
-            return redirect('order_list')
+            return redirect('order_list_client')
     else:
         form = OrderForm()
         svc_fs = OrderServiceFormSet()
@@ -110,20 +110,35 @@ def order_create(request):
 
 from .models import Order
 @login_required
-@user_passes_test(lambda u: u.groups.filter(name='Clients').exists())
-def order_list(request):
+@user_passes_test(is_client)
+def order_list_client(request):
     client = request.user.profile.client
     orders = Order.objects.filter(client=client).order_by('-created_at')
-    return render(request, 'comps/order_list.html', {'orders': orders})
+    return render(request, 'comps/order_list_client.html', {'orders': orders})
 
 
 @login_required
-@user_passes_test(is_client)
 def order_detail(request, pk):
     # берём заказ или 404
     order = get_object_or_404(Order, pk=pk)
     # проверяем, что текущий пользователь — владелец заказа
-    if order.client.profile.user != request.user:
+    if order.client.profile.user != request.user and order.employee.profile.user != request.user:
         return HttpResponseForbidden("Это не ваш заказ.")
     # передаём в шаблон
     return render(request, 'comps/order_detail.html', {'order': order})
+
+
+# Для Employee
+def is_employee(user):
+    return user.is_authenticated and user.groups.filter(name='Employees').exists()
+
+@login_required
+@user_passes_test(is_employee)
+def order_list_employee(request):
+    # получаем объект Employee по связанному Profile
+    emp = get_object_or_404(Employee, profile=request.user.profile)
+    # выбираем все заказы, где этот Employee
+    orders = Order.objects.filter(employee=emp).order_by('-created_at')
+    return render(request, 'comps/order_list_employee.html', {
+        'orders': orders
+    })

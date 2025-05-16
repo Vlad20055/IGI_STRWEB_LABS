@@ -1,4 +1,6 @@
 {% extends "comps/base.html" %}
+{% load group_filters %}
+
 {% block title %}Заказ {{ order.number }}{% endblock %}
 
 {% block content %}
@@ -45,5 +47,12 @@
 
   <p><strong>Общая стоимость:</strong> {{ order.total_cost }} руб.</p>
 
-  <a href="{% url 'order_list' %}">← Вернуться к списку заказов</a>
+  {% if user.is_authenticated and user|has_group:"Clients" %}
+    <a href="{% url 'order_list_client' %}">← Вернуться к списку заказов</a>  
+  {% endif %}
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <li><a href="{% url 'order_list_employee' %}"> Вернуться к списку заказов </a></li>
+  {% endif %}
+
 {% endblock %}

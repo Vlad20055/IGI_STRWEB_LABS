@@ -1,0 +1,24 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Удалить тип устройства{% endblock %}
+{% block content %}
+  <h2>Удалить тип устройства «{{ object.name }}»?</h2>
+
+  {% if related_devices %}
+    <p>Вместе с этим будут удалены следующие устройства:</p>
+    <ul>
+      {% for d in related_devices %}
+        <li>{{ d.type.name }} {{ d.model }} (S/N: {{ d.serial_number }})</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Связанных устройств не найдено.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'device_type_list' %}">Отмена</a>
+  </form>
+{% endblock %}

@@ -60,7 +60,7 @@ class ServiceType(models.Model):
 
 # Услуга
 class Service(models.Model):
-    type = models.ForeignKey(ServiceType, on_delete=models.PROTECT, related_name='services')
+    type = models.ForeignKey(ServiceType, on_delete=models.CASCADE, related_name='services')
     name = models.CharField(max_length=200)
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
@@ -77,7 +77,7 @@ class DeviceType(models.Model):
 
 # Ремонтируемое устройство
 class Device(models.Model):
-    type = models.ForeignKey(DeviceType, on_delete=models.PROTECT, related_name='devices')
+    type = models.ForeignKey(DeviceType, on_delete=models.CASCADE, related_name='devices')
     model = models.CharField(max_length=200)
     serial_number = models.CharField(max_length=100, blank=True)
     
@@ -93,7 +93,7 @@ class SparePartType(models.Model):
 
 # Запасная часть
 class SparePart(models.Model):
-    type = models.ForeignKey(SparePartType, on_delete=models.PROTECT, related_name='parts')
+    type = models.ForeignKey(SparePartType, on_delete=models.CASCADE, related_name='parts')
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     stock = models.PositiveIntegerField(default=0)
@@ -137,7 +137,7 @@ class Order(models.Model):
 # Промежуточная модель для услуг в заказе
 class OrderService(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    service = models.ForeignKey(Service, on_delete=models.PROTECT)
+    service = models.ForeignKey(Service, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     
     @property
@@ -147,7 +147,7 @@ class OrderService(models.Model):
 # Промежуточная модель для запчастей в заказе
 class OrderPart(models.Model):
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
-    part = models.ForeignKey(SparePart, on_delete=models.PROTECT)
+    part = models.ForeignKey(SparePart, on_delete=models.CASCADE)
     quantity = models.PositiveIntegerField(default=0, validators=[MinValueValidator(0)])
     
     @property

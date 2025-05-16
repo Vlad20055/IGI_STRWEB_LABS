@@ -1,0 +1,25 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Запчасти{% endblock %}
+{% block content %}
+  <h2>Запчасти</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'sparepart_add' %}">Добавить запчасть</a></p>
+  {% endif %}
+
+  <ul>
+    {% for p in parts %}
+      <li>
+        {{ p.name }} ({{ p.type.name }}) — {{ p.stock }} шт. по {{ p.price }}
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'sparepart_edit' p.pk %}">изменить</a>]
+          [<a href="{% url 'sparepart_delete' p.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Запчастей ещё нет.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}
