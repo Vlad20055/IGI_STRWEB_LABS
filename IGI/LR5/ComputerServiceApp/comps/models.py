@@ -14,15 +14,7 @@ class Profile(models.Model):
         null=True,
         verbose_name='Фото'
     )
-    phone = models.CharField(
-        max_length=20,
-        validators=[
-            RegexValidator(
-                regex=r'^\+375\s*\(\d{2}\)\s*\d{3}-\d{2}-\d{2}$',
-                message='Формат номера: +375 (XX) XXX-XX-XX'
-            )
-        ]
-    )
+    phone = models.CharField(max_length=20)
     address = models.TextField()
     passport = models.CharField(max_length=20)
     birth_date = models.DateField()

@@ -1,3 +1,4 @@
+from django.urls import re_path
 from django.urls import path
 from . import views
 from django.contrib.auth import views as auth_views
@@ -24,8 +25,9 @@ urlpatterns = [
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('orders/employee/', views.order_list_employee, name='order_list_employee'),
     path('orders/create/', views.order_create, name='order_create'),
-    path('orders/<int:pk>/', views.order_detail, name='order_detail'),
+    re_path(r'^orders/(?P<number>ORD-[A-F0-9]{8})/$', views.order_detail_by_number, name='order_detail_by_number'),
     path('orders/client/', views.order_list_client, name='order_list_client'),
+    path('special/', views.special, name='special'),
 ]
 
 

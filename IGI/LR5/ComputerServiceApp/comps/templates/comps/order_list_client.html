@@ -6,7 +6,9 @@
     <ul>
         {% for o in orders %}
             <li>
-            <a href="{% url 'order_detail' o.pk %}">{{ o.number }}</a> —
+            <a href="{% url 'order_detail_by_number' number=o.number %}">
+              {{ o.number }}
+            </a>
             {{ o.created_at|date:"d/m/Y" }} — {{ o.total_cost }} руб.
             </li>
         {% endfor %}

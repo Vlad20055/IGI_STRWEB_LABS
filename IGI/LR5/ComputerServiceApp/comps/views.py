@@ -1,3 +1,5 @@
+import requests
+import re
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
@@ -118,13 +120,15 @@ def order_list_client(request):
 
 
 @login_required
-def order_detail(request, pk):
-    # берём заказ или 404
-    order = get_object_or_404(Order, pk=pk)
-    # проверяем, что текущий пользователь — владелец заказа
-    if order.client.profile.user != request.user and order.employee.profile.user != request.user:
+def order_detail_by_number(request, number):
+    # Ищем заказ по его 'number', а не по 'pk'
+    order = get_object_or_404(Order, number=number)
+
+    # Проверка, что заказ принадлежит либо клиенту, либо мастеру
+    user = request.user
+    if order.client.profile.user != user and order.employee.profile.user != user:
         return HttpResponseForbidden("Это не ваш заказ.")
-    # передаём в шаблон
+
     return render(request, 'comps/order_detail.html', {'order': order})
 
 
@@ -141,4 +145,33 @@ def order_list_employee(request):
     orders = Order.objects.filter(employee=emp).order_by('-created_at')
     return render(request, 'comps/order_list_employee.html', {
         'orders': orders
+    })
+
+
+def special(request):
+    action = request.GET.get('action')
+
+    if 'joke' not in request.session or action == 'joke':
+        try:
+            jr = requests.get('https://official-joke-api.appspot.com/random_joke', timeout=5)
+            jr.raise_for_status()
+            request.session['joke'] = jr.json()
+        except:
+            request.session['joke'] = {'setup': 'Ошибка при получении шутки.', 'punchline': ''}
+
+    if 'quote' not in request.session or action == 'quote':
+        try:
+            qr = requests.get('https://favqs.com/api/qotd', timeout=5)
+            qr.raise_for_status()
+            quote_data = qr.json().get('quote', {})
+            request.session['quote'] = {
+                'body': quote_data.get('body', ''),
+                'author': quote_data.get('author', '')
+            }
+        except:
+            request.session['quote'] = {'body': 'Ошибка при получении цитаты.', 'author': ''}
+
+    return render(request, 'comps/special.html', {
+        'joke': request.session['joke'],
+        'quote': request.session['quote'],
     })

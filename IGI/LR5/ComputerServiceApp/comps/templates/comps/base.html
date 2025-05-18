@@ -32,6 +32,8 @@
           </li>
 
           {% if user.is_authenticated %}
+
+            <a href="{% url 'special' %}">Специально для вас</a>
           
             {% if user|has_group:"Clients" %}
                 <li><a href="{% url 'order_create' %}">Создать заказ</a></li>
