@@ -133,3 +133,56 @@ MEDIA_ROOT = BASE_DIR / 'media'
 LOGIN_REDIRECT_URL = '/'
 # Перенаправлять на главную после выхода (если используете LogoutView)
 LOGOUT_REDIRECT_URL = '/'
+
+import os
+# Допустимые уровни: DEBUG, INFO, WARNING, ERROR, CRITICAL
+LOG_LEVEL = os.getenv('DJANGO_LOG_LEVEL', 'INFO').upper()
+
+import logging.config
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'verbose': {
+            'format': '[{asctime}] {levelname} {name}.{funcName}:{lineno} — {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'file': {
+            'level': LOG_LEVEL,   # <-- здесь
+            'class': 'logging.handlers.RotatingFileHandler',
+            'filename': os.path.join(BASE_DIR, 'logs/app.log'),
+            'maxBytes': 10*1024*1024,
+            'backupCount': 1,
+            'formatter': 'verbose',
+        },
+        'console': {
+            'level': LOG_LEVEL,   # <-- и здесь
+            'class': 'logging.StreamHandler',
+            'formatter': 'verbose',
+        },
+    },
+    'loggers': {
+        'django': {
+            'handlers': ['console'],
+            'level': 'WARNING', 
+            'propagate': False,
+        },
+        'django.request': {
+            'handlers': ['console'],
+            'level': 'ERROR',
+            'propagate': False,
+        },
+        # наш кастомный логгер (ниже)
+        'custom': {
+            'handlers': ['file'],
+            'level': LOG_LEVEL,
+            'propagate': False,
+        },
+    },
+
+}
+
+logging.config.dictConfig(LOGGING)

@@ -1,4 +1,5 @@
 # comps/crud_views.py
+from django.shortcuts import render
 from django.urls import reverse_lazy
 from django.views.generic import ListView, CreateView, UpdateView, DeleteView
 from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
@@ -165,3 +166,34 @@ class SparePartDeleteView(EmployeeRequiredMixin, DeleteView):
     model = SparePart
     template_name = 'comps/crud_views/sparepart_confirm_delete.html'
     success_url = reverse_lazy('sparepart_list')
+
+
+
+# Отдельный шаблон для страницы с показом услуг (с сортировкой и фильтрацией)
+def service_list(request):
+    # 1) Все типы для выпадающего списка
+    types = ServiceType.objects.all()
+
+    # 2) GET‑параметры
+    selected_type = request.GET.get('type', '')
+    sort = request.GET.get('sort', '')
+
+    # 3) Базовый queryset
+    qs = Service.objects.select_related('type').all()
+
+    # 4) Применяем фильтр по типу
+    if selected_type:
+        qs = qs.filter(type_id=selected_type)
+
+    # 5) Сортировка
+    if sort == 'price_asc':
+        qs = qs.order_by('price')
+    elif sort == 'price_desc':
+        qs = qs.order_by('-price')
+
+    return render(request, 'comps/crud_views/service_list.html', {
+        'services': qs,
+        'types': types,
+        'selected_type': selected_type,
+        'sort': sort,
+    })

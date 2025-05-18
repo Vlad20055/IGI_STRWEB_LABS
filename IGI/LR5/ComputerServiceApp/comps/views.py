@@ -1,15 +1,26 @@
+import calendar
+import io
+import base64
+import statistics
+import datetime
 import requests
-import re
+import matplotlib
+matplotlib.use('Agg')
+import matplotlib.pyplot as plt
+from django.db.models import F, Sum
 from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from .forms import ClientSignUpForm
-from .models import Article
+from .models import Article, OrderService
 from .models import CompanyInfo
 from .models import News
 from .models import FAQ
 from .models import Employee
 from .models import Vacancy
+
+import logging
+logger = logging.getLogger('custom')
 
 def index(request):
     # получаем последнюю по дате опубликования статью
@@ -97,6 +108,7 @@ def order_create(request):
             svc_fs.save()
             part_fs.instance = order
             part_fs.save()
+            logger.info(f"Создан заказ: {order.number}, клиент: {request.user.username}, дата: {order.created_at}")
             return redirect('order_list_client')
     else:
         form = OrderForm()
@@ -174,4 +186,143 @@ def special(request):
     return render(request, 'comps/special.html', {
         'joke': request.session['joke'],
         'quote': request.session['quote'],
+    })
+
+import statistics
+def statistic(request):
+    # --- (ваш существующий код по возрастам) ---
+    today = datetime.date.today()
+    ages = []
+    for client in Client.objects.select_related('profile').all():
+        bd = client.profile.birth_date
+        age = today.year - bd.year - ((today.month, today.day) < (bd.month, bd.day))
+        ages.append(age)
+    if ages:
+        avg_age = round(statistics.mean(ages), 1)
+        med_age = statistics.median(ages)
+        try:
+            mode_age = statistics.mode(ages)
+        except statistics.StatisticsError:
+            mode_age = min(statistics.multimode(ages))
+    else:
+        avg_age = med_age = mode_age = 0
+
+    # Гистограмма возрастов
+    fig1, ax1 = plt.subplots()
+    bins = range(min(ages, default=18), max(ages, default=18) + 2)
+    ax1.hist(ages, bins=bins, edgecolor='black')
+    ax1.set_xlabel('Возраст (лет)')
+    ax1.set_ylabel('Число клиентов')
+    ax1.set_title('Распределение возрастов клиентов')
+    buf1 = io.BytesIO()
+    fig1.tight_layout()
+    fig1.savefig(buf1, format='png')
+    plt.close(fig1)
+    buf1.seek(0)
+    age_chart = base64.b64encode(buf1.getvalue()).decode('ascii')
+    buf1.close()
+
+    # --- Новый блок: статистика по типам услуг ---
+    # Считаем общее количество всех сервисов в заказах
+    total_items = 0
+    # словарь {ServiceType: total_quantity}
+    counts = {}
+    for os in OrderService.objects.select_related('service__type').all():
+        st = os.service.type
+        counts.setdefault(st, 0)
+        counts[st] += os.quantity
+        total_items += os.quantity
+
+    # Подготавливаем данные для диаграммы
+    labels = []
+    values = []
+    for st, cnt in counts.items():
+        labels.append(st.name)
+        # процент
+        pct = (cnt / total_items * 100) if total_items else 0
+        values.append(pct)
+
+    # Рисуем горизонтальную столбчатую диаграмму
+    fig2, ax2 = plt.subplots(figsize=(6, max(4, len(labels)*0.5)))
+    y_pos = range(len(labels))
+    ax2.barh(y_pos, values, align='center', edgecolor='black')
+    ax2.set_yticks(y_pos)
+    ax2.set_yticklabels(labels)
+    ax2.invert_yaxis()
+    ax2.set_xlabel('Процент заказов (%)')
+    ax2.set_title('Распределение заказов по типам услуг')
+    buf2 = io.BytesIO()
+    fig2.tight_layout()
+    fig2.savefig(buf2, format='png')
+    plt.close(fig2)
+    buf2.seek(0)
+    services_chart = base64.b64encode(buf2.getvalue()).decode('ascii')
+    buf2.close()
+
+    return render(request, 'comps/statistic.html', {
+        'avg_age': avg_age,
+        'med_age': med_age,
+        'mode_age': mode_age,
+        'age_chart': f'data:image/png;base64,{age_chart}',
+        'services_chart': f'data:image/png;base64,{services_chart}',
+    })
+
+
+@login_required
+@user_passes_test(is_employee)
+def company_statistic(request):
+    # 1) Считаем выручку по каждому типу услуг
+    qs = (
+        OrderService.objects
+        .values(type_name=F('service__type__name'))
+        .annotate(revenue=Sum(F('quantity') * F('service__price')))
+        .order_by('-revenue')
+    )
+
+    # 2) Метки и данные
+    labels = [item['type_name'] for item in qs]
+    revenues = [item['revenue'] or 0 for item in qs]
+
+    # 3) Самый прибыльный тип услуги
+    top_type = labels[0] if labels else None
+
+    # 4) Строим диаграмму
+    fig, ax = plt.subplots(figsize=(6, max(4, len(labels) * 0.5)))
+    y_pos = list(range(len(labels)))
+    ax.barh(y_pos, revenues, align='center', edgecolor='black')
+    ax.set_yticks(y_pos)
+    ax.set_yticklabels(labels)
+    ax.invert_yaxis()
+    ax.set_xlabel('Выручка (руб.)')
+    ax.set_title('Выручка по типам услуг')
+
+    buf = io.BytesIO()
+    fig.tight_layout()
+    fig.savefig(buf, format='png')
+    plt.close(fig)
+    buf.seek(0)
+    chart = base64.b64encode(buf.getvalue()).decode('ascii')
+    buf.close()
+
+    return render(request, 'comps/company_statistic.html', {
+        'top_type': top_type,
+        'chart': f'data:image/png;base64,{chart}',
+    })
+
+
+def calendar_view(request):
+    # Получаем текущий год и месяц
+    today = datetime.date.today()
+    year, month = today.year, today.month
+
+    # Генерируем текстовый календарь для месяца
+    cal = calendar.TextCalendar(firstweekday=0)  # понедельник первым
+    month_calendar = cal.formatmonth(year, month)
+
+    # Передаём текущую дату в формате DD/MM/YYYY (серверное время)
+    current_date = today.strftime('%d/%m/%Y')
+
+    return render(request, 'comps/calendar.html', {
+        'month_calendar': month_calendar,
+        'current_date': current_date,
     })

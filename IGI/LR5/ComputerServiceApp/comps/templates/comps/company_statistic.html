@@ -1,0 +1,16 @@
+{% extends "comps/base.html" %}
+{% block title %}Статистика (Мастер){% endblock %}
+
+{% block content %}
+  <h1>Статистика продаж услуг</h1>
+
+  {% if top_type %}
+    <p>
+      <strong>Самый прибыльный тип услуги:</strong>
+      {{ top_type }}
+    </p>
+    <img src="{{ chart }}" alt="Выручка по типам услуг">
+  {% else %}
+    <p>Нет данных по продажам услуг.</p>
+  {% endif %}
+{% endblock %}

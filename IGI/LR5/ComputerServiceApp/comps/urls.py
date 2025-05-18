@@ -5,12 +5,14 @@ from django.contrib.auth import views as auth_views
 
 from .crud_views import (
     ServiceTypeListView, ServiceTypeCreateView, ServiceTypeUpdateView, ServiceTypeDeleteView,
-    ServiceListView, ServiceCreateView, ServiceUpdateView, ServiceDeleteView,
+    ServiceCreateView, ServiceUpdateView, ServiceDeleteView,
     DeviceTypeListView, DeviceTypeCreateView, DeviceTypeUpdateView, DeviceTypeDeleteView,
     DeviceListView, DeviceCreateView, DeviceUpdateView, DeviceDeleteView,
     SparePartTypeListView, SparePartTypeCreateView, SparePartTypeUpdateView, SparePartTypeDeleteView,
     SparePartListView, SparePartCreateView, SparePartUpdateView, SparePartDeleteView
 )
+from .crud_views import service_list
+
 
 urlpatterns = [
     path('', views.index, name='home'),
@@ -28,6 +30,9 @@ urlpatterns = [
     re_path(r'^orders/(?P<number>ORD-[A-F0-9]{8})/$', views.order_detail_by_number, name='order_detail_by_number'),
     path('orders/client/', views.order_list_client, name='order_list_client'),
     path('special/', views.special, name='special'),
+    path('statistic/', views.statistic, name='statistic'),
+    path('company-statistic/', views.company_statistic, name='company_statistic'),
+    path('calendar/', views.calendar_view, name='calendar'),
 ]
 
 
@@ -39,7 +44,7 @@ urlpatterns += [
     path('types/service/<int:pk>/delete/', ServiceTypeDeleteView.as_view(), name='service_type_delete'),
 
     # Service CRUD
-    path('services/', ServiceListView.as_view(), name='service_list'),
+    path('services/', service_list, name='service_list'),
     path('services/add/', ServiceCreateView.as_view(), name='service_add'),
     path('services/<int:pk>/edit/', ServiceUpdateView.as_view(), name='service_edit'),
     path('services/<int:pk>/delete/', ServiceDeleteView.as_view(), name='service_delete'),

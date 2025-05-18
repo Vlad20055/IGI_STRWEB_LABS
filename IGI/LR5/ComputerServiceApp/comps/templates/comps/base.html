@@ -17,7 +17,9 @@
             <a href="{% url 'faq_list' %}">Словарь</a> |
             <a href="{% url 'contacts' %}">Контакты</a> |
             <a href="{% url 'vacancy_list' %}">Вакансии</a> |
-            <a href="{% url 'privacy_policy' %}">Политика</a>
+            <a href="{% url 'privacy_policy' %}">Политика</a> |
+            <a href="{% url 'statistic' %}">Статистика</a> |
+            <a href="{% url 'calendar' %}">Календарь</a> |
         </nav>
         <nav>
           <li>Справочники:
@@ -42,6 +44,7 @@
 
             {% if user|has_group:"Employees" %}
                 <li><a href="{% url 'order_list_employee' %}">Заказы (мастер)</a></li>
+                <a href="{% url 'company_statistic' %}">Статистика (Мастер)</a> |
             {% endif %}
 
             Привет, {{ user.username }}!

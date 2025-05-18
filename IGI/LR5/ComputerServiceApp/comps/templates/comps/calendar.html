@@ -1,0 +1,38 @@
+{% extends "comps/base.html" %}
+{% block title %}Календарь — Computer Service{% endblock %}
+
+{% block content %}
+  <h1>Календарь</h1>
+
+  <p><strong>Текущая дата (серверное время):</strong> {{ current_date }}</p>
+  <p>
+    <strong>Ваше локальное время и зона:</strong>
+    <span id="local-date">загрузка…</span>,
+    <span id="tz-name">загрузка…</span>
+  </p>
+  <p>
+    <strong>Текущее время в UTC:</strong>
+    <span id="utc-date">загрузка…</span>
+  </p>
+
+  <h2>Календарь на этот месяц</h2>
+  <pre style="font-family: monospace; line-height:1.2;">
+{{ month_calendar }}
+  </pre>
+
+  <script>
+    const now = new Date();
+
+    // Локальное время и зона
+    const localDate = now.toLocaleDateString();
+    const localTime = now.toLocaleTimeString();
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+    document.getElementById('local-date').textContent = `${localDate} ${localTime}`;
+    document.getElementById('tz-name').textContent = tz;
+
+    // UTC время
+    const utcDate = now.toLocaleDateString('default', { timeZone: 'UTC' });
+    const utcTime = now.toLocaleTimeString('default', { timeZone: 'UTC' });
+    document.getElementById('utc-date').textContent = `${utcDate} ${utcTime}`;
+  </script>
+{% endblock %}

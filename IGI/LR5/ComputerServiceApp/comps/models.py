@@ -88,7 +88,6 @@ class SparePart(models.Model):
     type = models.ForeignKey(SparePartType, on_delete=models.CASCADE, related_name='parts')
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
-    stock = models.PositiveIntegerField(default=0)
     
     def __str__(self):
         return self.name
@@ -123,7 +122,7 @@ class Order(models.Model):
         return svc + parts
 
     def __str__(self):
-        return f"Заказ {self.number} — {self.client}"
+        return f"Заказ {self.number} — {self.client}"   
 
 
 # Промежуточная модель для услуг в заказе
