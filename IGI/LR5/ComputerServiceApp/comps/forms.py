@@ -1,7 +1,7 @@
 from django import forms
 from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.models import User, Group
-from .models import Profile, Client, Employee
+from .models import Profile, Client, Employee, Review
 
 # Для регистрации клиента
 class ClientSignUpForm(UserCreationForm):
@@ -116,4 +116,14 @@ OrderPartFormSet = inlineformset_factory(
     extra=3,
     can_delete=False
 )
+
+# Для создания отзывов
+class ReviewForm(forms.ModelForm):
+    class Meta:
+        model = Review
+        fields = ['rating', 'text']
+        widgets = {
+            'rating': forms.NumberInput(attrs={'min':1, 'max':10}),
+            'text': forms.Textarea(attrs={'rows':4}),
+        }
 

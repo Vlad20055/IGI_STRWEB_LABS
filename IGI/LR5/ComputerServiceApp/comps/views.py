@@ -12,15 +12,15 @@ from django.http import HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from .forms import ClientSignUpForm
-from .models import Article, OrderService
+from .models import Article, Coupon, OrderService
 from .models import CompanyInfo
 from .models import News
 from .models import FAQ
 from .models import Employee
 from .models import Vacancy
+from .models import Review
+from .forms import ReviewForm
 
-import logging
-logger = logging.getLogger('custom')
 
 def index(request):
     # получаем последнюю по дате опубликования статью
@@ -108,7 +108,6 @@ def order_create(request):
             svc_fs.save()
             part_fs.instance = order
             part_fs.save()
-            logger.info(f"Создан заказ: {order.number}, клиент: {request.user.username}, дата: {order.created_at}")
             return redirect('order_list_client')
     else:
         form = OrderForm()
@@ -159,7 +158,7 @@ def order_list_employee(request):
         'orders': orders
     })
 
-
+@login_required
 def special(request):
     action = request.GET.get('action')
 
@@ -222,7 +221,7 @@ def statistic(request):
     age_chart = base64.b64encode(buf1.getvalue()).decode('ascii')
     buf1.close()
 
-    # --- Новый блок: статистика по типам услуг ---
+    # --- Статистика по типам услуг ---
     # Считаем общее количество всех сервисов в заказах
     total_items = 0
     # словарь {ServiceType: total_quantity}
@@ -325,4 +324,33 @@ def calendar_view(request):
     return render(request, 'comps/calendar.html', {
         'month_calendar': month_calendar,
         'current_date': current_date,
+    })
+
+
+# Для отзывов
+def review_list(request):
+    reviews = Review.objects.select_related('user').order_by('-created_at')
+    return render(request, 'comps/review_list.html', {'reviews': reviews})
+
+@login_required(login_url='login')
+def review_create(request):
+    if request.method == 'POST':
+        form = ReviewForm(request.POST)
+        if form.is_valid():
+            rev = form.save(commit=False)
+            rev.user = request.user
+            rev.save()
+            return redirect('review_list')
+    else:
+        form = ReviewForm()
+    return render(request, 'comps/review_form.html', {'form': form})
+
+# Для промокодов и купонов
+def coupon_list(request):
+    today = datetime.date.today()
+    active = Coupon.objects.filter(valid_until__gte=today)
+    archived = Coupon.objects.filter(valid_until__lt=today)
+    return render(request, 'comps/coupon_list.html', {
+        'active': active,
+        'archived': archived,
     })

@@ -9,6 +9,9 @@ from .models import (
     SparePartType, SparePart
 )
 
+import logging
+logger = logging.getLogger('custom')
+
 class EmployeeRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.groups.filter(name='Employees').exists()
@@ -152,13 +155,13 @@ class SparePartListView(ListView):
 
 class SparePartCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePart
-    fields = ['type', 'name', 'price', 'stock']
+    fields = ['type', 'name', 'price']
     template_name = 'comps/crud_views/sparepart_form.html'
     success_url = reverse_lazy('sparepart_list')
 
 class SparePartUpdateView(EmployeeRequiredMixin, UpdateView):
     model = SparePart
-    fields = ['type', 'name', 'price', 'stock']
+    fields = ['type', 'name', 'price']
     template_name = 'comps/crud_views/sparepart_form.html'
     success_url = reverse_lazy('sparepart_list')
 

@@ -151,7 +151,7 @@ LOGGING = {
     },
     'handlers': {
         'file': {
-            'level': LOG_LEVEL,   # <-- здесь
+            'level': LOG_LEVEL,
             'class': 'logging.handlers.RotatingFileHandler',
             'filename': os.path.join(BASE_DIR, 'logs/app.log'),
             'maxBytes': 10*1024*1024,
@@ -159,7 +159,7 @@ LOGGING = {
             'formatter': 'verbose',
         },
         'console': {
-            'level': LOG_LEVEL,   # <-- и здесь
+            'level': LOG_LEVEL,
             'class': 'logging.StreamHandler',
             'formatter': 'verbose',
         },

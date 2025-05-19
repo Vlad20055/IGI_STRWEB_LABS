@@ -33,6 +33,9 @@ urlpatterns = [
     path('statistic/', views.statistic, name='statistic'),
     path('company-statistic/', views.company_statistic, name='company_statistic'),
     path('calendar/', views.calendar_view, name='calendar'),
+    path('reviews/', views.review_list, name='review_list'),
+    path('reviews/add/', views.review_create, name='review_create'),
+    path('coupons/', views.coupon_list, name='coupon_list'),
 ]
 
 

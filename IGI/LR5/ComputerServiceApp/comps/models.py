@@ -241,3 +241,47 @@ class Vacancy(models.Model):
 
     def __str__(self):
         return self.title
+
+
+# Отзывы
+class Review(models.Model):
+    user = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        related_name='reviews'
+    )
+    rating = models.PositiveSmallIntegerField(
+        validators=[MinValueValidator(1), MaxValueValidator(10)]
+    )
+    text = models.TextField()
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"Отзыв от {self.user.get_full_name()} — {self.rating}"
+
+
+# Промокоды и купоны
+class Coupon(models.Model):
+    service = models.ForeignKey(
+        'Service',
+        on_delete=models.CASCADE,
+        related_name='coupons'
+    )
+    discount_percent = models.PositiveSmallIntegerField(
+        help_text='Скидка в процентах (1–100)'
+    )
+    valid_until = models.DateField(
+        help_text='Дата окончания действия купона'
+    )
+
+    class Meta:
+        ordering = ['-valid_until']
+        verbose_name = 'Промокод/купон'
+        verbose_name_plural = 'Промокоды и купоны'
+
+    @property
+    def is_active(self):
+        return self.valid_until >= timezone.now().date()
+
+    def __str__(self):
+        return f"{self.service.name}: −{self.discount_percent}% до {self.valid_until.strftime('%d/%m/%Y')}"

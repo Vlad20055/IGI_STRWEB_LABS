@@ -1,10 +1,10 @@
 from django.contrib import admin
-from .models import Service, ServiceType, Order, Client, Employee, Article, Specialization, SparePart, SparePartType, Device, DeviceType, Profile
+from .models import Review, Coupon, Service, ServiceType, Order, Client, Employee, Article, Specialization, SparePart, SparePartType, Device, DeviceType, Profile
 
 #Register your models here
 admin.site.register([ServiceType, Order,
                      Specialization, SparePartType,
-                     DeviceType, Device, Profile, Article])
+                     DeviceType, Device, Profile, Article, Review])
 
 
 from .models import CompanyInfo
@@ -86,5 +86,13 @@ class SparePartAdmin(admin.ModelAdmin):
     list_filter  = ('type',)
     ordering     = ('price',)
     search_fields= ('name',)
+
+
+@admin.register(Coupon)
+class CouponAdmin(admin.ModelAdmin):
+    list_display = ('service', 'discount_percent', 'valid_until', 'is_active')
+    list_filter  = ('service',)
+    readonly_fields = ()
+
 
 

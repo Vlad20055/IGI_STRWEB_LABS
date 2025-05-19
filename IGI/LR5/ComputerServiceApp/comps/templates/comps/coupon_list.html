@@ -1,0 +1,34 @@
+{% extends "comps/base.html" %}
+{% block title %}Промокоды и купоны{% endblock %}
+
+{% block content %}
+  <h2>Промокоды и купоны</h2>
+
+  <h3>Активные</h3>
+  {% if active %}
+    <ul>
+      {% for c in active %}
+        <li>
+          <strong>{{ c.service.name }}</strong> — скидка {{ c.discount_percent }}%,
+          до {{ c.valid_until|date:"d/m/Y" }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>На данный момент нет действующих купонов.</p>
+  {% endif %}
+
+  <h3>Архив</h3>
+  {% if archived %}
+    <ul>
+      {% for c in archived %}
+        <li>
+          <strong>{{ c.service.name }}</strong> — скидка {{ c.discount_percent }}%,
+          истёк {{ c.valid_until|date:"d/m/Y" }}
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Архив пока пуст.</p>
+  {% endif %}
+{% endblock %}
