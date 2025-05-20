@@ -44,8 +44,8 @@ class ClientSignUpForm(UserCreationForm):
         today = datetime.date.today()
         # вычисляем полные годы:
         years = today.year - bd.year - ((today.month, today.day) < (bd.month, bd.day))
-        if years < 18:
-            raise ValidationError("Регистрация только с 18 лет и старше.")
+        if years < 18 or years > 100:
+            raise ValidationError("Регистрация возможна только с 18 до 100 лет.")
         return bd
 
     def save(self, commit=True):
