@@ -1,0 +1,17 @@
+{% extends "comps/base.html" %}
+
+{% block title %}Главная — Computer Service{% endblock %}
+
+{% block content %}
+    <h1>Главная — Computer Service</h1>
+    {% if article %}
+    <article>
+        <h2>{{ article.title }}</h2>
+        <p><em>Опубликовано: {{ article.published_at|date:"d/m/Y H:i" }}</em></p>
+        <p>{{ article.short_description }}</p>
+        <!-- при желании: <div>{{ article.content }}</div> -->
+    </article>
+    {% else %}
+    <p>Пока нет ни одной опубликованной статьи.</p>
+    {% endif %}
+{% endblock %}

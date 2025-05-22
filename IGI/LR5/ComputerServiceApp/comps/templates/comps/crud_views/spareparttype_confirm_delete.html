@@ -1,0 +1,24 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Удалить тип запчасти{% endblock %}
+{% block content %}
+  <h2>Удалить тип запчасти «{{ object.name }}»?</h2>
+
+  {% if related_parts %}
+    <p>Вместе с этим будут удалены следующие запчасти:</p>
+    <ul>
+      {% for p in related_parts %}
+        <li>{{ p.name }} — {{ p.stock }} шт.</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Связанных запчастей не найдено.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'spareparttype_list' %}">Отмена</a>
+  </form>
+{% endblock %}

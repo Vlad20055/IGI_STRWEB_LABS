@@ -1,0 +1,33 @@
+{% extends "comps/base.html" %}
+
+{% block title %}Новости — Computer Service{% endblock %}
+
+{% block content %}
+    <h1>Новости — Computer Service</h1>
+    {% if news_items %}
+    <ul>
+    {% for item in news_items %}
+        <li style="margin-bottom: 2em;">
+        <h2>{{ item.title }}</h2>
+        <p><small>Опубликовано: {{ item.published_at|date:"d/m/Y" }}</small></p>
+
+        {# Показываем картинку, если она есть #}
+        {% if item.image %}
+            <img src="{{ item.image.url }}" alt="{{ item.title }}" style="max-width:300px;">
+        {% endif %}
+
+        {# Краткое описание #}
+        <p>{{ item.short_description }}</p>
+
+        {# Полный текст новости #}
+        <div>
+            {{ item.content|linebreaks }}
+        </div>
+        </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>Пока нет новостей.</p>
+    {% endif %}
+{% endblock %}
+

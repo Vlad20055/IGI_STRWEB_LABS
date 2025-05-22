@@ -1,0 +1,25 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Типы устройств{% endblock %}
+{% block content %}
+  <h2>Типы устройств</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'device_type_add' %}">Добавить тип устройства</a></p>
+  {% endif %}
+
+  <ul>
+    {% for dt in devicetypes %}
+      <li>
+        {{ dt.name }}
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'device_type_edit' dt.pk %}">изменить</a>]
+          [<a href="{% url 'device_type_delete' dt.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Типов устройств ещё нет.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

@@ -1,0 +1,24 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Удалить тип услуги{% endblock %}
+{% block content %}
+  <h2>Удалить тип услуги «{{ object.name }}»?</h2>
+
+  {% if related_services %}
+    <p>Вместе с этим будут удалены следующие услуги:</p>
+    <ul>
+      {% for svc in related_services %}
+        <li>{{ svc.name }}</li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>Никаких связанных услуг не найдено.</p>
+  {% endif %}
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'service_type_list' %}">Отмена</a>
+  </form>
+{% endblock %}

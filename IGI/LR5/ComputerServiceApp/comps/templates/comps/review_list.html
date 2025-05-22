@@ -1,0 +1,25 @@
+{% extends "comps/base.html" %}
+{% block title %}Отзывы{% endblock %}
+
+{% block content %}
+  <h2>Отзывы</h2>
+
+  {% if user.is_authenticated %}
+    <p><a href="{% url 'review_create' %}">Оставить отзыв</a></p>
+  {% else %}
+    <p><a href="{% url 'login' %}?next={% url 'review_create' %}">Войти, чтобы оставить отзыв</a></p>
+  {% endif %}
+
+  <ul>
+    {% for r in reviews %}
+      <li>
+        <strong>{{ r.user.get_full_name }}</strong>
+        — оценка: {{ r.rating }}/10
+        — {{ r.created_at|date:"d/m/Y H:i" }}<br>
+        {{ r.text|linebreaks }}
+      </li>
+    {% empty %}
+      <li>Пока нет ни одного отзыва.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

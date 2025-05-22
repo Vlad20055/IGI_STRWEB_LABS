@@ -1,0 +1,12 @@
+{% extends "comps/base.html" %}
+{% block title %}Оставить отзыв{% endblock %}
+
+{% block content %}
+  <h2>Оставить отзыв</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Отправить</button>
+    <a href="{% url 'review_list' %}">Отмена</a>
+  </form>
+{% endblock %}
