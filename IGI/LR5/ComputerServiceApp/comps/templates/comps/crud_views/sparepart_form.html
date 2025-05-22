@@ -1,0 +1,13 @@
+{% extends "comps/base.html" %}
+
+{% block title %}Добавить/изменить запчасть{% endblock %}
+
+{% block content %}
+  <h2>{% if object %}Редактировать{% else %}Добавить{% endif %} запчасть</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if object %}Сохранить{% else %}Создать{% endif %}</button>
+    <a href="{% url 'sparepart_list' %}">Отмена</a>
+  </form>
+{% endblock %}

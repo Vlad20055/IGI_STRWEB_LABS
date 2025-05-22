@@ -1,0 +1,51 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Услуги{% endblock %}
+{% block content %}
+  <h2>Услуги</h2>
+
+  {# Форма фильтрации и сортировки #}
+  <form method="get" style="margin-bottom:1em;">
+    <label>
+      Тип услуги:
+      <select name="type">
+        <option value="" {% if not selected_type %}selected{% endif %}>Все</option>
+        {% for t in types %}
+          <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_type %}selected{% endif %}>
+            {{ t.name }}
+          </option>
+        {% endfor %}
+      </select>
+    </label>
+
+    <label style="margin-left:1em;">
+      Сортировка по цене:
+      <select name="sort">
+        <option value="" {% if not sort %}selected{% endif %}>Без сортировки</option>
+        <option value="price_asc" {% if sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
+        <option value="price_desc" {% if sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
+      </select>
+    </label>
+
+    <button type="submit" style="margin-left:1em;">Применить</button>
+  </form>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
+  {% endif %}
+
+  <ul>
+    {% for s in services %}
+      <li>
+        {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
+          [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Услуг ещё нет.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

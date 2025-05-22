@@ -1,0 +1,14 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Удалить устройство{% endblock %}
+{% block content %}
+  <h2>Удалить устройство «{{ object.type.name }} {{ object.model }}»?</h2>
+  <p>При удалении этого устройства будут удалены все связанные записи в заказах.</p>
+
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Да, удалить</button>
+    <a href="{% url 'device_list' %}">Отмена</a>
+  </form>
+{% endblock %}

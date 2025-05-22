@@ -1,0 +1,24 @@
+{% extends "comps/base.html" %}
+{% block title %}Создать заказ{% endblock %}
+{% block content %}
+  <h2>Новый заказ</h2>
+  <form method="post">
+    {% csrf_token %}
+
+    {{ form.as_p }}
+
+    <h3>Услуги</h3>
+    {{ svc_fs.management_form }}
+    {% for f in svc_fs %}
+      {{ f.as_p }}
+    {% endfor %}
+
+    <h3>Запчасти</h3>
+    {{ part_fs.management_form }}
+    {% for f in part_fs %}
+      {{ f.as_p }}
+    {% endfor %}
+
+    <button type="submit">Сохранить заказ</button>
+  </form>
+{% endblock %}

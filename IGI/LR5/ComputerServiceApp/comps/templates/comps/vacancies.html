@@ -1,0 +1,21 @@
+{% extends "comps/base.html" %}
+
+{% block title %}Вакансии — Computer Service{% endblock %}
+
+{% block content %}
+    <h1>Вакансии — Computer Service</h1>
+    {% if vacancies %}
+    <ul>
+    {% for vac in vacancies %}
+        <li style="margin-bottom: 1.5em;">
+        <h2>{{ vac.title }}</h2>
+        <p><small>Опубликовано: {{ vac.posted_at|date:"d/m/Y" }}</small></p>
+        <div>{{ vac.description|linebreaks }}</div>
+        </li>
+    {% endfor %}
+    </ul>
+    {% else %}
+    <p>На данный момент открытых вакансий нет.</p>
+    {% endif %}
+{% endblock %}
+

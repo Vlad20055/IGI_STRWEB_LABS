@@ -1,0 +1,13 @@
+{% extends "comps/base.html" %}
+
+{% block title %}Добавить/изменить тип услуги{% endblock %}
+
+{% block content %}
+  <h2>{% if object %}Редактировать{% else %}Добавить{% endif %} тип услуги</h2>
+  <form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">{% if object %}Сохранить{% else %}Создать{% endif %}</button>
+    <a href="{% url 'service_type_list' %}">Отмена</a>
+  </form>
+{% endblock %}

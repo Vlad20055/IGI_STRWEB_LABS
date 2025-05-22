@@ -1,0 +1,25 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Ремонтируемые устройства{% endblock %}
+{% block content %}
+  <h2>Ремонтируемые устройства</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'device_add' %}">Добавить устройство</a></p>
+  {% endif %}
+
+  <ul>
+    {% for d in devices %}
+      <li>
+        {{ d.type.name }} {{ d.model }} (S/N: {{ d.serial_number }})
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'device_edit' d.pk %}">изменить</a>]
+          [<a href="{% url 'device_delete' d.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Устройств ещё нет.</li>
+    {% endfor %}
+  </ul>
+{% endblock %}

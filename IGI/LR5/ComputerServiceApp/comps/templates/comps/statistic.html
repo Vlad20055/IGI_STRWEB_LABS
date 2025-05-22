@@ -1,0 +1,22 @@
+{% extends "comps/base.html" %}
+{% block title %}Статистика — Computer Service{% endblock %}
+{% block content %}
+  <h1>Статистика</h1>
+
+  <h2>Возраст клиентов</h2>
+  {% if avg_age %}
+    <p>Средний возраст: {{ avg_age }} лет;<br>
+       Медиана: {{ med_age }} лет;<br>
+       Мода: {{ mode_age }} лет.</p>
+    <img src="{{ age_chart }}" alt="Распределение возрастов клиентов">
+  {% else %}
+    <p>Нет данных по возрастам клиентов.</p>
+  {% endif %}
+
+  <h2>Заказы по типам услуг</h2>
+  {% if services_chart %}
+    <img src="{{ services_chart }}" alt="Распределение заказов по типам услуг">
+  {% else %}
+    <p>Нет данных по заказам услуг.</p>
+  {% endif %}
+{% endblock %}

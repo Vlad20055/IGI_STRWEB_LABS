@@ -1,0 +1,20 @@
+{% extends "comps/base.html" %}
+{% block title %}Мои заказы (мастер){% endblock %}
+
+{% block content %}
+  <h2>Заказы, назначенные мне</h2>
+  {% if orders %}
+    <ul>
+      {% for o in orders %}
+        <li>
+          <a href="{% url 'order_detail_by_number' number=o.number %}">
+            {{ o.number }}
+          </a>
+          — {{ o.created_at|date:"d/m/Y" }} — {{ o.total_cost }} руб.
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <p>У вас пока нет назначенных заказов.</p>
+  {% endif %}
+{% endblock %}
