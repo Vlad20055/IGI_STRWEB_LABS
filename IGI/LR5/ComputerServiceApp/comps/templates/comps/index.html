@@ -3,7 +3,18 @@
 {% block title %}Главная — Computer Service{% endblock %}
 
 {% block content %}
-    <h1>Главная — Computer Service</h1>
+    <h1>
+        <div>
+            <h1>
+                Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
+            </h1>
+        </div>
+    </h1>
+
+    <div>
+        <img src="/media/index/banner.jpg" width="500" height="300">
+    </div>
+
     {% if article %}
     <article>
         <h2>{{ article.title }}</h2>

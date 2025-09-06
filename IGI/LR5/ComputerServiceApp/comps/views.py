@@ -77,14 +77,15 @@ def signup_client(request):
         form = ClientSignUpForm()
     return render(request, 'comps/signup_client.html', {'form': form})
 
-
 # Для создания заказов
 from django.contrib.auth.decorators import login_required, user_passes_test
 from .forms import OrderForm, OrderServiceFormSet, OrderPartFormSet
 from .models import Client
 
+
 def is_client(user):
     return user.is_authenticated and user.groups.filter(name='Clients').exists()
+
 
 @login_required
 @user_passes_test(is_client)
@@ -142,10 +143,10 @@ def order_detail_by_number(request, number):
 
     return render(request, 'comps/order_detail.html', {'order': order})
 
-
 # Для Employee
 def is_employee(user):
     return user.is_authenticated and user.groups.filter(name='Employees').exists()
+
 
 @login_required
 @user_passes_test(is_employee)
@@ -187,7 +188,10 @@ def special(request):
         'quote': request.session['quote'],
     })
 
+
 import statistics
+
+
 def statistic(request):
     # --- (ваш существующий код по возрастам) ---
     today = datetime.date.today()
@@ -325,7 +329,6 @@ def calendar_view(request):
         'month_calendar': month_calendar,
         'current_date': current_date,
     })
-
 
 # Для отзывов
 def review_list(request):

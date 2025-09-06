@@ -79,6 +79,7 @@ from django.forms import inlineformset_factory
 from .models import Order, OrderService, OrderPart
 from django.core.exceptions import ValidationError
 
+
 class OrderForm(forms.ModelForm):
     class Meta:
         model = Order
@@ -109,6 +110,7 @@ OrderServiceFormSet = inlineformset_factory(
     extra=3,
     can_delete=False
 )
+
 
 OrderPartFormSet = inlineformset_factory(
     Order, OrderPart,

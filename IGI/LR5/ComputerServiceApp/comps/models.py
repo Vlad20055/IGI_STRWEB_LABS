@@ -35,15 +35,22 @@ class Profile(models.Model):
     def age(self):
         return (timezone.now().date() - self.birth_date).days // 365
 
+    class Meta:
+        verbose_name = 'Профиль'
+        verbose_name_plural = 'Профили'
+
     def __str__(self):
         return f"{self.user.get_full_name()}"
-
 
 # Специализация сотрудника
 class Specialization(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     
+    class Meta:
+        verbose_name = 'Специализация'
+        verbose_name_plural = 'Специализации'
+
     def __str__(self):
         return self.name
 
@@ -52,6 +59,10 @@ class Employee(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     specializations = models.ManyToManyField(Specialization, related_name='employees')
     
+    class Meta:
+        verbose_name = 'Мастер'
+        verbose_name_plural = 'Мастера'
+
     def __str__(self):
         return self.profile.user.get_full_name()
 
@@ -60,6 +71,10 @@ class ServiceType(models.Model):
     name = models.CharField(max_length=100)
     description = models.TextField(blank=True)
     
+    class Meta:
+        verbose_name = 'Тип услуги'
+        verbose_name_plural = 'Типы услуг'
+
     def __str__(self):
         return self.name
 
@@ -70,6 +85,10 @@ class Service(models.Model):
     description = models.TextField(blank=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     
+    class Meta:
+        verbose_name = 'Услуга'
+        verbose_name_plural = 'Услуги'
+
     def __str__(self):
         return self.name
 
@@ -77,6 +96,10 @@ class Service(models.Model):
 class DeviceType(models.Model):
     name = models.CharField(max_length=100)
     
+    class Meta:
+        verbose_name = 'Тип устройства'
+        verbose_name_plural = 'Типы устройств'
+
     def __str__(self):
         return self.name
 
@@ -86,22 +109,34 @@ class Device(models.Model):
     model = models.CharField(max_length=200)
     serial_number = models.CharField(max_length=100, blank=True)
     
+    class Meta:
+        verbose_name = 'Устройство'
+        verbose_name_plural = 'Устройства'
+
     def __str__(self):
         return f"{self.type.name} {self.model}"
 
-# Тип запасной части
+# Тип запчасти
 class SparePartType(models.Model):
     name = models.CharField(max_length=100)
     
+    class Meta:
+        verbose_name = 'Тип запчасти'
+        verbose_name_plural = 'Типы запчастей'
+
     def __str__(self):
         return self.name
 
-# Запасная часть
+# Запчасть
 class SparePart(models.Model):
     type = models.ForeignKey(SparePartType, on_delete=models.CASCADE, related_name='parts')
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     
+    class Meta:
+        verbose_name = 'Запчасть'
+        verbose_name_plural = 'Запчасти'
+
     def __str__(self):
         return self.name
 
@@ -109,6 +144,10 @@ class SparePart(models.Model):
 class Client(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     
+    class Meta:
+        verbose_name = 'Клиент'
+        verbose_name_plural = 'Клиенты'
+
     def __str__(self):
         return self.profile.user.username
 
@@ -123,6 +162,10 @@ class Order(models.Model):
     services = models.ManyToManyField(Service, through='OrderService')
     spare_parts = models.ManyToManyField(SparePart, through='OrderPart')
 
+    class Meta:
+        verbose_name = 'Заказ'
+        verbose_name_plural = 'Заказы'
+
     def save(self, *args, **kwargs):
         if not self.number:
             self.number = f"ORD-{uuid.uuid4().hex[:8].upper()}"
@@ -136,7 +179,6 @@ class Order(models.Model):
 
     def __str__(self):
         return f"Заказ {self.number} — {self.client}"   
-
 
 # Промежуточная модель для услуг в заказе
 class OrderService(models.Model):
@@ -168,13 +210,17 @@ class PromoCode(models.Model):
     
     def __str__(self):
         return self.code
-    
+
 # Статья
 class Article(models.Model):
     title = models.CharField(max_length=200)
     short_description = models.TextField()
     content = models.TextField()
     published_at = models.DateTimeField(auto_now_add=True)
+
+    class Meta:
+        verbose_name = "Статья"
+        verbose_name_plural = "Статьи"
 
     def __str__(self):
         return self.title
@@ -255,7 +301,6 @@ class Vacancy(models.Model):
     def __str__(self):
         return self.title
 
-
 # Отзывы
 class Review(models.Model):
     user = models.ForeignKey(
@@ -269,9 +314,12 @@ class Review(models.Model):
     text = models.TextField()
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
     def __str__(self):
         return f"Отзыв от {self.user.get_full_name()} — {self.rating}"
-
 
 # Промокоды и купоны
 class Coupon(models.Model):
@@ -297,4 +345,4 @@ class Coupon(models.Model):
         return self.valid_until >= timezone.now().date()
 
     def __str__(self):
-        return f"{self.service.name}: −{self.discount_percent}% до {self.valid_until.strftime('%d/%m/%Y')}"
+        return f"{self.service.name}: -{self.discount_percent}% до {self.valid_until.strftime('%d/%m/%Y')}"

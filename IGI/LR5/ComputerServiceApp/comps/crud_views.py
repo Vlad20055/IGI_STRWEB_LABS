@@ -22,17 +22,20 @@ class ServiceTypeListView(ListView):
     template_name = 'comps/crud_views/service_type_list.html'
     context_object_name = 'types'
 
+
 class ServiceTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = ServiceType
     fields = ['name', 'description']
     template_name = 'comps/crud_views/service_type_form.html'
     success_url = reverse_lazy('service_type_list')
 
+
 class ServiceTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = ServiceType
     fields = ['name', 'description']
     template_name = 'comps/crud_views/service_type_form.html'
     success_url = reverse_lazy('service_type_list')
+
 
 class ServiceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = ServiceType
@@ -51,17 +54,20 @@ class ServiceListView(ListView):
     template_name = 'comps/crud_views/service_list.html'
     context_object_name = 'services'
 
+
 class ServiceCreateView(EmployeeRequiredMixin, CreateView):
     model = Service
     fields = ['type', 'name', 'description', 'price']
     template_name = 'comps/crud_views/service_form.html'
     success_url = reverse_lazy('service_list')
 
+
 class ServiceUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Service
     fields = ['type', 'name', 'description', 'price']
     template_name = 'comps/crud_views/service_form.html'
     success_url = reverse_lazy('service_list')
+
 
 class ServiceDeleteView(EmployeeRequiredMixin, DeleteView):
     model = Service
@@ -102,17 +108,20 @@ class DeviceListView(ListView):
     template_name = 'comps/crud_views/device_list.html'
     context_object_name = 'devices'
 
+
 class DeviceCreateView(EmployeeRequiredMixin, CreateView):
     model = Device
     fields = ['type', 'model', 'serial_number']
     template_name = 'comps/crud_views/device_form.html'
     success_url = reverse_lazy('device_list')
 
+
 class DeviceUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Device
     fields = ['type', 'model', 'serial_number']
     template_name = 'comps/crud_views/device_form.html'
     success_url = reverse_lazy('device_list')
+
 
 class DeviceDeleteView(EmployeeRequiredMixin, DeleteView):
     model = Device
@@ -125,17 +134,20 @@ class SparePartTypeListView(ListView):
     template_name = 'comps/crud_views/spareparttype_list.html'
     context_object_name = 'parttypes'
 
+
 class SparePartTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePartType
     fields = ['name']
     template_name = 'comps/crud_views/spareparttype_form.html'
     success_url = reverse_lazy('spareparttype_list')
 
+
 class SparePartTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = SparePartType
     fields = ['name']
     template_name = 'comps/crud_views/spareparttype_form.html'
     success_url = reverse_lazy('spareparttype_list')
+
 
 class SparePartTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = SparePartType
@@ -153,17 +165,20 @@ class SparePartListView(ListView):
     template_name = 'comps/crud_views/sparepart_list.html'
     context_object_name = 'parts'
 
+
 class SparePartCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePart
     fields = ['type', 'name', 'price']
     template_name = 'comps/crud_views/sparepart_form.html'
     success_url = reverse_lazy('sparepart_list')
 
+
 class SparePartUpdateView(EmployeeRequiredMixin, UpdateView):
     model = SparePart
     fields = ['type', 'name', 'price']
     template_name = 'comps/crud_views/sparepart_form.html'
     success_url = reverse_lazy('sparepart_list')
+
 
 class SparePartDeleteView(EmployeeRequiredMixin, DeleteView):
     model = SparePart

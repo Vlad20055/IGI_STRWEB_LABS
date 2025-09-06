@@ -5,10 +5,12 @@ from django.contrib.auth.models import User, Group
 from .models import ServiceType, Service, Review, Coupon, Profile, Client as ClientModel
 from datetime import date, timedelta
 
+
 class ServiceTypeModelTest(TestCase):
     def test_str(self):
         st = ServiceType.objects.create(name="Ремонт", description="Описание")
         self.assertEqual(str(st), "Ремонт")
+
 
 class ServiceListViewTest(TestCase):
     @classmethod
@@ -26,6 +28,7 @@ class ServiceListViewTest(TestCase):
         response = self.client.get(reverse('service_list'))
         self.assertTrue('services' in response.context)
         self.assertEqual(len(response.context['services']), 5)
+
 
 class CouponListViewTest(TestCase):
     @classmethod
@@ -64,6 +67,7 @@ class CouponListViewTest(TestCase):
 
         # проверяем, что есть заголовок "Архив"
         self.assertContains(response, "Архив")
+
 
 class ReviewFormTest(TestCase):
     def setUp(self):
