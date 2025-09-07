@@ -74,59 +74,48 @@ class ServiceDeleteView(EmployeeRequiredMixin, DeleteView):
     template_name = 'comps/crud_views/service_confirm_delete.html'
     success_url = reverse_lazy('service_list')
 
-# === DeviceType CRUD ===
-class DeviceTypeListView(ListView):
-    model = DeviceType
-    template_name = 'comps/crud_views/device_type_list.html'
-    context_object_name = 'devicetypes'
-
+# === DeviceType CUD ===
 class DeviceTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = DeviceType
     fields = ['name']
     template_name = 'comps/crud_views/device_type_form.html'
-    success_url = reverse_lazy('device_type_list')
+    success_url = reverse_lazy('home')
 
 class DeviceTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = DeviceType
     fields = ['name']
     template_name = 'comps/crud_views/device_type_form.html'
-    success_url = reverse_lazy('device_type_list')
+    success_url = reverse_lazy('home')
 
 class DeviceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = DeviceType
     template_name = 'comps/crud_views/device_type_confirm_delete.html'
-    success_url = reverse_lazy('device_type_list')
+    success_url = reverse_lazy('home')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['related_devices'] = self.object.devices.all()
         return ctx
 
-# === Device CRUD ===
-class DeviceListView(ListView):
-    model = Device
-    template_name = 'comps/crud_views/device_list.html'
-    context_object_name = 'devices'
-
-
+# === Device CUD ===
 class DeviceCreateView(EmployeeRequiredMixin, CreateView):
     model = Device
     fields = ['type', 'model', 'serial_number']
     template_name = 'comps/crud_views/device_form.html'
-    success_url = reverse_lazy('device_list')
+    success_url = reverse_lazy('home')
 
 
 class DeviceUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Device
     fields = ['type', 'model', 'serial_number']
     template_name = 'comps/crud_views/device_form.html'
-    success_url = reverse_lazy('device_list')
+    success_url = reverse_lazy('home')
 
 
 class DeviceDeleteView(EmployeeRequiredMixin, DeleteView):
     model = Device
     template_name = 'comps/crud_views/device_confirm_delete.html'
-    success_url = reverse_lazy('device_list')
+    success_url = reverse_lazy('home')
 
 # === SparePartType CRUD ===
 class SparePartTypeListView(ListView):

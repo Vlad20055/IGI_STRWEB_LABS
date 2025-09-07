@@ -6,8 +6,8 @@ from django.contrib.auth import views as auth_views
 from .crud_views import (
     ServiceTypeListView, ServiceTypeCreateView, ServiceTypeUpdateView, ServiceTypeDeleteView,
     ServiceCreateView, ServiceUpdateView, ServiceDeleteView,
-    DeviceTypeListView, DeviceTypeCreateView, DeviceTypeUpdateView, DeviceTypeDeleteView,
-    DeviceListView, DeviceCreateView, DeviceUpdateView, DeviceDeleteView,
+    DeviceTypeCreateView, DeviceTypeUpdateView, DeviceTypeDeleteView,
+    DeviceCreateView, DeviceUpdateView, DeviceDeleteView,
     SparePartTypeListView, SparePartTypeCreateView, SparePartTypeUpdateView, SparePartTypeDeleteView,
     SparePartListView, SparePartCreateView, SparePartUpdateView, SparePartDeleteView
 )
@@ -52,14 +52,12 @@ urlpatterns += [
     path('services/<int:pk>/edit/', ServiceUpdateView.as_view(), name='service_edit'),
     path('services/<int:pk>/delete/', ServiceDeleteView.as_view(), name='service_delete'),
 
-    # DeviceType CRUD
-    path('types/device/', DeviceTypeListView.as_view(), name='device_type_list'),
+    # DeviceType CUD
     path('types/device/add/', DeviceTypeCreateView.as_view(), name='device_type_add'),
     path('types/device/<int:pk>/edit/', DeviceTypeUpdateView.as_view(), name='device_type_edit'),
     path('types/device/<int:pk>/delete/', DeviceTypeDeleteView.as_view(), name='device_type_delete'),
 
-    # Device CRUD
-    path('devices/', DeviceListView.as_view(), name='device_list'),
+    # Device CUD
     path('devices/add/', DeviceCreateView.as_view(), name='device_add'),
     path('devices/<int:pk>/edit/', DeviceUpdateView.as_view(), name='device_edit'),
     path('devices/<int:pk>/delete/', DeviceDeleteView.as_view(), name='device_delete'),

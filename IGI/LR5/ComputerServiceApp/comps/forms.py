@@ -72,7 +72,6 @@ class ClientSignUpForm(UserCreationForm):
             Client.objects.create(profile=profile)
         return user
 
-
 # Для создания заказов:
 import datetime
 from django.forms import inlineformset_factory

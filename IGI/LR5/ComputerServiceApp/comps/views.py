@@ -19,14 +19,18 @@ from .models import FAQ
 from .models import Employee
 from .models import Vacancy
 from .models import Review
+from .models import DeviceType
 from .forms import ReviewForm
 
 
 def index(request):
     # получаем последнюю по дате опубликования статью
     latest_article = Article.objects.order_by('-published_at').first()
+    device_types = DeviceType.objects.prefetch_related('devices').all()
+
     return render(request, 'comps/index.html', {
-        'article': latest_article
+        'article': latest_article,
+        'device_types': device_types
     })
 
 
