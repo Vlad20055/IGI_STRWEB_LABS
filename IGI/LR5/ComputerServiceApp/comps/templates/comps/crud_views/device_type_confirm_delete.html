@@ -9,7 +9,7 @@
     <p>Вместе с этим будут удалены следующие устройства:</p>
     <ul>
       {% for d in related_devices %}
-        <li>{{ d.type.name }} {{ d.model }} (S/N: {{ d.serial_number }})</li>
+        <li>{{ d.type.name }} {{ d.model }}</li>
       {% endfor %}
     </ul>
   {% else %}

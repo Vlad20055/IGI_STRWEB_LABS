@@ -16,31 +16,25 @@ class EmployeeRequiredMixin(LoginRequiredMixin, UserPassesTestMixin):
     def test_func(self):
         return self.request.user.groups.filter(name='Employees').exists()
 
-# === ServiceType CRUD ===
-class ServiceTypeListView(ListView):
-    model = ServiceType
-    template_name = 'comps/crud_views/service_type_list.html'
-    context_object_name = 'types'
-
-
+# === ServiceType CUD ===
 class ServiceTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = ServiceType
-    fields = ['name', 'description']
+    fields = ['name']
     template_name = 'comps/crud_views/service_type_form.html'
-    success_url = reverse_lazy('service_type_list')
+    success_url = reverse_lazy('types_services_spareparts')
 
 
 class ServiceTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = ServiceType
-    fields = ['name', 'description']
+    fields = ['name']
     template_name = 'comps/crud_views/service_type_form.html'
-    success_url = reverse_lazy('service_type_list')
+    success_url = reverse_lazy('types_services_spareparts')
 
 
 class ServiceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = ServiceType
     template_name = 'comps/crud_views/service_type_confirm_delete.html'
-    success_url = reverse_lazy('service_type_list')
+    success_url = reverse_lazy('types_services_spareparts')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -48,31 +42,25 @@ class ServiceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
         ctx['related_services'] = self.object.services.all()
         return ctx
 
-# === Service CRUD ===
-class ServiceListView(ListView):
-    model = Service
-    template_name = 'comps/crud_views/service_list.html'
-    context_object_name = 'services'
-
-
+# === Service CUD ===
 class ServiceCreateView(EmployeeRequiredMixin, CreateView):
     model = Service
     fields = ['type', 'name', 'description', 'price']
     template_name = 'comps/crud_views/service_form.html'
-    success_url = reverse_lazy('service_list')
+    success_url = reverse_lazy('home')
 
 
 class ServiceUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Service
     fields = ['type', 'name', 'description', 'price']
     template_name = 'comps/crud_views/service_form.html'
-    success_url = reverse_lazy('service_list')
+    success_url = reverse_lazy('home')
 
 
 class ServiceDeleteView(EmployeeRequiredMixin, DeleteView):
     model = Service
     template_name = 'comps/crud_views/service_confirm_delete.html'
-    success_url = reverse_lazy('service_list')
+    success_url = reverse_lazy('home')
 
 # === DeviceType CUD ===
 class DeviceTypeCreateView(EmployeeRequiredMixin, CreateView):
@@ -81,11 +69,13 @@ class DeviceTypeCreateView(EmployeeRequiredMixin, CreateView):
     template_name = 'comps/crud_views/device_type_form.html'
     success_url = reverse_lazy('home')
 
+
 class DeviceTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = DeviceType
     fields = ['name']
     template_name = 'comps/crud_views/device_type_form.html'
     success_url = reverse_lazy('home')
+
 
 class DeviceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = DeviceType
@@ -100,14 +90,14 @@ class DeviceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
 # === Device CUD ===
 class DeviceCreateView(EmployeeRequiredMixin, CreateView):
     model = Device
-    fields = ['type', 'model', 'serial_number']
+    fields = ['type', 'model']
     template_name = 'comps/crud_views/device_form.html'
     success_url = reverse_lazy('home')
 
 
 class DeviceUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Device
-    fields = ['type', 'model', 'serial_number']
+    fields = ['type', 'model']
     template_name = 'comps/crud_views/device_form.html'
     success_url = reverse_lazy('home')
 
@@ -118,89 +108,48 @@ class DeviceDeleteView(EmployeeRequiredMixin, DeleteView):
     success_url = reverse_lazy('home')
 
 # === SparePartType CRUD ===
-class SparePartTypeListView(ListView):
-    model = SparePartType
-    template_name = 'comps/crud_views/spareparttype_list.html'
-    context_object_name = 'parttypes'
-
-
 class SparePartTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePartType
     fields = ['name']
     template_name = 'comps/crud_views/spareparttype_form.html'
-    success_url = reverse_lazy('spareparttype_list')
+    success_url = reverse_lazy('types_services_spareparts')
 
 
 class SparePartTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = SparePartType
     fields = ['name']
     template_name = 'comps/crud_views/spareparttype_form.html'
-    success_url = reverse_lazy('spareparttype_list')
+    success_url = reverse_lazy('types_services_spareparts')
 
 
 class SparePartTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = SparePartType
     template_name = 'comps/crud_views/spareparttype_confirm_delete.html'
-    success_url = reverse_lazy('spareparttype_list')
+    success_url = reverse_lazy('types_services_spareparts')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
         ctx['related_parts'] = self.object.parts.all()
         return ctx
 
-# === SparePart CRUD ===
-class SparePartListView(ListView):
-    model = SparePart
-    template_name = 'comps/crud_views/sparepart_list.html'
-    context_object_name = 'parts'
-
-
+# === SparePart CUD ===
 class SparePartCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePart
-    fields = ['type', 'name', 'price']
+    fields = ['type', 'name', 'price', 'description']
     template_name = 'comps/crud_views/sparepart_form.html'
-    success_url = reverse_lazy('sparepart_list')
+    success_url = reverse_lazy('home')
 
 
 class SparePartUpdateView(EmployeeRequiredMixin, UpdateView):
     model = SparePart
-    fields = ['type', 'name', 'price']
+    fields = ['type', 'name', 'price', 'description']
     template_name = 'comps/crud_views/sparepart_form.html'
-    success_url = reverse_lazy('sparepart_list')
+    success_url = reverse_lazy('home')
 
 
 class SparePartDeleteView(EmployeeRequiredMixin, DeleteView):
     model = SparePart
     template_name = 'comps/crud_views/sparepart_confirm_delete.html'
-    success_url = reverse_lazy('sparepart_list')
+    success_url = reverse_lazy('home')
 
 
-
-# Отдельный шаблон для страницы с показом услуг (с сортировкой и фильтрацией)
-def service_list(request):
-    # 1) Все типы для выпадающего списка
-    types = ServiceType.objects.all()
-
-    # 2) GET‑параметры
-    selected_type = request.GET.get('type', '')
-    sort = request.GET.get('sort', '')
-
-    # 3) Базовый queryset
-    qs = Service.objects.select_related('type').all()
-
-    # 4) Применяем фильтр по типу
-    if selected_type:
-        qs = qs.filter(type_id=selected_type)
-
-    # 5) Сортировка
-    if sort == 'price_asc':
-        qs = qs.order_by('price')
-    elif sort == 'price_desc':
-        qs = qs.order_by('-price')
-
-    return render(request, 'comps/crud_views/service_list.html', {
-        'services': qs,
-        'types': types,
-        'selected_type': selected_type,
-        'sort': sort,
-    })

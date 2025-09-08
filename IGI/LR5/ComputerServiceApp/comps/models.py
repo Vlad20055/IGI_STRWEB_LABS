@@ -69,7 +69,6 @@ class Employee(models.Model):
 # Тип услуги
 class ServiceType(models.Model):
     name = models.CharField(max_length=100)
-    description = models.TextField(blank=True)
     
     class Meta:
         verbose_name = 'Тип услуги'
@@ -107,7 +106,7 @@ class DeviceType(models.Model):
 class Device(models.Model):
     type = models.ForeignKey(DeviceType, on_delete=models.CASCADE, related_name='devices')
     model = models.CharField(max_length=200)
-    serial_number = models.CharField(max_length=100, blank=True)
+    # serial_number = models.CharField(max_length=100, blank=True)
     
     class Meta:
         verbose_name = 'Устройство'
@@ -132,6 +131,7 @@ class SparePart(models.Model):
     type = models.ForeignKey(SparePartType, on_delete=models.CASCADE, related_name='parts')
     name = models.CharField(max_length=200)
     price = models.DecimalField(max_digits=10, decimal_places=2)
+    description = models.TextField(blank=True)
     
     class Meta:
         verbose_name = 'Запчасть'

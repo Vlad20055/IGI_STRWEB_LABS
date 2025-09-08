@@ -8,11 +8,12 @@ import matplotlib
 matplotlib.use('Agg')
 import matplotlib.pyplot as plt
 from django.db.models import F, Sum
-from django.http import HttpResponseForbidden
+from django.http import Http404, HttpResponseForbidden
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
+from django.views.generic import DetailView
 from .forms import ClientSignUpForm
-from .models import Article, Coupon, OrderService
+from .models import Article, Coupon, OrderService, Service, ServiceType, SparePart, SparePartType
 from .models import CompanyInfo
 from .models import News
 from .models import FAQ
@@ -28,9 +29,48 @@ def index(request):
     latest_article = Article.objects.order_by('-published_at').first()
     device_types = DeviceType.objects.prefetch_related('devices').all()
 
+    services = Service.objects.select_related('type').all()
+    service_types = ServiceType.objects.all()
+
+    spareparts = SparePart.objects.select_related('type').all()
+    sparepart_types = SparePartType.objects.all()
+
+    # Обработка фильтров для услуг (если есть)
+    selected_service_type = request.GET.get('service_type')
+    service_sort = request.GET.get('service_sort')
+    
+    if selected_service_type:
+        services = services.filter(type_id=selected_service_type)
+    
+    if service_sort == 'price_asc':
+        services = services.order_by('price')
+    elif service_sort == 'price_desc':
+        services = services.order_by('-price')
+
+    # Обработка фильтров для запчастей (если есть)
+    selected_sparepart_type = request.GET.get('sparepart_type')
+    sparepart_sort = request.GET.get('sparepart_sort')
+    
+    if selected_sparepart_type:
+        spareparts = spareparts.filter(type_id=selected_sparepart_type)
+    
+    if sparepart_sort == 'price_asc':
+        spareparts = spareparts.order_by('price')
+    elif sparepart_sort == 'price_desc':
+        spareparts = spareparts.order_by('-price')
+
+
     return render(request, 'comps/index.html', {
         'article': latest_article,
-        'device_types': device_types
+        'device_types': device_types,
+        'services': services,
+        'service_types': service_types,
+        'selected_service_type': selected_service_type,
+        'service_sort': service_sort,
+        'spareparts': spareparts,
+        'sparepart_types': sparepart_types,
+        'selected_sparepart_type': selected_sparepart_type,
+        'sparepart_sort': sparepart_sort,
     })
 
 
@@ -361,3 +401,33 @@ def coupon_list(request):
         'active': active,
         'archived': archived,
     })
+
+# Для типов услуг и запчастей
+def types_services_spareparts(request):
+    service_types = ServiceType.objects.all()
+    sparepart_types = SparePartType.objects.all()
+    return render(request, 'comps/types_services_spareparts.html', {
+        'service_types': service_types,
+        'sparepart_types': sparepart_types
+    })
+
+# Для услуг и запчастей
+class UniversalDetailView(DetailView):
+    template_name = 'comps/detail_services_spareparts.html'
+    
+    def get_object(self):
+        # Определяем тип объекта и получаем его
+        model_type = self.kwargs.get('model_type')
+        pk = self.kwargs.get('pk')
+        
+        if model_type == 'service':
+            return get_object_or_404(Service, pk=pk)
+        elif model_type == 'sparepart':
+            return get_object_or_404(SparePart, pk=pk)
+        else:
+            raise Http404("Объект не найден")
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['model_type'] = self.kwargs.get('model_type')
+        return context

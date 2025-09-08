@@ -26,10 +26,7 @@
         <nav>
           <li>Справочники:
             <ul>
-              <li><a href="{% url 'service_type_list' %}">Типы услуг</a></li>
-              <li><a href="{% url 'service_list' %}">Услуги</a></li>
-              <li><a href="{% url 'spareparttype_list' %}">Типы запчастей</a></li>
-              <li><a href="{% url 'sparepart_list' %}">Запчасти</a></li>
+              <li><a href="{% url 'types_services_spareparts' %}">Типы услуг и запчастей</a></li>
             </ul>
           </li>
 
@@ -60,7 +57,7 @@
           {% endif %}
         </nav>
     </header>
-
+    
     <main>
       {% block content %}
       <!-- здесь будет основное содержимое страниц -->

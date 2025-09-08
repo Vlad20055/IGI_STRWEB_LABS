@@ -4,14 +4,13 @@ from . import views
 from django.contrib.auth import views as auth_views
 
 from .crud_views import (
-    ServiceTypeListView, ServiceTypeCreateView, ServiceTypeUpdateView, ServiceTypeDeleteView,
+    ServiceTypeCreateView, ServiceTypeUpdateView, ServiceTypeDeleteView,
     ServiceCreateView, ServiceUpdateView, ServiceDeleteView,
     DeviceTypeCreateView, DeviceTypeUpdateView, DeviceTypeDeleteView,
     DeviceCreateView, DeviceUpdateView, DeviceDeleteView,
-    SparePartTypeListView, SparePartTypeCreateView, SparePartTypeUpdateView, SparePartTypeDeleteView,
-    SparePartListView, SparePartCreateView, SparePartUpdateView, SparePartDeleteView
+    SparePartTypeCreateView, SparePartTypeUpdateView, SparePartTypeDeleteView,
+    SparePartCreateView, SparePartUpdateView, SparePartDeleteView
 )
-from .crud_views import service_list
 
 
 urlpatterns = [
@@ -36,18 +35,18 @@ urlpatterns = [
     path('reviews/', views.review_list, name='review_list'),
     path('reviews/add/', views.review_create, name='review_create'),
     path('coupons/', views.coupon_list, name='coupon_list'),
+    path('types_services_spareparts/', views.types_services_spareparts, name='types_services_spareparts'),
+    path('detail/<str:model_type>/<int:pk>/', views.UniversalDetailView.as_view(), name='detail_services_spareparts'),
 ]
 
 
 urlpatterns += [
-    # ServiceType CRUD
-    path('types/service/', ServiceTypeListView.as_view(), name='service_type_list'),
+    # ServiceType CUD
     path('types/service/add/', ServiceTypeCreateView.as_view(), name='service_type_add'),
     path('types/service/<int:pk>/edit/', ServiceTypeUpdateView.as_view(), name='service_type_edit'),
     path('types/service/<int:pk>/delete/', ServiceTypeDeleteView.as_view(), name='service_type_delete'),
 
-    # Service CRUD
-    path('services/', service_list, name='service_list'),
+    # Service CUD
     path('services/add/', ServiceCreateView.as_view(), name='service_add'),
     path('services/<int:pk>/edit/', ServiceUpdateView.as_view(), name='service_edit'),
     path('services/<int:pk>/delete/', ServiceDeleteView.as_view(), name='service_delete'),
@@ -62,14 +61,12 @@ urlpatterns += [
     path('devices/<int:pk>/edit/', DeviceUpdateView.as_view(), name='device_edit'),
     path('devices/<int:pk>/delete/', DeviceDeleteView.as_view(), name='device_delete'),
 
-    # SparePartType CRUD
-    path('types/part/', SparePartTypeListView.as_view(), name='spareparttype_list'),
+    # SparePartType CUD
     path('types/part/add/', SparePartTypeCreateView.as_view(), name='spareparttype_add'),
     path('types/part/<int:pk>/edit/', SparePartTypeUpdateView.as_view(), name='spareparttype_edit'),
     path('types/part/<int:pk>/delete/', SparePartTypeDeleteView.as_view(), name='spareparttype_delete'),
 
-    # SparePart CRUD
-    path('parts/', SparePartListView.as_view(), name='sparepart_list'),
+    # SparePart CUD
     path('parts/add/', SparePartCreateView.as_view(), name='sparepart_add'),
     path('parts/<int:pk>/edit/', SparePartUpdateView.as_view(), name='sparepart_edit'),
     path('parts/<int:pk>/delete/', SparePartDeleteView.as_view(), name='sparepart_delete'),

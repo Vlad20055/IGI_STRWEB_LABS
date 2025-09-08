@@ -6,28 +6,125 @@
 {% block content %}
     <h1>
         <div>
-            <h1>
+            <h3>
                 Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
-            </h1>
+            </h3>
         </div>
     </h1>
 
+    <!-- Каталог услуг -->
+    <h2>Услуги</h2>
+    
+    {# Форма фильтрации услуг #}
+    <form method="get" style="margin-bottom:1em;">
+        <label>
+            Тип услуги:
+            <select name="service_type">
+                <option value="" {% if not selected_service_type %}selected{% endif %}>Все</option>
+                {% for t in service_types %}
+                    <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_service_type %}selected{% endif %}>
+                        {{ t.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label style="margin-left:1em;">
+            Сортировка по цене:
+            <select name="service_sort">
+                <option value="" {% if not service_sort %}selected{% endif %}>Без сортировки</option>
+                <option value="price_asc" {% if service_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
+                <option value="price_desc" {% if service_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
+            </select>
+        </label>
+
+        <button type="submit" name="filter_services" style="margin-left:1em;">Применить к услугам</button>
+    </form>
+
+    {% if user.is_authenticated and user|has_group:"Employees" %}
+        <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
+    {% endif %}
+
+    <ul>
+        {% for s in services %}
+            <li>
+                {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
+                <a href="{% url 'detail_services_spareparts' 'service' s.pk %}" style="margin-left: 10px;">Подробнее</a>
+                {% if user.is_authenticated and user|has_group:"Employees" %}
+                    [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
+                    [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Услуг ещё нет.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Каталог запчастей -->
+    <h2>Запчасти</h2>
+    
+    {# Форма фильтрации запчастей #}
+    <form method="get" style="margin-bottom:1em;">
+        <label>
+            Тип запчасти:
+            <select name="sparepart_type">
+                <option value="" {% if not selected_sparepart_type %}selected{% endif %}>Все</option>
+                {% for t in sparepart_types %}
+                    <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_sparepart_type %}selected{% endif %}>
+                        {{ t.name }}
+                    </option>
+                {% endfor %}
+            </select>
+        </label>
+
+        <label style="margin-left:1em;">
+            Сортировка по цене:
+            <select name="sparepart_sort">
+                <option value="" {% if not sparepart_sort %}selected{% endif %}>Без сортировки</option>
+                <option value="price_asc" {% if sparepart_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
+                <option value="price_desc" {% if sparepart_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
+            </select>
+        </label>
+
+        <button type="submit" name="filter_parts" style="margin-left:1em;">Применить к запчастям</button>
+    </form>
+
+    {% if user.is_authenticated and user|has_group:"Employees" %}
+        <p><a href="{% url 'sparepart_add' %}">Добавить запчасть</a></p>
+    {% endif %}
+
+    <ul>
+        {% for p in spareparts %}
+            <li>
+                {{ p.name }} ({{ p.type.name }}) — {{ p.price }} руб
+                <a href="{% url 'detail_services_spareparts' 'sparepart' p.pk %}" style="margin-left: 10px;">Подробнее</a>
+                {% if user.is_authenticated and user|has_group:"Employees" %}
+                    [<a href="{% url 'sparepart_edit' p.pk %}">изменить</a>]
+                    [<a href="{% url 'sparepart_delete' p.pk %}">удалить</a>]
+                {% endif %}
+            </li>
+        {% empty %}
+            <li>Запчастей ещё нет.</li>
+        {% endfor %}
+    </ul>
+
+    <!-- Баннер -->
     <div>
         <img src="/media/index/banner.jpg" width="500" height="300">
     </div>
 
     <!-- Выпадающий список типов устройств -->
     <h2>Ремонтируемые устройства</h2>
-
+    
     {% for device_type in device_types %}
     <details>
         <summary>
             <strong>
                 {{ device_type.name }}
-                    {% if user.is_authenticated and user|has_group:"Employees" %}
-                        [<a href="{% url 'device_type_edit' device_type.pk %}">изменить</a>]
-                        [<a href="{% url 'device_type_delete' device_type.pk %}">удалить</a>]
-                    {% endif %}
+                {% if user.is_authenticated and user|has_group:"Employees" %}
+                    [<a href="{% url 'device_type_edit' device_type.pk %}">изменить</a>]
+                    [<a href="{% url 'device_type_delete' device_type.pk %}">удалить</a>]
+                {% endif %}
             </strong>
         </summary>
         
@@ -37,7 +134,7 @@
                 <li>
                     {{ device.model }} 
                     {% if device.serial_number %}
-                        (S/N: {{ device.serial_number }})
+                        (S/N: {{ d.serial_number }})
                     {% endif %}
                     {% if user.is_authenticated and user|has_group:"Employees" %}
                         [<a href="{% url 'device_edit' device.pk %}">изменить</a>]
@@ -62,14 +159,12 @@
         </p>
     {% endif %}
 
-
     <!-- Статья -->
     {% if article %}
     <article>
         <h2>{{ article.title }}</h2>
         <p><em>Опубликовано: {{ article.published_at|date:"d/m/Y H:i" }}</em></p>
         <p>{{ article.short_description }}</p>
-        <!-- при желании: <div>{{ article.content }}</div> -->
     </article>
     {% else %}
     <p>Пока нет ни одной опубликованной статьи.</p>
