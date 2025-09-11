@@ -22,6 +22,7 @@
             <a href="{% url 'calendar' %}">Календарь</a> |
             <a href="{% url 'review_list' %}">Отзывы</a> |
             <a href="{% url 'coupon_list' %}">Промокоды и купоны</a> |
+            
         </nav>
         <nav>
           <li>Справочники:
@@ -37,6 +38,10 @@
             {% if user|has_group:"Clients" %}
                 <li><a href="{% url 'order_create' %}">Создать заказ</a></li>
                 <li><a href="{% url 'order_list_client' %}">Мои заказы</a></li>
+                <li><a href="{% url 'cart_view' %}">🛒 Корзина</a></li> 
+                  <!-- {% with cart_count=request.session.cart.spareparts|length %}
+                      {% if cart_count > 0 %}({{ cart_count }}){% endif %}
+                  {% endwith %} -->
             {% endif %}
 
             {% if user|has_group:"Employees" %}

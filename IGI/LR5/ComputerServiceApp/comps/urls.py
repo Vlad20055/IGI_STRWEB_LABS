@@ -37,6 +37,11 @@ urlpatterns = [
     path('coupons/', views.coupon_list, name='coupon_list'),
     path('types_services_spareparts/', views.types_services_spareparts, name='types_services_spareparts'),
     path('detail/<str:model_type>/<int:pk>/', views.UniversalDetailView.as_view(), name='detail_services_spareparts'),
+    path('cart/', views.cart_view, name='cart_view'),
+    path('cart/add/<int:sparepart_id>/', views.add_to_cart, name='add_to_cart'),
+    path('cart/update/<int:sparepart_id>/', views.update_cart_quantity, name='update_cart_quantity'),
+    path('cart/remove/<int:sparepart_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('cart/clear/', views.clear_cart, name='clear_cart'),
 ]
 
 

@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.views.generic import DetailView
 from .forms import ClientSignUpForm
-from .models import Article, Coupon, OrderService, Service, ServiceType, SparePart, SparePartType
+from .models import Article, Coupon, OrderPart, OrderService, Service, ServiceType, SparePart, SparePartType
 from .models import CompanyInfo
 from .models import News
 from .models import FAQ
@@ -123,6 +123,7 @@ def signup_client(request):
 
 # Для создания заказов
 from django.contrib.auth.decorators import login_required, user_passes_test
+from django.views.decorators.http import require_POST
 from .forms import OrderForm, OrderServiceFormSet, OrderPartFormSet
 from .models import Client
 
@@ -134,35 +135,64 @@ def is_client(user):
 @login_required
 @user_passes_test(is_client)
 def order_create(request):
-    # Попытка достать клиента через профиль
+    """Создание заказа из корзины"""
     try:
         client = request.user.profile.client
     except (AttributeError, Client.DoesNotExist):
-        # если что-то не так с профилем/Client, выдаём 403
         return HttpResponseForbidden("У вас нет прав создавать заказы.")
+
+    # Проверяем, что корзина не пуста (правильная проверка)
+    cart = request.session.get('cart', {})
+    spareparts_in_cart = cart.get('spareparts', [])
     
+    if not spareparts_in_cart:  # Проверяем, что список не пустой
+        messages.warning(request, 'Корзина пуста!')
+        return redirect('cart_view')
+
     if request.method == 'POST':
         form = OrderForm(request.POST)
-        svc_fs = OrderServiceFormSet(request.POST)
-        part_fs = OrderPartFormSet(request.POST)
-        if form.is_valid() and svc_fs.is_valid() and part_fs.is_valid():
+        if form.is_valid():
             order = form.save(commit=False)
             order.client = client
             order.save()
-            svc_fs.instance = order
-            svc_fs.save()
-            part_fs.instance = order
-            part_fs.save()
+
+            # Сохраняем запчасти из корзины
+            for item in spareparts_in_cart:
+                try:
+                    sparepart = SparePart.objects.get(id=item['id'])
+                    OrderPart.objects.create(
+                        order=order,
+                        part=sparepart,
+                        quantity=item['quantity']
+                    )
+                except SparePart.DoesNotExist:
+                    continue
+
+            # Очищаем корзину
+            request.session['cart'] = {}
+            request.session.modified = True
+            
+            messages.success(request, 'Заказ успешно создан!')
             return redirect('order_list_client')
     else:
         form = OrderForm()
-        svc_fs = OrderServiceFormSet()
-        part_fs = OrderPartFormSet()
 
-    return render(request, 'comps/order_form.html', {
+    # Подготовим данные для отображения в шаблоне
+    spareparts_data = []
+    for item in spareparts_in_cart:
+        try:
+            sparepart = SparePart.objects.get(id=item['id'])
+            spareparts_data.append({
+                'sparepart': sparepart,
+                'quantity': item['quantity'],
+                'total': sparepart.price * item['quantity']
+            })
+        except SparePart.DoesNotExist:
+            continue
+
+    return render(request, 'comps/order_create.html', {
         'form': form,
-        'svc_fs': svc_fs,
-        'part_fs': part_fs
+        'spareparts_in_cart': spareparts_data
     })
 
 
@@ -431,3 +461,118 @@ class UniversalDetailView(DetailView):
         context = super().get_context_data(**kwargs)
         context['model_type'] = self.kwargs.get('model_type')
         return context
+
+
+# Для работы с карзиной
+# views.py
+# from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.views.decorators.http import require_POST
+from django.http import HttpResponseForbidden
+from django.contrib import messages
+from .models import SparePart
+
+@login_required
+@user_passes_test(is_client)
+def cart_view(request):
+    """Страница корзины"""
+    cart = request.session.get('cart', {})
+    spareparts_in_cart = []
+    total_price = 0
+    
+    for item in cart.get('spareparts', []):
+        try:
+            sparepart = SparePart.objects.get(id=item['id'])
+            item_total = sparepart.price * item['quantity']
+            spareparts_in_cart.append({
+                'sparepart': sparepart,
+                'quantity': item['quantity'],
+                'total': item_total
+            })
+            total_price += item_total
+        except SparePart.DoesNotExist:
+            continue
+    
+    return render(request, 'comps/cart.html', {
+        'spareparts_in_cart': spareparts_in_cart,
+        'total_price': total_price
+    })
+
+@login_required
+@user_passes_test(is_client)
+@require_POST
+def add_to_cart(request, sparepart_id):
+    """Добавить запчасть в корзину (без выбора количества)"""
+    sparepart = get_object_or_404(SparePart, id=sparepart_id)
+    
+    cart = request.session.get('cart', {})
+    if 'spareparts' not in cart:
+        cart['spareparts'] = []
+    
+    # Проверяем, есть ли уже эта запчасть в корзине
+    found = False
+    for item in cart['spareparts']:
+        if item['id'] == sparepart_id:
+            item['quantity'] += 1  # Просто увеличиваем на 1
+            found = True
+            break
+    
+    if not found:
+        cart['spareparts'].append({
+            'id': sparepart_id, 
+            'quantity': 1  # Всегда добавляем 1 штуку
+        })
+    
+    request.session['cart'] = cart
+    request.session.modified = True
+    
+    messages.success(request, f'{sparepart.name} добавлен в корзину!')
+    return redirect('cart_view')
+
+@login_required
+@user_passes_test(is_client)
+@require_POST
+def update_cart_quantity(request, sparepart_id):
+    """Изменить количество запчасти в корзине"""
+    sparepart = get_object_or_404(SparePart, id=sparepart_id)
+    quantity = int(request.POST.get('quantity', 1))
+    
+    cart = request.session.get('cart', {})
+    if 'spareparts' in cart:
+        for item in cart['spareparts']:
+            if item['id'] == sparepart_id:
+                if quantity <= 0:
+                    # Если количество стало 0 или меньше, удаляем
+                    cart['spareparts'] = [i for i in cart['spareparts'] if i['id'] != sparepart_id]
+                else:
+                    item['quantity'] = quantity
+                break
+    
+    request.session['cart'] = cart
+    request.session.modified = True
+    
+    return redirect('cart_view')
+
+@login_required
+@user_passes_test(is_client)
+@require_POST
+def remove_from_cart(request, sparepart_id):
+    """Удалить запчасть из корзины"""
+    cart = request.session.get('cart', {})
+    if 'spareparts' in cart:
+        cart['spareparts'] = [item for item in cart['spareparts'] if item['id'] != sparepart_id]
+        request.session['cart'] = cart
+        request.session.modified = True
+    
+    messages.success(request, 'Запчасть удалена из корзины!')
+    return redirect('cart_view')
+
+@login_required
+@user_passes_test(is_client)
+def clear_cart(request):
+    """Очистить всю корзину"""
+    request.session['cart'] = {}
+    request.session.modified = True
+    messages.success(request, 'Корзина очищена!')
+    return redirect('cart_view')
+

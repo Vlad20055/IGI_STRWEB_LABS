@@ -24,6 +24,16 @@
             <p class="service-note">🚀 Профессиональная услуга по ремонту</p>
         {% else %}
             <p class="sparepart-note">🔧 Оригинальная запчасть в наличии</p>
+            <div class="add-to-cart-section">
+                <h3>Добавить в заказ</h3>
+                <form method="post" action="{% url 'add_to_cart' object.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn-add-to-cart">
+                        🛒 Добавить в корзину
+                    </button>
+                </form>
+                <p><a href="{% url 'cart_view' %}">Перейти в корзину →</a></p>
+            </div>
         {% endif %}
     </div>
     
