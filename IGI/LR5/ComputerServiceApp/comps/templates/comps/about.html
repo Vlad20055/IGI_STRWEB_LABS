@@ -3,13 +3,49 @@
 {% block title %}О компании — Computer Service{% endblock %}
 
 {% block content %}
-    <h1>О компании — Computer Service</h1>
-    {% if info %}
-    
-    {{ info.content|linebreaks }}
-    
-    <p><small>Обновлено: {{ info.updated_at|date:"d/m/Y H:i" }}</small></p>
-    {% else %}
-    <p>Информация о компании ещё не добавлена.</p>
-    {% endif %}
+<h1>О компании — Computer Service</h1>
+
+{% if info %}
+{% if info.logo %}
+<img src="{{ info.logo.url }}" alt="Логотип компании" width="200">
+{% endif %}
+
+{{ info.content|linebreaks }}
+
+{% if info.video_file %}
+<h2>Видео о компании</h2>
+<video controls width="400">
+    <source src="{{ info.video_file.url }}" type="video/mp4">
+    Ваш браузер не поддерживает видео
+</video>
+{% endif %}
+
+{% if info.audio_file %}
+<h2>Аудио презентация</h2>
+<audio controls>
+    <source src="{{ info.audio_file.url }}" type="audio/mpeg">
+    Ваш браузер не поддерживает аудио
+</audio>
+{% endif %}
+
+{% if info.history %}
+<h2>История компании</h2>
+{{ info.history|linebreaks }}
+{% endif %}
+
+{% if info.requisites %}
+<h2>Реквизиты</h2>
+{{ info.requisites|linebreaks }}
+{% endif %}
+
+{% if info.certificate %}
+<h2>Сертификаты</h2>
+{{ info.certificate|linebreaks }}
+{% endif %}
+
+<p><small>Обновлено: {{ info.updated_at|date:"d/m/Y H:i" }}</small></p>
+
+{% else %}
+<p>Информация о компании ещё не добавлена.</p>
+{% endif %}
 {% endblock %}

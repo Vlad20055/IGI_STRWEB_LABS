@@ -226,15 +226,20 @@ class Article(models.Model):
         return self.title
 
 # Для страницы "О компании"
+# models.py
 class CompanyInfo(models.Model):
     """
-    Хранит текстовую информацию «О компании».
-    Можно создавать несколько записей (например, для разных разделов или историй по годам),
-    но сейчас будем брать первую.
+    Хранит полную информацию о компании
     """
-    title = models.CharField(max_length=200, default="О компании")
-    content = models.TextField(help_text="Основной текст «О компании»")
-    updated_at = models.DateTimeField(auto_now=True)
+    title = models.CharField(max_length=200, default="О компании", verbose_name="Заголовок")
+    content = models.TextField(help_text="Основной текст о компании", verbose_name="Основной текст")
+    logo = models.ImageField(upload_to='company/logo/', blank=True, null=True, verbose_name="Логотип компании")
+    video_file = models.FileField(upload_to='company/videos/', blank=True, null=True, verbose_name="Видео файл")
+    audio_file = models.FileField(upload_to='company/audio/', blank=True, null=True, verbose_name="Аудио файл")
+    history = models.TextField(blank=True, null=True, verbose_name="История по годам")
+    requisites = models.TextField(blank=True, null=True, verbose_name="Реквизиты")
+    certificate = models.TextField(blank=True, null=True, verbose_name="Сертификаты")
+    updated_at = models.DateTimeField(auto_now=True, verbose_name="Обновлено")
 
     class Meta:
         verbose_name = "Информация о компании"

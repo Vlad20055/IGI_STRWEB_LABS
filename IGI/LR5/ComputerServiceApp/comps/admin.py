@@ -12,6 +12,17 @@ from .models import CompanyInfo
 class CompanyInfoAdmin(admin.ModelAdmin):
     list_display = ('title', 'updated_at')
     ordering = ('-updated_at',)
+    fieldsets = (
+        ('Основная информация', {
+            'fields': ('title', 'content', 'logo')
+        }),
+        ('Медиа контент', {
+            'fields': ('video_file', 'audio_file')
+        }),
+        ('Дополнительная информация', {
+            'fields': ('history', 'requisites', 'certificate')
+        }),
+    )
 
 
 from .models import News
