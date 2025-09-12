@@ -10,7 +10,7 @@
         <li style="margin-bottom: 1.5em;">
         <h2>{{ vac.title }}</h2>
         <p><small>Опубликовано: {{ vac.posted_at|date:"d/m/Y" }}</small></p>
-        <div>{{ vac.description|linebreaks }}</div>
+        {{ vac.description|linebreaks }}
         </li>
     {% endfor %}
     </ul>

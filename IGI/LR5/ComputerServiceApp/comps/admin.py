@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Review, Coupon, Service, ServiceType, Order, Client, Employee, Article, Specialization, SparePart, SparePartType, Device, DeviceType, Profile
+from .models import Review, Coupon, Service, ServiceType, Order, Client, Employee, Article, Specialization, SparePart, SparePartType, Device, DeviceType, Profile, Partner
 
 #Register your models here
 admin.site.register([ServiceType, Order,
@@ -95,4 +95,8 @@ class CouponAdmin(admin.ModelAdmin):
     readonly_fields = ()
 
 
+@admin.register(Partner)
+class PartnerAdmin(admin.ModelAdmin):
+    list_display = ['name', 'website']
+    search_fields = ['name']
 

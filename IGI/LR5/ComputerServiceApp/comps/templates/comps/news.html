@@ -20,9 +20,9 @@
         <p>{{ item.short_description }}</p>
 
         {# Полный текст новости #}
-        <div>
-            {{ item.content|linebreaks }}
-        </div>
+        
+        {{ item.content|linebreaks }}
+        
         </li>
     {% endfor %}
     </ul>

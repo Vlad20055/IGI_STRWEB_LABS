@@ -2,31 +2,25 @@
 {% block title %}Специально для вас{% endblock %}
 
 {% block content %}
-  <h2>Специально для вас</h2>
+<h2>Специально для вас</h2>
 
-  <!-- Шутка дня -->
-  <section style="margin-bottom:2em;">
-    <h3>Шутка дня</h3>
-    <div style="padding:1em;border:1px solid #ccc;border-radius:4px;">
-      <p><strong>{{ joke.setup }}</strong></p>
-      <p>{{ joke.punchline }}</p>
-    </div>
-    <form method="get" style="display:inline;">
-      <button type="submit" name="action" value="joke">Ещё шутка 😂</button>
-    </form>
-  </section>
+<!-- Шутка дня -->
+<h3>Шутка дня</h3>
+<p><strong>{{ joke.setup }}</strong></p>
+<p>{{ joke.punchline }}</p>
+<form method="get">
+    <button type="submit" name="action" value="joke">Ещё шутка</button>
+</form>
 
-  <!-- Цитата дня -->
-  <section style="margin-bottom:2em;">
-    <h3>Цитата дня</h3>
-    <blockquote style="padding:1em;border-left:4px solid #888;background:#f9f9f9;">
-      <p>&ldquo;{{ quote.body }}&rdquo;</p>
-      {% if quote.author %}
-        <footer style="text-align:right;font-style:italic;">— {{ quote.author }}</footer>
-      {% endif %}
-    </blockquote>
-    <form method="get" style="display:inline;">
-      <button type="submit" name="action" value="quote">Ещё цитата 📜</button>
-    </form>
-  </section>
+<!-- Цитата дня -->
+<h3>Цитата дня</h3>
+<blockquote>
+    <p>«{{ quote.body }}»</p>
+    {% if quote.author %}
+    <p>— {{ quote.author }}</p>
+    {% endif %}
+</blockquote>
+<form method="get">
+    <button type="submit" name="action" value="quote">Ещё цитата</button>
+</form>
 {% endblock %}

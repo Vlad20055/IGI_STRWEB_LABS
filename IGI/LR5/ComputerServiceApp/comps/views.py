@@ -13,7 +13,7 @@ from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib.auth import login
 from django.views.generic import DetailView
 from .forms import ClientSignUpForm
-from .models import Article, Coupon, OrderPart, OrderService, Service, ServiceType, SparePart, SparePartType
+from .models import Article, Coupon, OrderPart, OrderService, Partner, Service, ServiceType, SparePart, SparePartType
 from .models import CompanyInfo
 from .models import News
 from .models import FAQ
@@ -59,6 +59,8 @@ def index(request):
     elif sparepart_sort == 'price_desc':
         spareparts = spareparts.order_by('-price')
 
+    partners = Partner.objects.all()
+
 
     return render(request, 'comps/index.html', {
         'article': latest_article,
@@ -71,6 +73,7 @@ def index(request):
         'sparepart_types': sparepart_types,
         'selected_sparepart_type': selected_sparepart_type,
         'sparepart_sort': sparepart_sort,
+        'partners': partners
     })
 
 

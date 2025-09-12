@@ -2,40 +2,30 @@
 {% block title %}Оформление заказа{% endblock %}
 
 {% block content %}
-<div class="order-create-container">
-    <h2>📋 Оформление заказа</h2>
+<h2>Оформление заказа</h2>
+
+{% if messages %}
+{% for message in messages %}
+<p><strong>{{ message }}</strong></p>
+{% endfor %}
+{% endif %}
+
+<h3>Запчасти в заказе:</h3>
+{% for item in spareparts_in_cart %}
+<p>
+    {{ item.sparepart.name }} - {{ item.quantity }} шт. × {{ item.sparepart.price }} руб. = {{ item.total }} руб.
+</p>
+{% endfor %}
+
+<form method="post">
+    {% csrf_token %}
     
-    {% if messages %}
-    <div class="messages">
-        {% for message in messages %}
-        <div class="alert alert-{{ message.tags }}">
-            {{ message }}
-        </div>
-        {% endfor %}
-    </div>
-    {% endif %}
-
-    <div class="order-summary">
-        <h3>Запчасти в заказе:</h3>
-        <ul>
-            {% for item in spareparts_in_cart %}
-            <li>
-                {{ item.sparepart.name }} - {{ item.quantity }} шт. × {{ item.sparepart.price }} руб. = {{ item.total }} руб.
-            </li>
-            {% endfor %}
-        </ul>
-    </div>
-
-    <form method="post">
-        {% csrf_token %}
-        
-        <h3>Информация о заказе:</h3>
-        {{ form.as_p }}
-        
-        <div class="form-actions">
-            <button type="submit" class="btn-submit">✅ Подтвердить заказ</button>
-            <a href="{% url 'cart_view' %}" class="btn-back">← Вернуться в корзину</a>
-        </div>
-    </form>
-</div>
+    <h3>Информация о заказе:</h3>
+    {{ form.as_p }}
+    
+    <p>
+        <button type="submit">Подтвердить заказ</button>
+        <a href="{% url 'cart_view' %}">Вернуться в корзину</a>
+    </p>
+</form>
 {% endblock %}

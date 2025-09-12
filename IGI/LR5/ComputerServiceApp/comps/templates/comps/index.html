@@ -5,11 +5,7 @@
 
 {% block content %}
     <h1>
-        <div>
-            <h3>
-                Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
-            </h3>
-        </div>
+        Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
     </h1>
 
     <!-- Каталог услуг -->
@@ -109,9 +105,9 @@
     </ul>
 
     <!-- Баннер -->
-    <div>
-        <img src="/media/index/banner.jpg" width="500" height="300">
-    </div>
+    
+    <img src="/media/index/banner.jpg" width="500" height="300">
+    
 
     <!-- Выпадающий список типов устройств -->
     <h2>Ремонтируемые устройства</h2>
@@ -169,4 +165,18 @@
     {% else %}
     <p>Пока нет ни одной опубликованной статьи.</p>
     {% endif %}
+
+    <h2>Наши партнеры</h2>
+
+    {% for partner in partners %}
+    <a href="{{ partner.website }}" target="_blank" rel="noopener noreferrer">
+        {% if partner.logo %}
+        <img src="{{ partner.logo.url }}" alt="{{ partner.name }}"><br>
+        {% endif %}
+        {{ partner.name }}
+    </a><br>
+    {% empty %}
+    <p>Информация о партнерах скоро появится...</p>
+    {% endfor %}
+
 {% endblock %}

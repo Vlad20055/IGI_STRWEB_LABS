@@ -6,49 +6,40 @@
 {% endblock %}
 
 {% block content %}
-<div class="detail-container">
-    <h1>{{ object.name }}</h1>
-    
-    <div class="detail-info">
-        <p><strong>Тип:</strong> {{ object.type.name }}</p>
-        <p><strong>Цена:</strong> {{ object.price }} руб.</p>
-        
-        {% if object.description %}
-            <div class="description">
-                <h3>Описание:</h3>
-                <p>{{ object.description }}</p>
-            </div>
-        {% endif %}
-        
-        {% if model_type == 'service' %}
-            <p class="service-note">🚀 Профессиональная услуга по ремонту</p>
-        {% else %}
-            <p class="sparepart-note">🔧 Оригинальная запчасть в наличии</p>
-            <div class="add-to-cart-section">
-                <h3>Добавить в заказ</h3>
-                <form method="post" action="{% url 'add_to_cart' object.id %}">
-                    {% csrf_token %}
-                    <button type="submit" class="btn-add-to-cart">
-                        🛒 Добавить в корзину
-                    </button>
-                </form>
-                <p><a href="{% url 'cart_view' %}">Перейти в корзину →</a></p>
-            </div>
-        {% endif %}
-    </div>
-    
-    <div class="actions">
-        <a href="{% url 'home' %}" class="btn-back">← Назад к каталогу</a>
-        
-        {% if user.is_authenticated and user|has_group:"Employees" %}
-            {% if model_type == 'service' %}
-                [<a href="{% url 'service_edit' object.pk %}">изменить</a>]
-                [<a href="{% url 'service_delete' object.pk %}">удалить</a>]
-            {% else %}
-                [<a href="{% url 'sparepart_edit' object.pk %}">изменить</a>]
-                [<a href="{% url 'sparepart_delete' object.pk %}">удалить</a>]
-            {% endif %}
-        {% endif %}
-    </div>
-</div>
+<h1>{{ object.name }}</h1>
+
+<p><strong>Тип:</strong> {{ object.type.name }}</p>
+<p><strong>Цена:</strong> {{ object.price }} руб.</p>
+
+{% if object.description %}
+<h3>Описание:</h3>
+<p>{{ object.description }}</p>
+{% endif %}
+
+{% if model_type == 'service' %}
+<p>Профессиональная услуга по ремонту</p>
+{% else %}
+<p>Оригинальная запчасть в наличии</p>
+
+<h3>Добавить в заказ</h3>
+<form method="post" action="{% url 'add_to_cart' object.id %}">
+    {% csrf_token %}
+    <button type="submit">Добавить в корзину</button>
+</form>
+<p><a href="{% url 'cart_view' %}">Перейти в корзину</a></p>
+{% endif %}
+
+<p><a href="{% url 'home' %}">Назад к каталогу</a></p>
+
+{% if user.is_authenticated and user|has_group:"Employees" %}
+<p>
+    {% if model_type == 'service' %}
+    [<a href="{% url 'service_edit' object.pk %}">изменить</a>]
+    [<a href="{% url 'service_delete' object.pk %}">удалить</a>]
+    {% else %}
+    [<a href="{% url 'sparepart_edit' object.pk %}">изменить</a>]
+    [<a href="{% url 'sparepart_delete' object.pk %}">удалить</a>]
+    {% endif %}
+</p>
+{% endif %}
 {% endblock %}

@@ -346,3 +346,17 @@ class Coupon(models.Model):
 
     def __str__(self):
         return f"{self.service.name}: -{self.discount_percent}% до {self.valid_until.strftime('%d/%m/%Y')}"
+    
+# Компании партнёры
+class Partner(models.Model):
+    name = models.CharField(max_length=100, verbose_name='Название компании')
+    logo = models.ImageField(upload_to='partners/logos/', verbose_name='Логотип')
+    website = models.URLField(verbose_name='Сайт компании')
+    
+    class Meta:
+        verbose_name = 'Партнер'
+        verbose_name_plural = 'Партнеры'
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
