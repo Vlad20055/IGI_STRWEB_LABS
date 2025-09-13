@@ -107,7 +107,7 @@ class DeviceDeleteView(EmployeeRequiredMixin, DeleteView):
     template_name = 'comps/crud_views/device_confirm_delete.html'
     success_url = reverse_lazy('home')
 
-# === SparePartType CRUD ===
+# === SparePartType CUD ===
 class SparePartTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePartType
     fields = ['name']
