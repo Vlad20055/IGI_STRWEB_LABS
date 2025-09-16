@@ -144,11 +144,11 @@ def order_create(request):
     except (AttributeError, Client.DoesNotExist):
         return HttpResponseForbidden("У вас нет прав создавать заказы.")
 
-    # Проверяем, что корзина не пуста (правильная проверка)
     cart = request.session.get('cart', {})
     spareparts_in_cart = cart.get('spareparts', [])
+    services_in_cart = cart.get('services', [])
     
-    if not spareparts_in_cart:  # Проверяем, что список не пустой
+    if not spareparts_in_cart and not services_in_cart:
         messages.warning(request, 'Корзина пуста!')
         return redirect('cart_view')
 
@@ -171,6 +171,18 @@ def order_create(request):
                 except SparePart.DoesNotExist:
                     continue
 
+            # Сохраняем услуги из корзины
+            for item in services_in_cart:
+                try:
+                    service = Service.objects.get(id=item['id'])
+                    OrderService.objects.create(
+                        order=order,
+                        service=service,
+                        quantity=item['quantity']
+                    )
+                except Service.DoesNotExist:
+                    continue
+
             # Очищаем корзину
             request.session['cart'] = {}
             request.session.modified = True
@@ -180,7 +192,7 @@ def order_create(request):
     else:
         form = OrderForm()
 
-    # Подготовим данные для отображения в шаблоне
+    # Подготовим данные для отображения
     spareparts_data = []
     for item in spareparts_in_cart:
         try:
@@ -193,9 +205,22 @@ def order_create(request):
         except SparePart.DoesNotExist:
             continue
 
+    services_data = []
+    for item in services_in_cart:
+        try:
+            service = Service.objects.get(id=item['id'])
+            services_data.append({
+                'service': service,
+                'quantity': item['quantity'],
+                'total': service.price * item['quantity']
+            })
+        except Service.DoesNotExist:
+            continue
+
     return render(request, 'comps/order_create.html', {
         'form': form,
-        'spareparts_in_cart': spareparts_data
+        'spareparts_in_cart': spareparts_data,
+        'services_in_cart': services_data
     })
 
 
@@ -481,8 +506,10 @@ def cart_view(request):
     """Страница корзины"""
     cart = request.session.get('cart', {})
     spareparts_in_cart = []
+    services_in_cart = []
     total_price = 0
     
+    # Обрабатываем запчасти
     for item in cart.get('spareparts', []):
         try:
             sparepart = SparePart.objects.get(id=item['id'])
@@ -496,15 +523,30 @@ def cart_view(request):
         except SparePart.DoesNotExist:
             continue
     
+    # Обрабатываем услуги
+    for item in cart.get('services', []):
+        try:
+            service = Service.objects.get(id=item['id'])
+            item_total = service.price * item['quantity']
+            services_in_cart.append({
+                'service': service,
+                'quantity': item['quantity'],
+                'total': item_total
+            })
+            total_price += item_total
+        except Service.DoesNotExist:
+            continue
+    
     return render(request, 'comps/cart.html', {
         'spareparts_in_cart': spareparts_in_cart,
+        'services_in_cart': services_in_cart,
         'total_price': total_price
     })
 
 @login_required
 @user_passes_test(is_client)
 @require_POST
-def add_to_cart(request, sparepart_id):
+def add_sparepart_to_cart(request, sparepart_id):
     """Добавить запчасть в корзину (без выбора количества)"""
     sparepart = get_object_or_404(SparePart, id=sparepart_id)
     
@@ -523,7 +565,7 @@ def add_to_cart(request, sparepart_id):
     if not found:
         cart['spareparts'].append({
             'id': sparepart_id, 
-            'quantity': 1  # Всегда добавляем 1 штуку
+            'quantity': 1
         })
     
     request.session['cart'] = cart
@@ -532,10 +574,42 @@ def add_to_cart(request, sparepart_id):
     messages.success(request, f'{sparepart.name} добавлен в корзину!')
     return redirect('cart_view')
 
+
 @login_required
 @user_passes_test(is_client)
 @require_POST
-def update_cart_quantity(request, sparepart_id):
+def add_service_to_cart(request, service_id):
+    """Добавить услугу в корзину"""
+    service = get_object_or_404(Service, id=service_id)
+    
+    cart = request.session.get('cart', {})
+    if 'services' not in cart:
+        cart['services'] = []
+    
+    # Проверяем, есть ли уже эта услуга в корзине
+    found = False
+    for item in cart['services']:
+        if item['id'] == service_id:
+            item['quantity'] += 1
+            found = True
+            break
+    
+    if not found:
+        cart['services'].append({
+            'id': service_id, 
+            'quantity': 1
+        })
+    
+    request.session['cart'] = cart
+    request.session.modified = True
+    
+    messages.success(request, f'{service.name} добавлена в корзину!')
+    return redirect('cart_view')
+
+@login_required
+@user_passes_test(is_client)
+@require_POST
+def update_sparepart_quantity(request, sparepart_id):
     """Изменить количество запчасти в корзине"""
     sparepart = get_object_or_404(SparePart, id=sparepart_id)
     quantity = int(request.POST.get('quantity', 1))
@@ -556,10 +630,34 @@ def update_cart_quantity(request, sparepart_id):
     
     return redirect('cart_view')
 
+
 @login_required
 @user_passes_test(is_client)
 @require_POST
-def remove_from_cart(request, sparepart_id):
+def update_service_quantity(request, service_id):
+    """Изменить количество услуги в корзине"""
+    service = get_object_or_404(Service, id=service_id)
+    quantity = int(request.POST.get('quantity', 1))
+    
+    cart = request.session.get('cart', {})
+    if 'services' in cart:
+        for item in cart['services']:
+            if item['id'] == service_id:
+                if quantity <= 0:
+                    cart['services'] = [i for i in cart['services'] if i['id'] != service_id]
+                else:
+                    item['quantity'] = quantity
+                break
+    
+    request.session['cart'] = cart
+    request.session.modified = True
+    
+    return redirect('cart_view')
+
+@login_required
+@user_passes_test(is_client)
+@require_POST
+def remove_sparepart_from_cart(request, sparepart_id):
     """Удалить запчасть из корзины"""
     cart = request.session.get('cart', {})
     if 'spareparts' in cart:
@@ -568,6 +666,21 @@ def remove_from_cart(request, sparepart_id):
         request.session.modified = True
     
     messages.success(request, 'Запчасть удалена из корзины!')
+    return redirect('cart_view')
+
+
+@login_required
+@user_passes_test(is_client)
+@require_POST
+def remove_service_from_cart(request, service_id):
+    """Удалить услугу из корзины"""
+    cart = request.session.get('cart', {})
+    if 'services' in cart:
+        cart['services'] = [item for item in cart['services'] if item['id'] != service_id]
+        request.session['cart'] = cart
+        request.session.modified = True
+    
+    messages.success(request, 'Услуга удалена из корзины!')
     return redirect('cart_view')
 
 @login_required

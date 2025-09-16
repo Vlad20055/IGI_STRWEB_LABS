@@ -5,51 +5,84 @@
 <h2>Корзина заказа</h2>
 
 {% if messages %}
-{% for message in messages %}
-<p><strong>{{ message }}</strong></p>
-{% endfor %}
+    {% for message in messages %}
+        <p><strong>{{ message }}</strong></p>
+    {% endfor %}
 {% endif %}
 
+<!-- Услуги в корзине -->
+{% if services_in_cart %}
+    <h3>Услуги:</h3>
+    {% for item in services_in_cart %}
+        <p>
+            <strong>{{ item.service.name }}</strong> ({{ item.service.type.name }})<br>
+            Цена: {{ item.service.price }} руб.<br>
+            Количество: 
+            <form method="post" action="{% url 'update_service_quantity' item.service.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                <button type="submit" {% if item.quantity <= 1 %}disabled{% endif %}>-</button>
+            </form>
+            {{ item.quantity }}
+            <form method="post" action="{% url 'update_service_quantity' item.service.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                <button type="submit">+</button>
+            </form>
+            <br>
+            Итого: {{ item.total }} руб.
+            <form method="post" action="{% url 'remove_service_from_cart' item.service.id %}">
+                {% csrf_token %}
+                <button type="submit">Удалить</button>
+            </form>
+        </p>
+    {% endfor %}
+{% endif %}
+
+<!-- Запчасти в корзине -->
 {% if spareparts_in_cart %}
-{% for item in spareparts_in_cart %}
-<p>
-    <strong>{{ item.sparepart.name }}</strong> ({{ item.sparepart.type.name }})<br>
-    Цена: {{ item.sparepart.price }} руб.<br>
-    Количество: 
-    <form method="post" action="{% url 'update_cart_quantity' item.sparepart.id %}">
-        {% csrf_token %}
-        <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
-        <button type="submit" {% if item.quantity <= 1 %}disabled{% endif %}>-</button>
-    </form>
-    {{ item.quantity }}
-    <form method="post" action="{% url 'update_cart_quantity' item.sparepart.id %}">
-        {% csrf_token %}
-        <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
-        <button type="submit">+</button>
-    </form>
-    <br>
-    Итого: {{ item.total }} руб.
-    <form method="post" action="{% url 'remove_from_cart' item.sparepart.id %}">
-        {% csrf_token %}
-        <button type="submit">Удалить</button>
-    </form>
-</p>
-{% endfor %}
+    <h3>Запчасти:</h3>
+    {% for item in spareparts_in_cart %}
+        <p>
+            <strong>{{ item.sparepart.name }}</strong> ({{ item.sparepart.type.name }})<br>
+            Цена: {{ item.sparepart.price }} руб.<br>
+            Количество: 
+            <form method="post" action="{% url 'update_sparepart_quantity' item.sparepart.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="{{ item.quantity|add:'-1' }}">
+                <button type="submit" {% if item.quantity <= 1 %}disabled{% endif %}>-</button>
+            </form>
+            {{ item.quantity }}
+            <form method="post" action="{% url 'update_sparepart_quantity' item.sparepart.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="{{ item.quantity|add:'1' }}">
+                <button type="submit">+</button>
+            </form>
+            <br>
+            Итого: {{ item.total }} руб.
+            <form method="post" action="{% url 'remove_sparepart_from_cart' item.sparepart.id %}">
+                {% csrf_token %}
+                <button type="submit">Удалить</button>
+            </form>
+        </p>
+    {% endfor %}
+{% endif %}
 
-<h3>Общая сумма: {{ total_price }} руб.</h3>
+{% if services_in_cart or spareparts_in_cart %}
+    <h3>Общая сумма: {{ total_price }} руб.</h3>
 
-<form method="post" action="{% url 'clear_cart' %}">
-    {% csrf_token %}
-    <button type="submit">Очистить корзину</button>
-</form>
+    <form method="post" action="{% url 'clear_cart' %}">
+        {% csrf_token %}
+        <button type="submit">Очистить корзину</button>
+    </form>
 
-<p>
-    <a href="{% url 'order_create' %}">Перейти к оформлению заказа</a><br>
-    <a href="{% url 'home' %}">Продолжить покупки</a>
-</p>
+    <p>
+        <a href="{% url 'order_create' %}">Перейти к оформлению заказа</a><br>
+        <a href="{% url 'home' %}">Продолжить покупки</a>
+    </p>
 
 {% else %}
-<p>Ваша корзина пуста</p>
-<p><a href="{% url 'home' %}">Вернуться к каталогу</a></p>
+    <p>Ваша корзина пуста</p>
+    <p><a href="{% url 'home' %}">Вернуться к каталогу</a></p>
 {% endif %}
 {% endblock %}

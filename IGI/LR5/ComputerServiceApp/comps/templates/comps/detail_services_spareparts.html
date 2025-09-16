@@ -12,21 +12,28 @@
 <p><strong>Цена:</strong> {{ object.price }} руб.</p>
 
 {% if object.description %}
-<h3>Описание:</h3>
-<p>{{ object.description }}</p>
+    <h3>Описание:</h3>
+    <p>{{ object.description }}</p>
 {% endif %}
 
 {% if model_type == 'service' %}
-<p>Профессиональная услуга по ремонту</p>
-{% else %}
-<p>Оригинальная запчасть в наличии</p>
+    <p>Профессиональная услуга по ремонту</p>
 
-<h3>Добавить в заказ</h3>
-<form method="post" action="{% url 'add_to_cart' object.id %}">
-    {% csrf_token %}
-    <button type="submit">Добавить в корзину</button>
-</form>
-<p><a href="{% url 'cart_view' %}">Перейти в корзину</a></p>
+    <h3>Добавить в заказ</h3>
+    <form method="post" action="{% url 'add_service_to_cart' object.id %}">
+        {% csrf_token %}
+        <button type="submit">Добавить в корзину</button>
+    </form>
+    <p><a href="{% url 'cart_view' %}">Перейти в корзину</a></p>
+{% else %}
+    <p>Оригинальная запчасть в наличии</p>
+
+    <h3>Добавить в заказ</h3>
+    <form method="post" action="{% url 'add_sparepart_to_cart' object.id %}">
+        {% csrf_token %}
+        <button type="submit">Добавить в корзину</button>
+    </form>
+    <p><a href="{% url 'cart_view' %}">Перейти в корзину</a></p>
 {% endif %}
 
 <p><a href="{% url 'home' %}">Назад к каталогу</a></p>

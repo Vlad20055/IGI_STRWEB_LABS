@@ -38,9 +38,12 @@ urlpatterns = [
     path('types_services_spareparts/', views.types_services_spareparts, name='types_services_spareparts'),
     path('detail/<str:model_type>/<int:pk>/', views.UniversalDetailView.as_view(), name='detail_services_spareparts'),
     path('cart/', views.cart_view, name='cart_view'),
-    path('cart/add/<int:sparepart_id>/', views.add_to_cart, name='add_to_cart'),
-    path('cart/update/<int:sparepart_id>/', views.update_cart_quantity, name='update_cart_quantity'),
-    path('cart/remove/<int:sparepart_id>/', views.remove_from_cart, name='remove_from_cart'),
+    path('cart/add_sparepart/<int:sparepart_id>/', views.add_sparepart_to_cart, name='add_sparepart_to_cart'),
+    path('cart/update_sparepart/<int:sparepart_id>/', views.update_sparepart_quantity, name='update_sparepart_quantity'),
+    path('cart/remove_sparepart/<int:sparepart_id>/', views.remove_sparepart_from_cart, name='remove_sparepart_from_cart'),
+    path('cart/add_service/<int:service_id>/', views.add_service_to_cart, name='add_service_to_cart'),
+    path('cart/update_service/<int:service_id>/', views.update_service_quantity, name='update_service_quantity'),
+    path('cart/remove_service/<int:service_id>/', views.remove_service_from_cart, name='remove_service_from_cart'),
     path('cart/clear/', views.clear_cart, name='clear_cart'),
 ]
 

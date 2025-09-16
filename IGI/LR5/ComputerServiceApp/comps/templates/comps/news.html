@@ -3,31 +3,32 @@
 {% block title %}Новости — Computer Service{% endblock %}
 
 {% block content %}
-    <h1>Новости — Computer Service</h1>
-    {% if news_items %}
-    <ul>
-    {% for item in news_items %}
-        <li style="margin-bottom: 2em;">
-        <h2>{{ item.title }}</h2>
-        <p><small>Опубликовано: {{ item.published_at|date:"d/m/Y" }}</small></p>
+<h1>Новости — Computer Service</h1>
 
-        {# Показываем картинку, если она есть #}
-        {% if item.image %}
-            <img src="{{ item.image.url }}" alt="{{ item.title }}" style="max-width:300px;">
-        {% endif %}
+{% if news_items %}
+{% for item in news_items %}
+<article>
+    <h2>{{ item.title }}</h2>
+    <p><small>Опубликовано: {{ item.published_at|date:"d/m/Y" }}</small></p>
 
-        {# Краткое описание #}
-        <p>{{ item.short_description }}</p>
-
-        {# Полный текст новости #}
-        
-        {{ item.content|linebreaks }}
-        
-        </li>
-    {% endfor %}
-    </ul>
-    {% else %}
-    <p>Пока нет новостей.</p>
+    {% if item.image %}
+    <img src="{{ item.image.url }}" alt="{{ item.title }}" width="300">
     {% endif %}
-{% endblock %}
 
+    <p>{{ item.short_description }}</p>
+
+    <details>
+        <summary>Читать далее</summary>
+        {{ item.content|linebreaks }}
+    </details>
+</article>
+
+{% if not forloop.last %}
+<hr>
+{% endif %}
+
+{% endfor %}
+{% else %}
+<p>Пока нет новостей.</p>
+{% endif %}
+{% endblock %}

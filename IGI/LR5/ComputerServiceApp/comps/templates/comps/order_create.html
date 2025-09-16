@@ -5,17 +5,28 @@
 <h2>Оформление заказа</h2>
 
 {% if messages %}
-{% for message in messages %}
-<p><strong>{{ message }}</strong></p>
-{% endfor %}
+    {% for message in messages %}
+        <p><strong>{{ message }}</strong></p>
+    {% endfor %}
 {% endif %}
 
-<h3>Запчасти в заказе:</h3>
-{% for item in spareparts_in_cart %}
-<p>
-    {{ item.sparepart.name }} - {{ item.quantity }} шт. × {{ item.sparepart.price }} руб. = {{ item.total }} руб.
-</p>
-{% endfor %}
+{% if services_in_cart %}
+    <h3>Услуги в заказе:</h3>
+    {% for item in services_in_cart %}
+        <p>
+            {{ item.service.name }} - {{ item.quantity }} шт. x {{ item.service.price }} руб. = {{ item.total }} руб.
+        </p>
+    {% endfor %}
+{% endif %}
+
+{% if spareparts_in_cart %}
+    <h3>Запчасти в заказе:</h3>
+    {% for item in spareparts_in_cart %}
+        <p>
+            {{ item.sparepart.name }} - {{ item.quantity }} шт. x {{ item.sparepart.price }} руб. = {{ item.total }} руб.
+        </p>
+    {% endfor %}
+{% endif %}
 
 <form method="post">
     {% csrf_token %}
