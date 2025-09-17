@@ -21,20 +21,20 @@ class ServiceTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = ServiceType
     fields = ['name']
     template_name = 'comps/crud_views/service_type_form.html'
-    success_url = reverse_lazy('types_services_spareparts')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class ServiceTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = ServiceType
     fields = ['name']
     template_name = 'comps/crud_views/service_type_form.html'
-    success_url = reverse_lazy('types_services_spareparts')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class ServiceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = ServiceType
     template_name = 'comps/crud_views/service_type_confirm_delete.html'
-    success_url = reverse_lazy('types_services_spareparts')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -67,20 +67,20 @@ class DeviceTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = DeviceType
     fields = ['name']
     template_name = 'comps/crud_views/device_type_form.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class DeviceTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = DeviceType
     fields = ['name']
     template_name = 'comps/crud_views/device_type_form.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class DeviceTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = DeviceType
     template_name = 'comps/crud_views/device_type_confirm_delete.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)
@@ -92,40 +92,40 @@ class DeviceCreateView(EmployeeRequiredMixin, CreateView):
     model = Device
     fields = ['type', 'model']
     template_name = 'comps/crud_views/device_form.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class DeviceUpdateView(EmployeeRequiredMixin, UpdateView):
     model = Device
     fields = ['type', 'model']
     template_name = 'comps/crud_views/device_form.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class DeviceDeleteView(EmployeeRequiredMixin, DeleteView):
     model = Device
     template_name = 'comps/crud_views/device_confirm_delete.html'
-    success_url = reverse_lazy('home')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 # === SparePartType CUD ===
 class SparePartTypeCreateView(EmployeeRequiredMixin, CreateView):
     model = SparePartType
     fields = ['name']
     template_name = 'comps/crud_views/spareparttype_form.html'
-    success_url = reverse_lazy('types_services_spareparts')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class SparePartTypeUpdateView(EmployeeRequiredMixin, UpdateView):
     model = SparePartType
     fields = ['name']
     template_name = 'comps/crud_views/spareparttype_form.html'
-    success_url = reverse_lazy('types_services_spareparts')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
 
 class SparePartTypeDeleteView(EmployeeRequiredMixin, DeleteView):
     model = SparePartType
     template_name = 'comps/crud_views/spareparttype_confirm_delete.html'
-    success_url = reverse_lazy('types_services_spareparts')
+    success_url = reverse_lazy('types_services_spareparts_devices')
 
     def get_context_data(self, **kwargs):
         ctx = super().get_context_data(**kwargs)

@@ -104,56 +104,10 @@
         {% endfor %}
     </ul>
 
-    <!-- Баннер -->
+    <!-- Banner -->
     
     <img src="/media/index/banner.jpg" width="500" height="300">
     
-
-    <!-- Выпадающий список типов устройств -->
-    <h2>Ремонтируемые устройства</h2>
-    
-    {% for device_type in device_types %}
-    <details>
-        <summary>
-            <strong>
-                {{ device_type.name }}
-                {% if user.is_authenticated and user|has_group:"Employees" %}
-                    [<a href="{% url 'device_type_edit' device_type.pk %}">изменить</a>]
-                    [<a href="{% url 'device_type_delete' device_type.pk %}">удалить</a>]
-                {% endif %}
-            </strong>
-        </summary>
-        
-        {% if device_type.devices.all %}
-            <ul>
-            {% for device in device_type.devices.all %}
-                <li>
-                    {{ device.model }} 
-                    {% if device.serial_number %}
-                        (S/N: {{ d.serial_number }})
-                    {% endif %}
-                    {% if user.is_authenticated and user|has_group:"Employees" %}
-                        [<a href="{% url 'device_edit' device.pk %}">изменить</a>]
-                        [<a href="{% url 'device_delete' device.pk %}">удалить</a>]
-                    {% endif %}
-                </li>
-            {% endfor %}
-            </ul>
-        {% else %}
-            <p>Устройств этого типа пока нет.</p>
-        {% endif %}
-    </details>
-    {% empty %}
-        <p>Типов устройств ещё нет.</p>
-    {% endfor %}
-
-    <!-- Ссылки для сотрудников -->
-    {% if user.is_authenticated and user|has_group:"Employees" %}
-        <p>
-            <a href="{% url 'device_type_add' %}">Добавить тип устройства</a> |
-            <a href="{% url 'device_add' %}">Добавить устройство</a>
-        </p>
-    {% endif %}
 
     <!-- Статья -->
     {% if article %}

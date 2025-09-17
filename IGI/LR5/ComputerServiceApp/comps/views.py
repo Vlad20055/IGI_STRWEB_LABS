@@ -27,7 +27,6 @@ from .forms import ReviewForm
 def index(request):
     # получаем последнюю по дате опубликования статью
     latest_article = Article.objects.order_by('-published_at').first()
-    device_types = DeviceType.objects.prefetch_related('devices').all()
 
     services = Service.objects.select_related('type').all()
     service_types = ServiceType.objects.all()
@@ -64,7 +63,6 @@ def index(request):
 
     return render(request, 'comps/index.html', {
         'article': latest_article,
-        'device_types': device_types,
         'services': services,
         'service_types': service_types,
         'selected_service_type': selected_service_type,
@@ -461,12 +459,14 @@ def coupon_list(request):
     })
 
 # Для типов услуг и запчастей
-def types_services_spareparts(request):
+def types_services_spareparts_devices(request):
     service_types = ServiceType.objects.all()
     sparepart_types = SparePartType.objects.all()
-    return render(request, 'comps/types_services_spareparts.html', {
+    device_types = DeviceType.objects.prefetch_related('devices').all()
+    return render(request, 'comps/types_services_spareparts_devices.html', {
         'service_types': service_types,
-        'sparepart_types': sparepart_types
+        'sparepart_types': sparepart_types,
+        'device_types': device_types
     })
 
 # Для услуг и запчастей

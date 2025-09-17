@@ -1,0 +1,93 @@
+{% extends "comps/base.html" %}
+{% load group_filters %}
+
+{% block title %}Типы услуг{% endblock %}
+{% block content %}
+  <h2>Типы услуг</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'service_type_add' %}">Добавить тип услуги</a></p>
+  {% endif %}
+
+  <ul>
+    {% for t in service_types %}
+      <li>
+        {{ t.name }}
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'service_type_edit' t.pk %}">изменить</a>]
+          [<a href="{% url 'service_type_delete' t.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Типов услуг ещё нет.</li>
+    {% endfor %}
+  </ul>
+
+
+  <h2>Типы запчастей</h2>
+
+  {% if user.is_authenticated and user|has_group:"Employees" %}
+    <p><a href="{% url 'spareparttype_add' %}">Добавить тип запчасти</a></p>
+  {% endif %}
+
+  <ul>
+    {% for pt in sparepart_types %}
+      <li>
+        {{ pt.name }}
+        {% if user.is_authenticated and user|has_group:"Employees" %}
+          [<a href="{% url 'spareparttype_edit' pt.pk %}">изменить</a>]
+          [<a href="{% url 'spareparttype_delete' pt.pk %}">удалить</a>]
+        {% endif %}
+      </li>
+    {% empty %}
+      <li>Типов запчастей ещё нет.</li>
+    {% endfor %}
+  </ul>
+
+  <!-- Выпадающий список типов устройств -->
+    <h2>Ремонтируемые устройства</h2>
+    
+    {% for device_type in device_types %}
+    <details>
+        <summary>
+            <strong>
+                {{ device_type.name }}
+                {% if user.is_authenticated and user|has_group:"Employees" %}
+                    [<a href="{% url 'device_type_edit' device_type.pk %}">изменить</a>]
+                    [<a href="{% url 'device_type_delete' device_type.pk %}">удалить</a>]
+                {% endif %}
+            </strong>
+        </summary>
+        
+        {% if device_type.devices.all %}
+            <ul>
+            {% for device in device_type.devices.all %}
+                <li>
+                    {{ device.model }} 
+                    {% if device.serial_number %}
+                        (S/N: {{ d.serial_number }})
+                    {% endif %}
+                    {% if user.is_authenticated and user|has_group:"Employees" %}
+                        [<a href="{% url 'device_edit' device.pk %}">изменить</a>]
+                        [<a href="{% url 'device_delete' device.pk %}">удалить</a>]
+                    {% endif %}
+                </li>
+            {% endfor %}
+            </ul>
+        {% else %}
+            <p>Устройств этого типа пока нет.</p>
+        {% endif %}
+    </details>
+    {% empty %}
+        <p>Типов устройств ещё нет.</p>
+    {% endfor %}
+
+    <!-- Ссылки для сотрудников -->
+    {% if user.is_authenticated and user|has_group:"Employees" %}
+        <p>
+            <a href="{% url 'device_type_add' %}">Добавить тип устройства</a> |
+            <a href="{% url 'device_add' %}">Добавить устройство</a>
+        </p>
+    {% endif %}
+
+{% endblock %}

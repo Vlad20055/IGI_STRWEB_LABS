@@ -6,7 +6,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{% block title %}Computer Service{% endblock %}</title>
-  <!-- сюда можно подключить CSS, например Bootstrap -->
+  <!-- here it is possible to add CSS, for example Bootstrap -->
 </head>
 <body>
     <header>
@@ -27,7 +27,7 @@
         <nav>
           <li>Справочники:
             <ul>
-              <li><a href="{% url 'types_services_spareparts' %}">Типы услуг и запчастей</a></li>
+              <li><a href="{% url 'types_services_spareparts_devices' %}">Типы услуг и запчастей</a></li>
             </ul>
           </li>
 
@@ -39,9 +39,6 @@
                 <li><a href="{% url 'order_create' %}">Создать заказ</a></li>
                 <li><a href="{% url 'order_list_client' %}">Мои заказы</a></li>
                 <li><a href="{% url 'cart_view' %}">🛒 Корзина</a></li> 
-                  <!-- {% with cart_count=request.session.cart.spareparts|length %}
-                      {% if cart_count > 0 %}({{ cart_count }}){% endif %}
-                  {% endwith %} -->
             {% endif %}
 
             {% if user|has_group:"Employees" %}
@@ -56,7 +53,7 @@
                   Выйти
               </button>
             </form>
-            {% else %}
+          {% else %}
               <a href="{% url 'login' %}">Вход</a> |
               <a href="{% url 'signup_client' %}">Регистрация клиента</a>
           {% endif %}
@@ -65,7 +62,7 @@
     
     <main>
       {% block content %}
-      <!-- здесь будет основное содержимое страниц -->
+      <!-- here is main content for a pages -->
       {% endblock %}
     </main>
 
