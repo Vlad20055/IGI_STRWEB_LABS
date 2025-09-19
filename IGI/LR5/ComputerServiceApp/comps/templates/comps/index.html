@@ -4,15 +4,24 @@
 {% block title %}Главная — Computer Service{% endblock %}
 
 {% block content %}
-    <h1>
+
+    <h1 dir="ltr" contenteditable="true">
         Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
     </h1>
 
-    <!-- Каталог услуг -->
+    
+    <mark>
+        <q cite="https://ru.wikiquote.org/wiki/%D0%9A%D0%BE%D0%BC%D0%BF%D1%8C%D1%8E%D1%82%D0%B5%D1%80">
+            Компьютер имеет то преимущество перед мозгом, что им пользуются - Габриэль Лауб</q><br>
+    </mark>
+
+    <a accesskey="p" href="#partners">Наши партнеры</a>
+
+    <!-- Services -->
     <h2>Услуги</h2>
     
     {# Форма фильтрации услуг #}
-    <form method="get" style="margin-bottom:1em;">
+    <form method="get">
         <label>
             Тип услуги:
             <select name="service_type">
@@ -25,7 +34,7 @@
             </select>
         </label>
 
-        <label style="margin-left:1em;">
+        <label>
             Сортировка по цене:
             <select name="service_sort">
                 <option value="" {% if not service_sort %}selected{% endif %}>Без сортировки</option>
@@ -34,14 +43,14 @@
             </select>
         </label>
 
-        <button type="submit" name="filter_services" style="margin-left:1em;">Применить к услугам</button>
+        <button type="submit" name="filter_services">Применить к услугам</button>
     </form>
 
     {% if user.is_authenticated and user|has_group:"Employees" %}
         <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
     {% endif %}
 
-    <ul>
+    <ul type="circle">
         {% for s in services %}
             <li>
                 {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
@@ -56,11 +65,11 @@
         {% endfor %}
     </ul>
 
-    <!-- Каталог запчастей -->
+    <!-- Spareparts -->
     <h2>Запчасти</h2>
     
     {# Форма фильтрации запчастей #}
-    <form method="get" style="margin-bottom:1em;">
+    <form method="get">
         <label>
             Тип запчасти:
             <select name="sparepart_type">
@@ -73,7 +82,7 @@
             </select>
         </label>
 
-        <label style="margin-left:1em;">
+        <label>
             Сортировка по цене:
             <select name="sparepart_sort">
                 <option value="" {% if not sparepart_sort %}selected{% endif %}>Без сортировки</option>
@@ -82,7 +91,7 @@
             </select>
         </label>
 
-        <button type="submit" name="filter_parts" style="margin-left:1em;">Применить к запчастям</button>
+        <button type="submit" name="filter_parts">Применить к запчастям</button>
     </form>
 
     {% if user.is_authenticated and user|has_group:"Employees" %}
@@ -104,33 +113,104 @@
         {% endfor %}
     </ul>
 
+    <!-- work hours -->
+    <h2>График работы</h2>
+    <table border="1">
+        <caption>Режим работы сервисного центра</caption>
+        <thead>
+            <tr>
+                <th id="day">День недели</th>
+                <th id="hours">Часы работы</th>
+                <th id="break">Перерыв</th>
+                <th id="status">Статус</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th id="mon" headers="day">Понедельник</th>
+                <td headers="mon hours">09:00 - 18:00</td>
+                <td headers="mon break">13:00 - 14:00</td>
+                <td headers="mon status">Работаем</td>
+            </tr>
+            <tr>
+                <th id="tue" headers="day">Вторник</th>
+                <td headers="tue hours">09:00 - 18:00</td>
+                <td headers="tue break">13:00 - 14:00</td>
+                <td headers="tue status">Работаем</td>
+            </tr>
+            <tr>
+                <th id="wed" headers="day">Среда</th>
+                <td headers="wed hours">09:00 - 18:00</td>
+                <td headers="wed break">13:00 - 14:00</td>
+                <td headers="wed status">Работаем</td>
+            </tr>
+            <tr>
+                <th id="thu" headers="day">Четверг</th>
+                <td headers="thu hours">09:00 - 18:00</td>
+                <td headers="thu break">13:00 - 14:00</td>
+                <td headers="thu status">Работаем</td>
+            </tr>
+            <tr>
+                <th id="fri" headers="day">Пятница</th>
+                <td headers="fri hours">09:00 - 18:00</td>
+                <td headers="fri break">13:00 - 14:00</td>
+                <td headers="fri status">Работаем</td>
+            </tr>
+            <tr>
+                <th id="sat" headers="day">Суббота</th>
+                <td headers="sat hours">10:00 - 16:00</td>
+                <td headers="sat break">Без перерыва</td>
+                <td headers="sat status">Сокращенный день</td>
+            </tr>
+            <tr>
+                <th id="sun" headers="day">Воскресенье</th>
+                <td align="center" colspan="3" headers="sun hours">Выходной</td>
+            </tr>
+        </tbody>
+    </table>
+
     <!-- Banner -->
     
     <img src="/media/index/banner.jpg" width="500" height="300">
     
 
-    <!-- Статья -->
+    <!-- Article -->
     {% if article %}
     <article>
         <h2>{{ article.title }}</h2>
         <p><em>Опубликовано: {{ article.published_at|date:"d/m/Y H:i" }}</em></p>
-        <p>{{ article.short_description }}</p>
+        <p spellcheck="true" translate="yes">{{ article.short_description }}</p>
     </article>
     {% else %}
-    <p>Пока нет ни одной опубликованной статьи.</p>
+        <p>Пока нет ни одной опубликованной статьи.</p>
     {% endif %}
 
-    <h2>Наши партнеры</h2>
-
+    <!-- Partners -->
+    <h2 id="partners">Наши партнеры</h2>
     {% for partner in partners %}
-    <a href="{{ partner.website }}" target="_blank" rel="noopener noreferrer">
-        {% if partner.logo %}
-        <img src="{{ partner.logo.url }}" alt="{{ partner.name }}"><br>
-        {% endif %}
-        {{ partner.name }}
-    </a><br>
+        <div itemscope itemtype="https://schema.org/Organization">
+            <a itemprop="url" href="{{ partner.website }}" target="_blank" title="Partner official website">
+                {% if partner.logo %}
+                    <img src="{{ partner.logo.url }}" alt="{{ partner.name }}"><br>
+                {% endif %}
+                {{ partner.name }}
+            </a><br>
+        </div>
     {% empty %}
-    <p>Информация о партнерах скоро появится...</p>
+        <p>Информация о партнерах скоро появится...</p>
     {% endfor %}
 
+    <!-- Code -->
+    <p>
+        <code>
+            var fruits = ["apples", "oranges", "mangoes", "cherries"];<br>
+            document.writeln("I like " + fruits.length + " fruits");
+        </code>
+    </p>
+    <p>The variable in this example is <var>fruits</var></p>
+    <p>The output from the code is: <samp>I like 4 fruits</samp></p>
+    <p>When prompted for my favorite fruit, I typed: <kbd>cherries</kbd></p>
+
 {% endblock %}
+
+

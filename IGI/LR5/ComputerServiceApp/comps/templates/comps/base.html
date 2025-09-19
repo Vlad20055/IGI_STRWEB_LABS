@@ -5,7 +5,13 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="author" content="Maksimenkov Vladislav">
+  <meta name="description" content="Сайт для заказа услуг по ремонту компьютерной техники и компьютерных запчастей">
+
+
   <title>{% block title %}Computer Service{% endblock %}</title>
+  <link rel="icon" href="{{ '/media/index/logo.jpg' }}">
+
   <!-- here it is possible to add CSS, for example Bootstrap -->
 </head>
 <body>
@@ -67,7 +73,7 @@
     </main>
 
     <footer>
-      <p>&copy; {{ now|date:"Y" }} Computer Service</p>
+      <p>&copy; Computer Service</p>
     </footer>
 </body>
 </html>

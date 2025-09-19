@@ -7,7 +7,7 @@
 
 {% if info %}
 {% if info.logo %}
-<img src="{{ info.logo.url }}" alt="Логотип компании" width="200">
+    <img src="{{ info.logo.url }}" alt="Логотип компании" width="200">
 {% endif %}
 
 {{ info.content|linebreaks }}
@@ -29,17 +29,17 @@
 {% endif %}
 
 {% if info.history %}
-<h2>История компании</h2>
+    <h2>История компании</h2>
 {{ info.history|linebreaks }}
 {% endif %}
 
 {% if info.requisites %}
-<h2>Реквизиты</h2>
+    <h2>Реквизиты</h2>
 {{ info.requisites|linebreaks }}
 {% endif %}
 
 {% if info.certificate %}
-<h2>Сертификаты</h2>
+    <h2>Сертификаты</h2>
 {{ info.certificate|linebreaks }}
 {% endif %}
 

@@ -2,11 +2,43 @@
 {% block title %}Оставить отзыв{% endblock %}
 
 {% block content %}
-  <h2>Оставить отзыв</h2>
-  <form method="post">
+<h2>Оставить отзыв</h2>
+
+<form method="post">
     {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Отправить</button>
-    <a href="{% url 'review_list' %}">Отмена</a>
-  </form>
+    
+    <fieldset>
+        <legend>Ваша оценка</legend>
+        
+        <label>
+            Оценка (от 1 до 10):
+            <input type="number" 
+                   name="{{ form.rating.name }}" 
+                   min="1" 
+                   max="10" 
+                   value="{{ form.rating.value|default:'' }}"
+                   required>
+        </label>
+        {% if form.rating.errors %}
+            <span>{{ form.rating.errors }}</span>
+        {% endif %}
+    </fieldset>
+    
+    <fieldset>
+        <legend>Текст отзыва</legend>
+        
+        <label>
+            Ваш отзыв:
+            <textarea name="{{ form.text.name }}" 
+                      rows="4" 
+                      required>{{ form.text.value|default:'' }}</textarea>
+        </label>
+        {% if form.text.errors %}
+            <span>{{ form.text.errors }}</span>
+        {% endif %}
+    </fieldset>
+    
+    <button type="submit">Отправить отзыв</button>
+    <a href="{% url 'review_list' %}">Посмотреть все отзывы</a>
+</form>
 {% endblock %}
