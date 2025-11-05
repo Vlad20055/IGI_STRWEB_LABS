@@ -1,10 +1,16 @@
 {% extends "comps/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/order_list_employee.css' %}"
+{% endblock %}
+
 {% block title %}Мои заказы (мастер){% endblock %}
 
 {% block content %}
   <h2>Заказы, назначенные мне</h2>
   {% if orders %}
-    <ul>
+    <ul data-count="{{ orders|length }}">
       {% for o in orders %}
         <li>
           <a href="{% url 'order_detail_by_number' number=o.number %}">

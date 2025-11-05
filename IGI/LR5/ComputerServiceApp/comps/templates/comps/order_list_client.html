@@ -1,4 +1,10 @@
 {% extends "comps/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/order_list_client.css' %}"
+{% endblock %}
+
 {% block title %}Мои заказы{% endblock %}
 {% block content %}
   <h2>Мои заказы</h2>

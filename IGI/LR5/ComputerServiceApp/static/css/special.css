@@ -1,0 +1,39 @@
+/* === ПОДКЛЮЧЕНИЕ GREAT VIBES === */
+@font-face {
+    font-family: 'GreatVibes';
+    src: url('../fonts/greatvibes-regular.woff2') format('woff2'),
+         url('../fonts/greatvibes-regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap;
+}
+
+/* === ОТОБРАЖЕНИЕ КАВЫЧЕК ПО ЯЗЫКУ === */
+
+/* Кавычки в зависимости от языка страницы */
+:lang(ru) q::before { content: "«"; }
+:lang(ru) q::after { content: "»"; }
+
+:lang(en) q::before { content: "“"; }
+:lang(en) q::after { content: "»"; }
+
+:lang(de) q::before { content: "„"; }
+:lang(de) q::after { content: "“"; }
+
+:lang(fr) q::before { content: "« "; }
+:lang(fr) q::after { content: " »"; }
+
+h3 {
+    font-family: 'GreatVibes', 'Times New Roman', serif;
+    font-size: 25px;
+}
+
+/* Стили для блока цитаты */
+blockquote {
+    font-style: italic;
+    border-left: 4px solid #3498db;
+    padding-left: 15px;
+    margin-left: 0;
+    font-size: 1.3rem;
+    line-height: 1.6;
+}

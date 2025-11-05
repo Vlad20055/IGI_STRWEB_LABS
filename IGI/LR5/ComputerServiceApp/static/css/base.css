@@ -1,0 +1,119 @@
+/* === Elements selectors === */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    background-color: #c6e8f7;
+    line-height: 1.6;
+}
+
+header {
+    background: #2c3e50;
+    color: white;
+    padding: 1rem;
+}
+
+main {
+    padding: 2rem;
+    min-height: 70vh;
+}
+
+footer {
+    background: #34495e;
+    color: white;
+    text-align: center;
+    padding: 1rem;
+}
+
+/* === Attributes selectors === */
+/* begins with # (якорные ссылки) */
+a[href^="#"] {
+    background: #7ae778;
+    color: white;
+    padding: 3px 8px;
+    border-radius: 3px;
+}
+
+/* ends with cart/ */
+a[href$="cart/"] {
+    font-weight: bold;
+    color: #e74c3c;
+    background: #ffe6e6;
+    padding: 5px 10px;
+    border-radius: 5px;
+}
+
+/* attribute with specific value */
+button[type="submit"] {
+    background: #2809ef;
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 3px;
+}
+
+/* === СЕЛЕКТОРЫ КЛАССОВ === */
+.main_navigation {
+    background: rgba(255,255,255,0.1);
+    padding: 10px;
+    margin-bottom: 10px;
+}
+
+/* === КОМБИНАЦИИ СЕЛЕКТОРОВ === */
+
+/* селекторы потомков */
+header nav a {
+    text-decoration: none;
+    color: white;
+    margin: 0 10px;
+    padding: 5px;
+}
+
+/* AND */
+nav.main_navigation {
+    border-bottom: 2px solid #36eb04;
+}
+
+/* дочерние элементы */
+nav > a {
+    border-right: 1px solid rgb(241, 245, 3);
+    padding-right: 15px;
+}
+
+/* === ПСЕВДОКЛАССЫ ДЛЯ ССЫЛОК === */
+a:link { color: rgb(248, 109, 9); }
+a:visited { color: #9b59b6; }
+a:hover { 
+    background: rgba(18, 251, 162, 0.98); 
+    text-decoration: underline;
+}
+a:active { color: #e74c3c; }
+a:focus { outline: 2px solid #f39c12; }
+
+/* === ПСЕВДОКЛАССЫ ДЛЯ ФОРМ === */
+/* обязательные поля */
+input:required, select:required {
+    border-left: 3px solid #e74c3c;
+}
+
+/* заблокированные элементы */
+input:disabled {
+    background: #ecf0f1;
+    cursor: not-allowed;
+}
+
+/* включенные флажки */
+input[type="checkbox"]:checked {
+    accent-color: #27ae60;
+}
+
+
+/* контекст в начале и конце */
+footer p::before {
+    content: "💻 ";
+}
+
+footer p::after {
+    content: " 💻";
+}

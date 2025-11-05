@@ -1,0 +1,74 @@
+/* Фон только для страницы входа */
+body {
+    background-image: url('/media/background/background.jpg');
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed;
+}
+
+/* Контейнер для позиционирования слева */
+.login-container {
+    display: flex;
+    align-items: center;
+    padding-left: 2%;
+}
+
+/* Форма входа */
+.login-form {
+    background: rgba(29, 240, 237, 0.95);
+    padding: 2rem;
+    border-radius: 15px;
+    width: 90%;
+    max-width: 350px;
+}
+
+/* Заголовок */
+.login-form h2 {
+    text-align: center;
+    color: #2c3e50;
+    margin-bottom: 1.5rem;
+    font-size: 1.8rem;
+}
+
+.login-form input {
+    width: 100%;
+    padding: 12px;
+    margin: 8px 0;
+    border: 1px solid #4111ef;
+    border-radius: 8px;
+    box-sizing: border-box;
+    font-size: 1rem;
+}
+
+.login-form button {
+    width: 100%;
+    background: #3498db;
+    color: white;
+    padding: 12px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1rem;
+    font-weight: bold;
+    margin-top: 5px;
+    transition: background 0.8s ease;
+}
+
+.login-form button:hover {
+    background: #271ae1;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .login-container {
+        padding-left: 5%;
+        padding-right: 5%;
+        justify-content: center;
+    }
+}
+
+@media (max-width: 480px) {
+    .login-form {
+        padding: 1.5rem;
+    }
+}

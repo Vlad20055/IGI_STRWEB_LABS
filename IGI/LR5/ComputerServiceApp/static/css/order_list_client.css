@@ -1,0 +1,30 @@
+/* === ПСЕВДОКЛАССЫ ДЛЯ СПИСКОВ === */
+/* первый элемент списка заказов */
+
+ul li:first-child {
+    font-weight: bold;
+    padding: 10px;
+    border-radius: 5px 5px 0 0;
+}
+
+/* последний элемент списка заказов */
+ul li:last-child {
+    border-bottom: 2px solid #7b9a0e;
+    padding-bottom: 10px;
+}
+
+/* n-й элемент (второй заказ) */
+ul li:nth-child(2) {
+    color: #e74c3c;
+    font-style: italic;
+}
+
+/* четные элементы для красивого чередования */
+ul li:nth-child(even) {
+    background: #67c3f5;
+}
+
+/* нечетные элементы */
+ul li:nth-child(odd) {
+    background: #96ebbf;
+}

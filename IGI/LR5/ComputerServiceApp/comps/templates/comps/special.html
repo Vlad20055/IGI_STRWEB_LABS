@@ -1,4 +1,10 @@
 {% extends "comps/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/special.css' %}"
+{% endblock %}
+
 {% block title %}Специально для вас{% endblock %}
 
 {% block content %}
@@ -15,7 +21,7 @@
 <!-- Цитата дня -->
 <h3>Цитата дня</h3>
 <blockquote>
-    <p>«{{ quote.body }}»</p>
+    <p><q>{{ quote.body }}</q></p>
     {% if quote.author %}
         <p>— {{ quote.author }}</p>
     {% endif %}

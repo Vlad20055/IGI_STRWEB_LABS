@@ -1,0 +1,53 @@
+/* === ДОПОЛНИТЕЛЬНЫЕ СЕЛЕКТОРЫ ДЛЯ INDEX === */
+
+/* селекторы элементов для таблицы */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1rem 0;
+}
+
+th, td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: left;
+}
+
+/* псевдоклассы для таблицы */
+tr:first-child {
+    background: #34495e;
+    color: white;
+}
+
+tr:last-child {
+    background: #f39c12;
+    color: white;
+}
+
+tr:nth-child(even) {
+    background: #ecf0f1;
+}
+
+/* псевдоэлементы для статьи */
+/* Стили для контента внутри details */
+.article-content {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid #67ef6c;
+}
+
+/* Стили для текста статьи внутри details */
+.article-content p:first-of-type::first-letter {
+    font-size: 2em;
+    color: #f99b2f;
+    float: left;
+    line-height: 1;
+    margin-right: 5px;
+    font-weight: bold;
+}
+
+/* Первая строка текста */
+.article-content p:first-of-type::first-line {
+    font-weight: bold;
+    color: #2c3e50;
+}

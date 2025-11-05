@@ -1,6 +1,11 @@
 {% extends "comps/base.html" %}
+{% load static %}
 
 {% block title %}Новости — Computer Service{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/news.css' %}">
+{% endblock %}
 
 {% block content %}
 <h1>Новости — Computer Service</h1>
@@ -15,11 +20,15 @@
     <img src="{{ item.image.url }}" alt="{{ item.title }}" width="300">
     {% endif %}
 
-    <p>{{ item.short_description }}</p>
+    <!-- Добавлен класс для краткого описания -->
+    <p class="short-description">{{ item.short_description }}</p>
 
     <details>
         <summary>Читать далее</summary>
-        {{ item.content|linebreaks }}
+        <!-- Обертка для многоколоночного контента -->
+        <div class="details-content">
+            {{ item.content|linebreaks }}
+        </div>
     </details>
 </article>
 

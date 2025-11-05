@@ -1,7 +1,12 @@
 {% extends "comps/base.html" %}
+{% load static %}
 {% load group_filters %}
 
 {% block title %}Главная — Computer Service{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"
+{% endblock %}
 
 {% block content %}
 
@@ -180,6 +185,13 @@
         <h2>{{ article.title }}</h2>
         <p><em>Опубликовано: {{ article.published_at|date:"d/m/Y H:i" }}</em></p>
         <p spellcheck="true" translate="yes">{{ article.short_description }}</p>
+
+        <details>
+            <summary>Читать далее</summary>
+            <div class="article-content">
+                {{ article.content|linebreaks }}
+            </div>
+        </details>
     </article>
     {% else %}
         <p>Пока нет ни одной опубликованной статьи.</p>
