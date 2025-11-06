@@ -1,6 +1,11 @@
 {% extends "comps/base.html" %}
+{% load static %}
 
 {% block title %}Регистрация клиента{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/signup_client.css' %}">
+{% endblock %}
 
 {% block content %}
   <h2>Регистрация клиента</h2>
@@ -9,4 +14,17 @@
     {{ form.as_p }}
     <button type="submit">Зарегистрироваться</button>
   </form>
+
+  <script>
+    // Проверка диапазона для поля опыта работы
+    document.getElementById('id_computer_experience_years').addEventListener('input', function() {
+        const value = parseInt(this.value);
+        if (value < 0 || value > 80) {
+            this.classList.add('out-of-range');
+        } else {
+            this.classList.remove('out-of-range');
+        }
+    });
+  </script> 
+
 {% endblock %}

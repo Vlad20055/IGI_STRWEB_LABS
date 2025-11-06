@@ -86,11 +86,9 @@ hr {
 /* === НОВЫЕ СТИЛИ ДЛЯ ТРЕБОВАНИЙ === */
 
 /* Overflow с многоточием для краткого описания */
-/* Overflow с многоточием для краткого описания - ОБНОВЛЕНО */
-/* Overflow с многоточием для краткого описания - ВАРИАНТ 2 */
 .short-description {
     display: block;
-    width: 100%; /* Узкая область */
+    width: 100%; 
     margin: 0 auto 1rem auto; /* Центрирование */
     padding: 1rem;
     background: white;
@@ -116,21 +114,19 @@ hr {
     text-align: justify;
 }
 
-/* Адаптивность для многоколоночного макета */
+
 @media (max-width: 768px) {
     .details-content {
-        column-count: 1; /* На мобильных одна колонка */
+        column-count: 1;
     }
 }
 
-/* Стили для текста внутри многоколоночного контейнера */
 .details-content p {
     text-indent: 1.5rem;
     line-height: 1.7;
     margin-bottom: 1rem;
 }
 
-/* Улучшенные стили для кнопки "Читать далее" */
 summary {
     background: #f8f9fa;
     padding: 0.8rem 1rem;

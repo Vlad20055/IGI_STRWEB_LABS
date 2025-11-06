@@ -20,13 +20,63 @@ class ClientSignUpForm(UserCreationForm):
         },
         label="Телефон"
     )
-    address = forms.CharField(widget=forms.Textarea, label="Адрес")
+    address = forms.CharField(widget=forms.Textarea, label="Адрес", required=False)
     birth_date = forms.DateField(
         widget=forms.DateInput(attrs={'type': 'date'}),
         label="Дата рождения"
     )
     passport = forms.CharField(max_length=20, label="Паспорт")
     photo = forms.ImageField(required=False, label="Фото")
+
+    # ДОБАВЛЕНО: Сохраняем существующие поля
+    country = forms.CharField(
+        initial="Беларусь",
+        disabled=True,  # ЗАБЛОКИРОВАННОЕ поле
+        label="Страна"
+    )
+    
+    newsletter = forms.BooleanField(
+        initial=True,
+        required=False,
+        label="Подписаться на рассылку акций и новостей"  # ВКЛЮЧЕННЫЙ флажок
+    )
+    
+    # ДОБАВЛЕНО: Новые поля для сбора статистики
+    SKILL_LEVEL_CHOICES = [
+        ('beginner', '👶 Новичок (только основы)'),
+        ('middle', '💻 Продвинутый пользователь'),
+        ('advanced', '👨‍💻 Эксперт (программист/админ)'),
+    ]
+    computer_skill_level = forms.ChoiceField(
+        choices=SKILL_LEVEL_CHOICES,
+        widget=forms.RadioSelect,  # ПЕРЕКЛЮЧАТЕЛИ
+        initial='middle',
+        label="Ваш уровень компьютерных навыков"
+    )
+    
+    GENERATION_CHOICES = [
+        ('boomer', '👴 Бумер (1946-1964)'),
+        ('gen_x', '🧔 Поколение X (1965-1980)'),
+        ('millennial', '🧑 Миллениал (1981-1996)'),
+        ('gen_z', '👦 Поколение Z (1997-2012)'),
+        ('gen_alpha', '👶 Поколение Alpha (2013+)'),
+    ]
+    generation_group = forms.ChoiceField(
+        choices=GENERATION_CHOICES,
+        initial='millennial',
+        label="К какому поколению вы относитесь"
+    )
+    
+    computer_experience_years = forms.IntegerField(
+        min_value=0,
+        max_value=80,
+        initial=5,
+        label="Опыт работы с компьютером (в годах)",
+        help_text="Введите число от 0 до 80 лет",
+    )
+    # ДОБАВЛЕНО КОНЕЦ
+
+
 
     class Meta:
         model = User
@@ -47,6 +97,13 @@ class ClientSignUpForm(UserCreationForm):
         if years < 18 or years > 100:
             raise ValidationError("Регистрация возможна только с 18 до 100 лет.")
         return bd
+    
+        # ДОБАВЛЕНО: Валидация для опыта работы (значение ВНЕ ДИАПАЗОНА)
+    def clean_computer_experience_years(self):
+        experience = self.cleaned_data.get('computer_experience_years')
+        if experience is not None and (experience < 0 or experience > 80):
+            raise ValidationError("Опыт работы должен быть в диапазоне от 0 до 80 лет")
+        return experience
 
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -63,7 +120,13 @@ class ClientSignUpForm(UserCreationForm):
                 address=self.cleaned_data['address'],
                 birth_date=self.cleaned_data['birth_date'],
                 passport=self.cleaned_data['passport'],
-                photo=self.cleaned_data.get('photo')
+                photo=self.cleaned_data.get('photo'),
+                # ДОБАВЛЕНО: Сохраняем поля
+                country="Беларусь",
+                newsletter=self.cleaned_data['newsletter'],
+                computer_skill_level=self.cleaned_data['computer_skill_level'],
+                generation_group=self.cleaned_data['generation_group'],
+                computer_experience_years=self.cleaned_data['computer_experience_years']
             )
 
             clients_group, _ = Group.objects.get_or_create(name='Clients')

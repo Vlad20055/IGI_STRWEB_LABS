@@ -1,0 +1,197 @@
+/* === СТИЛИ ДЛЯ ФОРМЫ РЕГИСТРАЦИИ КЛИЕНТА === */
+
+/* Common style for form */
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 2rem;
+    background: #f6f7f8;
+    border-radius: 10px;
+    box-shadow: 10px 10px 10px rgba(0,0,0,0.1);
+}
+
+/* For all form paragraphs */
+form p {
+    margin-bottom: 1.5rem;
+    position: relative;
+}
+
+/* For labels in form */
+form label {
+    display: block;  /* It makes element like a block (means now I can set margin, ...) */
+    margin-bottom: 0.5rem;
+    font-weight: bold;
+    color: #2c3e50;
+}
+
+
+/* === СТИЛИ ДЛЯ РАЗНЫХ ТИПОВ ПОЛЕЙ === */
+
+.out-of-range {
+    border-left: 4px solid #f39c12 !important;
+    background-color: #fff3cd !important;
+    color: #e74c3c !important;
+}
+
+/* Required fields */
+input:required, 
+textarea:required,
+select:required {
+    border-left: 4px solid #e74c3c;
+    background-color: #fff9f9;
+}
+
+/* НЕОБЯЗАТЕЛЬНЫЕ поля */
+input:not([required]),
+textarea:not([required]),
+select:not([required]) {
+    border-left: 4px solid #28a3f5;
+    background-color: #f8f9fa;
+}
+
+/* ДОСТУПНЫЕ поля в фокусе */
+input:enabled:focus,
+textarea:enabled:focus,
+select:enabled:focus {
+    outline: 2px solid #3498db;
+    outline-offset: 2px;
+    border-color: #3498db;
+}
+
+/* ЗАБЛОКИРОВАННЫЕ поля */
+input:disabled,
+textarea:disabled,
+select:disabled {
+    opacity: 0.7;
+    font-style: italic;
+    background-color: #ecf0f1;
+    color: #95a5a6;
+    cursor: not-allowed;
+    border-left: 4px solid #95a5a6;
+}
+
+input:invalid,
+textarea:invalid,
+select:invalid {
+    border-left: 4px solid #e74c3c;
+    background-color: #ffe6e6;
+}
+
+input:required:valid,
+textarea:required:valid,
+select:required:valid {
+    border-left: 4px solid #27ae60;
+    background-color: #f0fff4;
+}
+
+
+/* === СПЕЦИФИЧНЫЕ СТИЛИ ДЛЯ ТИПОВ ПОЛЕЙ === */
+input[type="email"]:invalid {
+    padding-right: 35px;
+}
+
+
+/* ВКЛЮЧЕННЫЕ флажки (если бы были) */
+input[type="checkbox"]:checked {
+    accent-color: #27ae60;
+    transform: scale(1.2);
+}
+
+input[type="radio"]:checked {
+    accent-color: #3498db;
+    transform: scale(1.1);
+}
+
+input[type="radio"] {
+    margin-right: 8px;
+}
+
+form p:has(input[type="radio"]) {
+    background: #f8f9fa;
+    padding: 15px;
+    border-radius: 8px;
+    border-left: 4px solid #3498db;
+}
+
+/* === СТИЛИ ДЛЯ ЭЛЕМЕНТОВ ФОРМЫ === */
+
+/* Текстовые поля и textarea */
+input[type="text"],
+input[type="email"],
+input[type="date"],
+input[type="password"],
+textarea,
+select {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #bdc3c7;
+    border-radius: 5px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    box-sizing: border-box;
+}
+
+textarea {
+    min-height: 80px;
+    resize: vertical;
+}
+
+/* Кнопка отправки */
+button[type="submit"] {
+    width: 100%;
+    background: linear-gradient(135deg, #3498db, #2980b9);
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+button[type="submit"]:hover {
+    background: linear-gradient(135deg, #2980b9, #3498db);
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+}
+
+button[type="submit"]:active {
+    transform: translateY(0);
+}
+
+/* === ИНДИКАТОРЫ ДЛЯ ПОЛЬЗОВАТЕЛЯ === */
+
+/* Подсказки для обязательных полей */
+form p:has(input:required) label::after {
+    content: " *";
+    color: #e74c3c;
+}
+
+/* Сообщения об ошибках (Django) */
+.errorlist {
+    color: #3f3ce7;
+    background: #ffe6e6;
+    padding: 8px 12px;
+    border-radius: 4px;
+    margin: 5px 0;
+    border-left: 3px solid #e74c3c;
+    font-size: 0.9rem;
+}
+
+/* === АДАПТИВНОСТЬ === */
+@media (max-width: 768px) {
+    form {
+        margin: 1rem;
+        padding: 1rem;
+    }
+    
+    input[type="text"],
+    input[type="email"],
+    input[type="date"],
+    input[type="password"],
+    textarea,
+    select {
+        font-size: 16px;
+    }
+}

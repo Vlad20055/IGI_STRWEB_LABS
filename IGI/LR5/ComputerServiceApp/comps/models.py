@@ -27,6 +27,51 @@ class Profile(models.Model):
     passport = models.CharField(max_length=20)
     birth_date = models.DateField()
 
+    # ДОБАВЛЕНО НАЧАЛО
+    country = models.CharField(
+        max_length=100, 
+        default="Беларусь",
+        verbose_name='Страна'
+    )
+    newsletter = models.BooleanField(
+        default=True,
+        verbose_name='Подписка на рассылку'
+    )
+    computer_experience_years = models.IntegerField(
+        validators=[MinValueValidator(0), MaxValueValidator(80)],
+        verbose_name='Опыт работы с компьютером (в годах)',
+        help_text='От 0 до 80 лет',
+        default=1
+    )
+    generation_group = models.CharField(
+        max_length=20,
+        choices=[
+            ('boomer', 'Бумер (1946-1964)'),
+            ('gen_x', 'Поколение X (1965-1980)'),
+            ('millennial', 'Миллениал (1981-1996)'),
+            ('gen_z', 'Поколение Z (1997-2012)'),
+            ('gen_alpha', 'Поколение Alpha (2013+)'),
+        ],
+        default='millennial',  # ← ДОБАВЬТЕ ЭТУ СТРОКУ
+        verbose_name='К какому поколению относитесь'
+    )
+    computer_skill_level = models.CharField(
+        max_length=20,
+        choices=[
+            ('beginner', 'Новичок (только основы)'),
+            ('middle', 'Продвинутый пользователь'),
+            ('advanced', 'Эксперт (программист/админ)'),
+        ],
+        default='middle',
+        verbose_name='Уровень компьютерных навыков'
+    )
+
+
+    
+    
+    # ДОБАВЛЕНО КОНЕЦ
+
+
     def save(self, *args, **kwargs):
         self.full_clean()
         super().save(*args, **kwargs)

@@ -8,14 +8,21 @@ body {
 }
 
 header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
     background: #2c3e50;
     color: white;
     padding: 1rem;
+    z-index: 1000;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
 main {
     padding: 2rem;
     min-height: 70vh;
+    margin-top: 120px; /* Высота header + отступ */
 }
 
 footer {
@@ -73,12 +80,17 @@ header nav a {
 /* AND */
 nav.main_navigation {
     border-bottom: 2px solid #36eb04;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    align-items: center;
 }
 
-/* дочерние элементы */
-nav > a {
+/* ДОБАВЛЕНО: Улучшим внешний вид фиксированной навигации */
+nav.main_navigation > a {
     border-right: 1px solid rgb(241, 245, 3);
     padding-right: 15px;
+    white-space: nowrap; /* Запрещаем перенос ссылок */
 }
 
 /* === ПСЕВДОКЛАССЫ ДЛЯ ССЫЛОК === */
