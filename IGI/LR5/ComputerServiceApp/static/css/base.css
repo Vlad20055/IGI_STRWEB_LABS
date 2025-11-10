@@ -22,7 +22,7 @@ header {
 main {
     padding: 2rem;
     min-height: 70vh;
-    margin-top: 120px; /* Высота header + отступ */
+    margin-top: 200px; /* Высота header + отступ */
 }
 
 footer {

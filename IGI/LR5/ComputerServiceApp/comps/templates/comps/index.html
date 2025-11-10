@@ -10,9 +10,11 @@
 
 {% block content %}
 
-    <h1 dir="ltr" contenteditable="true">
-        Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
-    </h1>
+    <div class="company-name">
+        <h1 dir="ltr" contenteditable="true">
+            Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">
+        </h1>
+    </div>
 
     
     <mark>
@@ -23,100 +25,106 @@
     <a accesskey="p" href="#partners">Наши партнеры</a>
 
     <!-- Services -->
-    <h2>Услуги</h2>
-    
-    {# Форма фильтрации услуг #}
-    <form method="get">
-        <label>
-            Тип услуги:
-            <select name="service_type">
-                <option value="" {% if not selected_service_type %}selected{% endif %}>Все</option>
-                {% for t in service_types %}
-                    <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_service_type %}selected{% endif %}>
-                        {{ t.name }}
-                    </option>
+    <div class="catalog-grid">
+        <div>
+            <h2>Услуги</h2>
+
+            {# Форма фильтрации услуг #}
+            <form method="get">
+                <label>
+                    Тип услуги:
+                    <select name="service_type">
+                        <option value="" {% if not selected_service_type %}selected{% endif %}>Все</option>
+                        {% for t in service_types %}
+                            <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_service_type %}selected{% endif %}>
+                                {{ t.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+        
+                <label>
+                    Сортировка по цене:
+                    <select name="service_sort">
+                        <option value="" {% if not service_sort %}selected{% endif %}>Без сортировки</option>
+                        <option value="price_asc" {% if service_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
+                        <option value="price_desc" {% if service_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
+                    </select>
+                </label>
+        
+                <button type="submit" name="filter_services">Применить к услугам</button>
+            </form>
+
+            {% if user.is_authenticated and user|has_group:"Employees" %}
+                <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
+            {% endif %}
+
+            <div class="services-grid">
+                {% for s in services %}
+                    <div>
+                        {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
+                        <a href="{% url 'detail_services_spareparts' 'service' s.pk %}">Подробнее</a>
+                        {% if user.is_authenticated and user|has_group:"Employees" %}
+                            [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
+                            [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div>Услуг ещё нет.</div>
                 {% endfor %}
-            </select>
-        </label>
+            </div>
+        </div>
 
-        <label>
-            Сортировка по цене:
-            <select name="service_sort">
-                <option value="" {% if not service_sort %}selected{% endif %}>Без сортировки</option>
-                <option value="price_asc" {% if service_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
-                <option value="price_desc" {% if service_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
-            </select>
-        </label>
+        <div>
+            <!-- Spareparts -->
+            <h2>Запчасти</h2>
 
-        <button type="submit" name="filter_services">Применить к услугам</button>
-    </form>
+            {# Форма фильтрации запчастей #}
+            <form method="get">
+                <label>
+                    Тип запчасти:
+                    <select name="sparepart_type">
+                        <option value="" {% if not selected_sparepart_type %}selected{% endif %}>Все</option>
+                        {% for t in sparepart_types %}
+                            <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_sparepart_type %}selected{% endif %}>
+                                {{ t.name }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </label>
+        
+                <label>
+                    Сортировка по цене:
+                    <select name="sparepart_sort">
+                        <option value="" {% if not sparepart_sort %}selected{% endif %}>Без сортировки</option>
+                        <option value="price_asc" {% if sparepart_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
+                        <option value="price_desc" {% if sparepart_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
+                    </select>
+                </label>
+        
+                <button type="submit" name="filter_parts">Применить к запчастям</button>
+            </form>
 
-    {% if user.is_authenticated and user|has_group:"Employees" %}
-        <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
-    {% endif %}
+            {% if user.is_authenticated and user|has_group:"Employees" %}
+                <p><a href="{% url 'sparepart_add' %}">Добавить запчасть</a></p>
+            {% endif %}
 
-    <ul type="circle">
-        {% for s in services %}
-            <li>
-                {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
-                <a href="{% url 'detail_services_spareparts' 'service' s.pk %}" style="margin-left: 10px;">Подробнее</a>
-                {% if user.is_authenticated and user|has_group:"Employees" %}
-                    [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
-                    [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
-                {% endif %}
-            </li>
-        {% empty %}
-            <li>Услуг ещё нет.</li>
-        {% endfor %}
-    </ul>
-
-    <!-- Spareparts -->
-    <h2>Запчасти</h2>
-    
-    {# Форма фильтрации запчастей #}
-    <form method="get">
-        <label>
-            Тип запчасти:
-            <select name="sparepart_type">
-                <option value="" {% if not selected_sparepart_type %}selected{% endif %}>Все</option>
-                {% for t in sparepart_types %}
-                    <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_sparepart_type %}selected{% endif %}>
-                        {{ t.name }}
-                    </option>
+            <div class="spareparts-grid">
+                {% for p in spareparts %}
+                    <div>
+                        {{ p.name }} ({{ p.type.name }}) — {{ p.price }} руб
+                        <a href="{% url 'detail_services_spareparts' 'sparepart' p.pk %}">Подробнее</a>
+                        {% if user.is_authenticated and user|has_group:"Employees" %}
+                            [<a href="{% url 'sparepart_edit' p.pk %}">изменить</a>]
+                            [<a href="{% url 'sparepart_delete' p.pk %}">удалить</a>]
+                        {% endif %}
+                    </div>
+                {% empty %}
+                    <div>Запчастей ещё нет.</div>
                 {% endfor %}
-            </select>
-        </label>
-
-        <label>
-            Сортировка по цене:
-            <select name="sparepart_sort">
-                <option value="" {% if not sparepart_sort %}selected{% endif %}>Без сортировки</option>
-                <option value="price_asc" {% if sparepart_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
-                <option value="price_desc" {% if sparepart_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
-            </select>
-        </label>
-
-        <button type="submit" name="filter_parts">Применить к запчастям</button>
-    </form>
-
-    {% if user.is_authenticated and user|has_group:"Employees" %}
-        <p><a href="{% url 'sparepart_add' %}">Добавить запчасть</a></p>
-    {% endif %}
-
-    <ul>
-        {% for p in spareparts %}
-            <li>
-                {{ p.name }} ({{ p.type.name }}) — {{ p.price }} руб
-                <a href="{% url 'detail_services_spareparts' 'sparepart' p.pk %}" style="margin-left: 10px;">Подробнее</a>
-                {% if user.is_authenticated and user|has_group:"Employees" %}
-                    [<a href="{% url 'sparepart_edit' p.pk %}">изменить</a>]
-                    [<a href="{% url 'sparepart_delete' p.pk %}">удалить</a>]
-                {% endif %}
-            </li>
-        {% empty %}
-            <li>Запчастей ещё нет.</li>
-        {% endfor %}
-    </ul>
+            </div>
+        </div>
+    </div>
 
     <!-- work hours -->
     <h2>График работы</h2>
@@ -181,13 +189,13 @@
 
     <!-- Article -->
     {% if article %}
-    <article>
-        <h2>{{ article.title }}</h2>
-        <p><em>Опубликовано: {{ article.published_at|date:"d/m/Y H:i" }}</em></p>
+    <article class="article-featured">
+        <h2 class="article-title">{{ article.title }}</h2>
+        <p class="article-date"><em>Опубликовано: {{ article.published_at|date:"d/m/Y H:i" }}</em></p>
         <p spellcheck="true" translate="yes">{{ article.short_description }}</p>
 
         <details>
-            <summary>Читать далее</summary>
+            <summary class="article-read-more">Читать далее</summary>
             <div class="article-content">
                 {{ article.content|linebreaks }}
             </div>
@@ -199,18 +207,20 @@
 
     <!-- Partners -->
     <h2 id="partners">Наши партнеры</h2>
-    {% for partner in partners %}
-        <div itemscope itemtype="https://schema.org/Organization">
-            <a itemprop="url" href="{{ partner.website }}" target="_blank" title="Partner official website">
-                {% if partner.logo %}
-                    <img src="{{ partner.logo.url }}" alt="{{ partner.name }}"><br>
-                {% endif %}
-                {{ partner.name }}
-            </a><br>
-        </div>
-    {% empty %}
-        <p>Информация о партнерах скоро появится...</p>
-    {% endfor %}
+    <div class="partners-container">
+        {% for partner in partners %}
+            <div class="partner-circle" itemscope itemtype="https://schema.org/Organization">
+                <a itemprop="url" href="{{ partner.website }}" target="_blank" title="{{ partner.name }}">
+                    {% if partner.logo %}
+                        <img src="{{ partner.logo.url }}" alt="{{ partner.name }}">
+                    {% endif %}
+                    <span class="partner-name">{{ partner.name }}</span>
+                </a>
+            </div>
+        {% empty %}
+            <p>Информация о партнерах скоро появится...</p>
+        {% endfor %}
+    </div>
 
     <!-- Code -->
     <p>
