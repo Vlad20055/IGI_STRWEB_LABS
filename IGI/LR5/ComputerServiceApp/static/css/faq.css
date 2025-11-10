@@ -1,0 +1,23 @@
+/* === МИНИМАЛЬНЫЕ СТИЛИ ДЛЯ СЛОВАРЯ === */
+
+/* Стили для details */
+details {
+    margin-bottom: 10px;
+    border: 1px solid #3498db;
+    border-radius: 5px;
+}
+
+/* Стили для summary */
+summary {
+    padding: 10px;
+    background: #3498db;
+    color: white;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+/* Контент ответа */
+details div {
+    padding: 10px;
+    background: #f8f9fa;
+}

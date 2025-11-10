@@ -1,34 +1,40 @@
 {% extends "comps/base.html" %}
+{% load static %}
 
 {% block title %}Контакты — Computer Service{% endblock %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/contacts.css' %}">
+{% endblock %}
 
 {% block content %}
 <h1>Контакты — Computer Service</h1>
 
 {% if employees %}
+<div class="employee-container">
 {% for emp in employees %}
-<h2>{{ emp.profile.user.get_full_name }}</h2>
-
-{% if emp.profile.photo %}
-    <img src="{{ emp.profile.photo.url }}" alt="{{ emp.profile.user.username }}" width="120" height="120">
-{% endif %}
-
-<p>Телефон: {{ emp.profile.phone }}</p>
-<p>Email: {{ emp.profile.user.email }}</p>
-<p>Адрес: {{ emp.profile.address }}</p>
-<p>Специализации: 
-    {% for spec in emp.specializations.all %}
-    {{ spec.name }}{% if not forloop.last %}, {% endif %}
-    {% empty %}
-    нет
-    {% endfor %}
-</p>
-
-{% if not forloop.last %}
-<hr>
-{% endif %}
-
+    <div class="employee-card">
+        {% if emp.profile.photo %}
+            <img src="{{ emp.profile.photo.url }}" alt="{{ emp.profile.user.username }}" 
+                 class="employee-photo" width="120" height="120">
+        {% endif %}
+        
+        <div class="employee-info">
+            <h2>{{ emp.profile.user.get_full_name }}</h2>
+            <p><strong>Телефон:</strong> {{ emp.profile.phone }}</p>
+            <p><strong>Email:</strong> {{ emp.profile.user.email }}</p>
+            <p><strong>Адрес:</strong> {{ emp.profile.address }}</p>
+            <p><strong>Специализации:</strong> 
+                {% for spec in emp.specializations.all %}
+                    {{ spec.name }}{% if not forloop.last %}, {% endif %}
+                {% empty %}
+                    нет
+                {% endfor %}
+            </p>
+        </div>
+    </div>
 {% endfor %}
+</div>
 {% else %}
     <p>Сотрудники ещё не добавлены.</p>
 {% endif %}

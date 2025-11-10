@@ -1,21 +1,26 @@
 {% extends "comps/base.html" %}
+{% load static %}
 
 {% block title %}Словарь терминов — Computer Service{% endblock %}
 
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'css/faq.css' %}">
+{% endblock %}
+
 {% block content %}
-<h1>Словарь терминов — Computer Service</h1>
+<h1>Словарь терминов</h1>
 
 {% if faqs %}
 {% for item in faqs %}
 <details>
-    <summary><strong>{{ item.question }}</strong></summary>
+    <summary>{{ item.question }}</summary>
     <div>
         {{ item.answer|linebreaks }}
-        <p><small>Добавлено: {{ item.created_at|date:"d/m/Y H:i" }}</small></p>
+        <small>Добавлено: {{ item.created_at|date:"d/m/Y H:i" }}</small>
     </div>
 </details>
 {% endfor %}
 {% else %}
-<p>Пока нет ни одного термина.</p>
+<p>Пока нет терминов.</p>
 {% endif %}
 {% endblock %}

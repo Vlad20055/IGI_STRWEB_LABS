@@ -1,0 +1,67 @@
+/* === FLOAT ДЛЯ ВАКАНСИЙ === */
+
+/* Контейнер для вакансий */
+.vacancy-list {
+    overflow: hidden; /* clearfix */
+}
+
+/* Каждая вакансия */
+.vacancy-item {
+    float: left;
+    width: 40%;
+    margin-right: 4%;
+    margin-bottom: 20px;
+    background: white;
+    padding: 15px;
+    border-radius: 8px;
+    border: 1px solid #3498db;
+}
+
+/* Четные элементы - справа */
+.vacancy-item:nth-child(even) {
+    float: right;
+    margin-right: 0;
+}
+
+/* Заголовок вакансии */
+.vacancy-title {
+    color: #2c3e50;
+    border-bottom: 2px solid #3498db;
+    padding-bottom: 5px;
+}
+
+/* Дата публикации */
+.vacancy-date {
+    color: #7f8c8d;
+    font-style: italic;
+}
+
+/* Clearfix */
+.vacancy-list::after {
+    content: "";
+    display: table;
+    clear: both;
+}
+
+/* === АДАПТАЦИЯ ДЛЯ МОБИЛЬНЫХ === */
+@media (max-width: 768px) {
+    .vacancy-list {
+        margin-top: 110px; /* Отступ чтобы не перекрывалось header */
+    }
+    
+    .vacancy-item {
+        float: none;
+        width: 90%;
+        margin: 0 auto 20px auto; /* Центрирование и отступ снизу */
+    }
+    
+    .vacancy-item:nth-child(even) {
+        float: none;
+        margin: 0 auto 20px auto; /* Центрирование */
+    }
+    
+    /* ДОБАВИТЬ: Уменьшим padding на мобильных */
+    .vacancy-item {
+        padding: 8px;
+    }
+}

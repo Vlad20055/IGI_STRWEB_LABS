@@ -1,0 +1,8 @@
+/* ДОБАВИТЬ: 3D трансформация */
+img[alt="Логотип компании"] {
+    transition: transform 0.6s ease;
+}
+
+img[alt="Логотип компании"]:hover {
+    transform: perspective(500px) rotateY(15deg) scale(1.1); /* 3D эффект */
+}
