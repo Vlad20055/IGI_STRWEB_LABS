@@ -10,6 +10,37 @@
 
 {% block content %}
 
+    <!-- Анимация восстановления -->
+    <section class="repair-animation">
+        <div class="devices-container">
+            <!-- Сломанный ноутбук -->
+            <div class="laptop broken">
+                <div class="screen cracked"></div>
+            </div>
+            
+            <!-- Сломанный телефон -->
+            <div class="phone broken">
+                <div class="screen cracked"></div>
+            </div>
+            
+            <!-- Волшебная палочка -->
+            <div class="magic-wand"></div>
+            
+            <!-- Название компании -->
+            <div class="company-title">Computer Service</div>
+        </div>
+    </section>
+
+    <!-- Прелоадер -->
+    <div class="preloader">
+        <div class="preloader-dots">
+            <span class="dot dot-1"></span>
+            <span class="dot dot-2"></span>
+            <span class="dot dot-3"></span>
+        </div>
+        <p>Загрузка завершена</p>
+    </div>
+
     <div class="company-name">
         <h1 dir="ltr" contenteditable="true">
             Главная — Computer Service <img src="{{ '/media/index/logo.jpg' }}" alt="Логотип" width="50" height="50">

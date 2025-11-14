@@ -1,34 +1,48 @@
 {% extends "comps/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+  <link rel="stylesheet" href="{% static 'css/coupon_list.css' %}"
+{% endblock %}
+
 {% block title %}Промокоды и купоны{% endblock %}
 
 {% block content %}
-  <h2>Промокоды и купоны</h2>
+<div class="coupons-container">
+  <h2 class="coupons-title">Промокоды и купоны</h2>
 
-  <h3>Активные</h3>
-  {% if active %}
-    <ul>
-      {% for c in active %}
-        <li>
-          <strong>{{ c.service.name }}</strong> — скидка {{ c.discount_percent }}%,
-          до {{ c.valid_until|date:"d/m/Y" }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>На данный момент нет действующих купонов.</p>
-  {% endif %}
+  <section class="coupons-section">
+    <h3 class="section-title">Активные</h3>
+    {% if active %}
+      <ul class="coupons-list">
+        {% for c in active %}
+          <li class="coupon-item">
+            <strong class="service-name">{{ c.service.name }}</strong> — 
+            <span class="discount">скидка {{ c.discount_percent }}%</span>,
+            <span class="valid-until">до {{ c.valid_until|date:"d/m/Y" }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-coupons">На данный момент нет действующих купонов.</p>
+    {% endif %}
+  </section>
 
-  <h3>Архив</h3>
-  {% if archived %}
-    <ul>
-      {% for c in archived %}
-        <li>
-          <strong>{{ c.service.name }}</strong> — скидка {{ c.discount_percent }}%,
-          истёк {{ c.valid_until|date:"d/m/Y" }}
-        </li>
-      {% endfor %}
-    </ul>
-  {% else %}
-    <p>Архив пока пуст.</p>
-  {% endif %}
+  <section class="coupons-section">
+    <h3 class="section-title">Архив</h3>
+    {% if archived %}
+      <ul class="coupons-list">
+        {% for c in archived %}
+          <li class="coupon-item archived">
+            <strong class="service-name">{{ c.service.name }}</strong> — 
+            <span class="discount">скидка {{ c.discount_percent }}%</span>,
+            <span class="expired">истёк {{ c.valid_until|date:"d/m/Y" }}</span>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="no-coupons">Архив пока пуст.</p>
+    {% endif %}
+  </section>
+</div>
 {% endblock %}

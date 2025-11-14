@@ -1,8 +1,269 @@
-/* ДОБАВИТЬ: 3D трансформация */
-img[alt="Логотип компании"] {
-    transition: transform 0.6s ease;
+/* Основные стили страницы */
+.about-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+    font-family: 'Arial', sans-serif;
+    line-height: 1.6;
 }
 
-img[alt="Логотип компании"]:hover {
-    transform: perspective(500px) rotateY(15deg) scale(1.1); /* 3D эффект */
+.company-header {
+    display: flex;
+    align-items: flex-start;
+    gap: 30px;
+    margin-bottom: 40px;
+    flex-wrap: wrap;
+}
+
+/* Стили для логотипа с 3D эффектом */
+.company-logo {
+    max-width: 200px;
+    transition: transform 0.6s ease;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.company-logo:hover {
+    transform: perspective(500px) rotateY(15deg) scale(1.1);
+}
+
+.company-content {
+    flex: 1;
+    min-width: 300px;
+}
+
+/* Стили для медиа-контента */
+.media-section {
+    margin: 40px 0;
+    padding: 20px;
+    background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+    border-radius: 15px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.video-container, .audio-container {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.company-video {
+    max-width: 100%;
+    border-radius: 10px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    background: #000;
+}
+
+.company-audio {
+    width: 100%;
+    max-width: 500px;
+    border-radius: 25px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Стили для истории с таймлайном */
+.history-section {
+    margin: 40px 0;
+    padding: 30px;
+    background: white;
+    border-left: 5px solid #2c3e50;
+    border-radius: 0 10px 10px 0;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.history-timeline {
+    position: relative;
+    padding-left: 30px;
+}
+
+.history-timeline::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 3px;
+    background: linear-gradient(to bottom, #3498db, #2c3e50);
+    border-radius: 2px;
+}
+
+.history-timeline p {
+    position: relative;
+    margin-bottom: 20px;
+    padding: 10px 15px;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border-left: 3px solid #3498db;
+}
+
+.history-timeline p::before {
+    content: '▶';
+    position: absolute;
+    left: -25px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #3498db;
+    font-size: 12px;
+}
+
+/* Стили для сертификатов с графическими файлами */
+.certificates-section {
+    margin: 40px 0;
+}
+
+.certificate-card {
+    position: relative;
+    padding: 60px 40px; /* Увеличил вертикальные отступы */
+    margin: 20px auto;
+    max-width: 350px; /* Шире */
+    min-height: 400px; /* ← ЗАДАЁМ МИНИМАЛЬНУЮ ВЫСОТУ */
+    height: auto; /* Автовысота по контенту */
+    
+    /* ФОН - УПРОЩАЕМ */
+    background: 
+        url('/media/certificate/background.jpg') center/cover no-repeat;
+    
+    border: 15px solid transparent;
+    border-image: url('/media/certificate/border.jpeg') 30 stretch;
+    -webkit-border-image: url('/media/certificate/border.jpeg') 30 stretch;
+    -moz-border-image: url('/media/certificate/border.jpeg') 30 stretch;
+    -o-border-image: url('/media/certificate/border.jpeg') 30 stretch;
+    border-image-slice: 30;
+    border-image-outset: 0; /* Важно! */
+    
+    border-radius: 20px;
+    box-shadow: 
+        0 10px 30px rgba(0, 0, 0, 0.2),
+        inset 0 0 50px rgba(52, 152, 219, 0.1);
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+    -moz-transform-style: preserve-3d;
+    perspective: 1000px;
+    -webkit-perspective: 1000px;
+    -moz-perspective: 1000px;
+    z-index: 1;
+    
+    /* Для красивого отображения контента */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.certificate-content {
+    position: relative;
+    z-index: 3;
+    text-align: center;
+    font-family: 'Georgia', serif;
+
+    text-align-last: center; /* Выравнивание последней строки */
+    hyphens: auto; /* Перенос слов */
+    word-spacing: 0.1em; /* Межсловный интервал */
+    letter-spacing: 0.05em; /* Межбуквенный интервал */
+    text-justify: inter-word; /* Выравнивание по ширине */
+    text-rendering: optimizeLegibility; /* Чёткость текста */
+    -webkit-font-smoothing: antialiased; /* Сглаживание для WebKit */
+    -moz-osx-font-smoothing: grayscale; /* Сглаживание для Firefox */
+
+    color: #2c3e50;
+    width: 90%; /* Занимает всю ширину */
+}
+
+/* Увеличиваем шрифты для большого сертификата */
+.certificate-content h3 {
+    font-size: 32px; /* Больше */
+    margin-bottom: 30px;
+    color: #e74c3c;
+    text-shadow: 1px 1px 2px rgba(0,0,0,0.1);
+}
+
+.certificate-content p {
+    font-size: 18px; /* Больше */
+    line-height: 1.8;
+    margin-bottom: 20px;
+    text-align: center; /* Центрируем текст */
+}
+
+/* Стили для реквизитов */
+.requisites-section {
+    margin: 40px 0;
+    padding: 25px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 15px;
+    color: white;
+}
+
+.requisites-content {
+    font-family: 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.8;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 20px;
+    border-radius: 10px;
+    backdrop-filter: blur(10px);
+}
+
+.requisites-content strong {
+    color: #f1c40f;
+    font-weight: 600;
+}
+
+/* Дополнительные стили */
+.last-updated {
+    text-align: center;
+    margin-top: 40px;
+    padding: 20px;
+    border-top: 1px solid #eee;
+    color: #7f8c8d;
+}
+
+.no-info {
+    text-align: center;
+    padding: 40px;
+    color: #95a5a6;
+    font-style: italic;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .company-header {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .company-logo {
+        margin: 0 auto;
+    }
+    
+    .certificate-card {
+        padding: 20px;
+        margin: 10px;
+    }
+    
+    .certificate-card::after {
+        width: 40px;
+        height: 40px;
+        font-size: 18px;
+        top: -10px;
+        right: -10px;
+    }
+}
+
+/* Эффекты при наведении */
+.certificate-card:hover {
+    transform: translateY(-5px) rotateX(5deg);
+    box-shadow: 
+        0 20px 40px rgba(0, 0, 0, 0.3),
+        inset 0 0 60px rgba(52, 152, 219, 0.2);
+    transition: all 0.3s ease;
+}
+
+.history-timeline p:hover {
+    background: #e3f2fd;
+    transform: translateX(5px);
+    transition: all 0.3s ease;
+}
+
+.requisites-content:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
 }

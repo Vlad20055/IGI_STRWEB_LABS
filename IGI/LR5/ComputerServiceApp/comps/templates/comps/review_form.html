@@ -1,4 +1,10 @@
 {% extends "comps/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/review_form.css' %}"
+{% endblock %}
+
 {% block title %}Оставить отзыв{% endblock %}
 
 {% block content %}

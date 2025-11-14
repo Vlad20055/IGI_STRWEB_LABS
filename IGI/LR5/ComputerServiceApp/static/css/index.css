@@ -1,3 +1,236 @@
+/* Анимация восстановления */
+.repair-animation {
+    height: 400px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+}
+
+.devices-container {
+    position: relative;
+    width: 600px;
+    height: 300px;
+}
+
+/* Стили для устройств */
+.laptop, .phone {
+    position: absolute;
+    transition: all 2s ease;
+}
+
+.laptop {
+    width: 200px;
+    height: 120px;
+    background: #333;
+    border-radius: 10px 10px 0 0;
+    left: 50px;
+    top: 100px;
+}
+
+.phone {
+    width: 80px;
+    height: 140px;
+    background: #222;
+    border-radius: 15px;
+    right: 100px;
+    top: 80px;
+}
+
+.screen {
+    position: absolute;
+    background: #1a1a1a;
+    transition: all 1s ease;
+}
+
+.laptop .screen {
+    width: 180px;
+    height: 100px;
+    top: 5px;
+    left: 10px;
+    border-radius: 5px;
+}
+
+.phone .screen {
+    width: 70px;
+    height: 120px;
+    top: 5px;
+    left: 5px;
+    border-radius: 10px;
+}
+
+/* Трещины на экранах */
+.cracked::before, .cracked::after {
+    content: '';
+    position: absolute;
+    background: red;
+    animation: crackPulse 2s infinite;
+}
+
+.cracked::before {
+    width: 2px;
+    height: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+}
+
+.cracked::after {
+    width: 100%;
+    height: 2px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+@keyframes crackPulse {
+    0%, 100% { opacity: 0.7; }
+    50% { opacity: 1; }
+}
+
+/* Волшебная палочка */
+.magic-wand {
+    position: absolute;
+    width: 4px;
+    height: 80px;
+    background: linear-gradient(45deg, gold, silver);
+    left: -50px;
+    top: 50%;
+    transform: translateY(-50%) rotate(-15deg);
+    opacity: 0;
+    animation: wandAppear 8s 2s forwards;
+    z-index: 10;
+}
+
+.magic-wand::before {
+    content: '✨';
+    position: absolute;
+    top: -10px;
+    left: -5px;
+    font-size: 20px;
+    animation: sparkle 1s infinite;
+}
+
+@keyframes wandAppear {
+    0% { opacity: 0; left: -50px; }
+    20% { opacity: 1; left: 150px; }
+    80% { opacity: 1; left: 450px; }
+    100% { opacity: 0; left: 650px; }
+}
+
+@keyframes sparkle {
+    0%, 100% { transform: scale(1); opacity: 1; }
+    50% { transform: scale(1.3); opacity: 0.7; }
+}
+
+/* Анимация восстановления экранов */
+@keyframes repairScreen {
+    0% { background: #1a1a1a; }
+    50% { background: #00ff00; box-shadow: 0 0 30px #00ff00; }
+    100% { background: #4a90e2; }
+}
+
+/* Запуск анимации при прохождении волшебной палочки */
+.magic-wand {
+    animation-delay: 2s;
+}
+
+.laptop.broken .screen,
+.phone.broken .screen {
+    animation: repairScreen 0.5s 4.5s forwards;
+}
+
+.laptop.broken .cracked::before,
+.laptop.broken .cracked::after,
+.phone.broken .cracked::before,
+.phone.broken .cracked::after {
+    animation: crackPulse 2s infinite, repairCrack 0.5s 4.5s forwards;
+}
+
+@keyframes repairCrack {
+    to { opacity: 0; transform: scale(0); }
+}
+
+/* Название компании */
+.company-title {
+    position: absolute;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 36px;
+    font-weight: bold;
+    color: white;
+    opacity: 0;
+    animation: titleAppear 3s 6s forwards;
+    text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+}
+
+@keyframes titleAppear {
+    0% { opacity: 0; transform: translateX(-50%) translateY(50px); }
+    100% { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+
+/* Прелоадер с перекрашивающимися точками */
+.preloader {
+    bottom: 20px;
+    right: 20px;
+    background: #3498db; /* Синий прямоугольник */
+    color: white;
+    padding: 20px;
+    border-radius: 10px;
+    z-index: 1000;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.preloader-dots {
+    display: flex;
+    gap: 8px;
+}
+
+.dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: white;
+    animation: dotColorChange 1.4s infinite ease-in-out;
+}
+
+.dot-1 {
+    animation-delay: 0s;
+}
+
+.dot-2 {
+    animation-delay: 0.2s;
+}
+
+.dot-3 {
+    animation-delay: 0.4s;
+}
+
+@keyframes dotColorChange {
+    0%, 100% {
+        background: white;
+    }
+    25%, 75% {
+        background: #ffeb3b; /* Желтый цвет */
+    }
+}
+
+.preloader p {
+    margin: 0;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+/* ======================================================================================================= */
+
+
 .company-name {
     font-family: 'Georgia', 'Times New Roman', serif;
     font-size: 1.2rem;

@@ -1,0 +1,66 @@
+/* Минимальные стили для страницы промокодов */
+.coupons-container {
+    font-family: sans-serif;
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.coupons-title {
+    font-size: 1.5rem;
+    color: #333;
+    margin-bottom: 2rem;
+}
+
+.coupons-section {
+    margin-bottom: 2rem;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    color: #666;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 0.5rem;
+    margin-bottom: 1rem;
+}
+
+.coupons-list {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.coupon-item {
+    padding: 0.75rem 0;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.coupon-item:last-child {
+    border-bottom: none;
+}
+
+.coupon-item.archived {
+    opacity: 0.6;
+}
+
+.service-name {
+    color: #2c5aa0;
+}
+
+.discount {
+    color: #27ae60;
+}
+
+.valid-until {
+    color: #3498db;
+}
+
+.expired {
+    color: #e74c3c;
+}
+
+.no-coupons {
+    color: #888;
+    font-style: italic;
+    margin: 1rem 0;
+}

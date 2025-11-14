@@ -2,55 +2,86 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/about.css' %}"
+    <link rel="stylesheet" href="{% static 'css/about.css' %}">
 {% endblock %}
 
 {% block title %}О компании — Computer Service{% endblock %}
 
 {% block content %}
-<h1>О компании — Computer Service</h1>
+<div class="about-container">
+    <h1>О компании — Computer Service</h1>
 
-{% if info %}
-{% if info.logo %}
-    <img src="{{ info.logo.url }}" alt="Логотип компании" width="200">
-{% endif %}
+    {% if info %}
+    <div class="company-header">
+        {% if info.logo %}
+            <img src="{{ info.logo.url }}" alt="Логотип компании" class="company-logo">
+        {% endif %}
+        <div class="company-content">
+            {{ info.content|linebreaks }}
+        </div>
+    </div>
 
-{{ info.content|linebreaks }}
+    {% if info.video_file %}
+    <section class="media-section">
+        <h2>Видео о компании</h2>
+        <div class="video-container">
+            <video controls class="company-video">
+                <source src="{{ info.video_file.url }}" type="video/mp4">
+                Ваш браузер не поддерживает видео
+            </video>
+        </div>
+    </section>
+    {% endif %}
 
-{% if info.video_file %}
-<h2>Видео о компании</h2>
-<video controls width="400">
-    <source src="{{ info.video_file.url }}" type="video/mp4">
-    Ваш браузер не поддерживает видео
-</video>
-{% endif %}
+    {% if info.audio_file %}
+    <section class="media-section">
+        <h2>Аудио презентация</h2>
+        <div class="audio-container">
+            <audio controls class="company-audio">
+                <source src="{{ info.audio_file.url }}" type="audio/mpeg">
+                Ваш браузер не поддерживает аудио
+            </audio>
+        </div>
+    </section>
+    {% endif %}
 
-{% if info.audio_file %}
-<h2>Аудио презентация</h2>
-<audio controls>
-    <source src="{{ info.audio_file.url }}" type="audio/mpeg">
-    Ваш браузер не поддерживает аудио
-</audio>
-{% endif %}
+    {% if info.history %}
+    <section class="history-section">
+        <h2>История компании</h2>
+        <div class="history-timeline">
+            {{ info.history|linebreaks }}
+        </div>
+    </section>
+    {% endif %}
 
-{% if info.history %}
-    <h2>История компании</h2>
-{{ info.history|linebreaks }}
-{% endif %}
+    {% if info.certificate_image or info.certificate %}
+    <section class="certificates-section">
+        <h2>Наши сертификаты</h2>
+        <div class="certificates-container">
+            <div class="certificate-card">
+                <div class="certificate-content">
+                    {{ info.certificate|linebreaks }}
+                </div>
+            </div>
+        </div>
+    </section>
+    {% endif %}
 
-{% if info.requisites %}
-    <h2>Реквизиты</h2>
-{{ info.requisites|linebreaks }}
-{% endif %}
+    {% if info.requisites %}
+    <section class="requisites-section">
+        <h2>Реквизиты</h2>
+        <div class="requisites-content">
+            {{ info.requisites|linebreaks }}
+        </div>
+    </section>
+    {% endif %}
 
-{% if info.certificate %}
-    <h2>Сертификаты</h2>
-{{ info.certificate|linebreaks }}
-{% endif %}
+    <div class="last-updated">
+        <small>Обновлено: {{ info.updated_at|date:"d/m/Y H:i" }}</small>
+    </div>
 
-<p><small>Обновлено: {{ info.updated_at|date:"d/m/Y H:i" }}</small></p>
-
-{% else %}
-<p>Информация о компании ещё не добавлена.</p>
-{% endif %}
+    {% else %}
+    <p class="no-info">Информация о компании ещё не добавлена.</p>
+    {% endif %}
+</div>
 {% endblock %}
