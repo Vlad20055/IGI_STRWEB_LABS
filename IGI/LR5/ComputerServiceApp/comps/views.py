@@ -21,6 +21,8 @@ from .models import Employee
 from .models import Vacancy
 from .models import Review
 from .models import DeviceType
+from .models import Slide
+from .models import SliderSettings
 from .forms import ReviewForm
 
 
@@ -60,6 +62,8 @@ def index(request):
 
     partners = Partner.objects.all()
 
+    slides = Slide.objects.filter(active=True).order_by('order')
+    slider_settings = SliderSettings.objects.first()
 
     return render(request, 'comps/index.html', {
         'article': latest_article,
@@ -71,7 +75,9 @@ def index(request):
         'sparepart_types': sparepart_types,
         'selected_sparepart_type': selected_sparepart_type,
         'sparepart_sort': sparepart_sort,
-        'partners': partners
+        'partners': partners,
+        'slides': slides,
+        'slider_settings': slider_settings
     })
 
 

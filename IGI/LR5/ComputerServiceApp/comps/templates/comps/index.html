@@ -264,6 +264,54 @@
     <p>The output from the code is: <samp>I like 4 fruits</samp></p>
     <p>When prompted for my favorite fruit, I typed: <kbd>cherries</kbd></p>
 
+    <!-- Слайдер -->
+    <div id="slider-container">
+        {% if slides %}
+            <div class="slider" 
+                data-delay="{{ slider_settings.delay }}"
+                data-loop="{{ slider_settings.loop|yesno:'true,false' }}"
+                data-navs="{{ slider_settings.navs|yesno:'true,false' }}"
+                data-pags="{{ slider_settings.pags|yesno:'true,false' }}"
+                data-auto="{{ slider_settings.auto|yesno:'true,false' }}"
+                data-stop-hover="{{ slider_settings.stop_mouse_hover|yesno:'true,false' }}">
+                
+                <div class="slides-wrapper">
+                    {% for slide in slides %}
+                    <div class="slide {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}">
+                        {% if slide.link %}
+                            <a href="{{ slide.link }}" target="_blank">
+                                <img src="{{ slide.image.url }}" alt="{{ slide.title }}">
+                            </a>
+                        {% else %}
+                            <img src="{{ slide.image.url }}" alt="{{ slide.title }}">
+                        {% endif %}
+                        <div class="slide-caption">{{ slide.title }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+                
+                {% if slider_settings.navs %}
+                    <button class="slider-nav prev">‹</button>
+                    <button class="slider-nav next">›</button>
+                {% endif %}
+                
+                {% if slider_settings.pags %}
+                <div class="slider-pagination">
+                    {% for slide in slides %}
+                        <span class="pagination-dot {% if forloop.first %}active{% endif %}" data-index="{{ forloop.counter0 }}"></span>
+                    {% endfor %}
+                </div>
+                {% endif %}
+                
+                <div class="slide-counter">
+                    <span class="current">1</span>/<span class="total">{{ slides|length }}</span>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+
+    <script src="{% static 'js/index.js' %}"></script>
+
 {% endblock %}
 
 

@@ -111,3 +111,37 @@ class PartnerAdmin(admin.ModelAdmin):
     list_display = ['name', 'website']
     search_fields = ['name']
 
+
+from .models import Slide, SliderSettings
+@admin.register(Slide)
+class SlideAdmin(admin.ModelAdmin):  # наследуем от admin.ModelAdmin, а не от Slide
+    list_display = ['title', 'order', 'active', 'link']
+    list_editable = ['order', 'active']
+    list_filter = ['active']
+    search_fields = ['title']
+    fieldsets = (
+        (None, {
+            'fields': ('title', 'image', 'link', 'order', 'active')
+        }),
+    )
+
+
+@admin.register(SliderSettings)
+class SliderSettingsAdmin(admin.ModelAdmin):
+    list_display = ['delay', 'loop', 'navs', 'pags', 'auto', 'stop_mouse_hover']
+
+    # Автоматическое создание настроек при заходе в админку
+    def changelist_view(self, request, extra_context=None):
+        if not SliderSettings.objects.exists():
+            # Создаем настройки по умолчанию
+            SliderSettings.objects.create()
+            self.message_user(request, "Созданы настройки слайдера по умолчанию", level='SUCCESS')
+        return super().changelist_view(request, extra_context)
+    
+    # Запрещаем добавление новых записей, если уже есть одна
+    def has_add_permission(self, request):
+        return not SliderSettings.objects.exists()
+    
+    # Запрещаем удаление
+    def has_delete_permission(self, request, obj=None):
+        return False

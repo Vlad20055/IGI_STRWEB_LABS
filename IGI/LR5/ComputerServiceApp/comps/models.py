@@ -410,3 +410,86 @@ class Partner(models.Model):
 
     def __str__(self):
         return self.name
+
+# Слайд
+# Для главной страницы
+class Slide(models.Model):
+    title = models.CharField(
+        max_length=200, 
+        verbose_name="Заголовок слайда"
+    )
+    image = models.ImageField(
+        upload_to='slides/',
+        verbose_name="Изображение слайда"
+    )
+    link = models.URLField(
+        max_length=500,
+        blank=True,
+        verbose_name="Ссылка для перехода"
+    )
+    order = models.PositiveIntegerField(
+        default=0,
+        verbose_name="Порядковый номер"
+    )
+    active = models.BooleanField(
+        default=True,
+        verbose_name="Активный"
+    )
+    
+    class Meta:
+        verbose_name = "Слайд"
+        verbose_name_plural = "Слайды"
+        ordering = ['order']
+    
+    def __str__(self):
+        return self.title
+    
+# Настройки слайдера
+# Для главной страницы
+class SliderSettings(models.Model):
+    delay = models.PositiveIntegerField(
+        default=5,
+        verbose_name="Интервал смены слайдов (сек)"
+    )
+    loop = models.BooleanField(
+        default=True,
+        verbose_name="Зациклить слайдер"
+    )
+    navs = models.BooleanField(
+        default=True,
+        verbose_name="Показывать стрелки навигации"
+    )
+    pags = models.BooleanField(
+        default=True,
+        verbose_name="Показывать пагинацию"
+    )
+    auto = models.BooleanField(
+        default=True,
+        verbose_name="Автоматическая смена слайдов"
+    )
+    stop_mouse_hover = models.BooleanField(
+        default=True,
+        verbose_name="Останавливать при наведении мыши"
+    )
+    
+    class Meta:
+        verbose_name = "Настройка слайдера"
+        verbose_name_plural = "Настройки слайдера"
+    
+    def __str__(self):
+        return "Настройки слайдера"
+    
+    def save(self, *args, **kwargs):
+        # Разрешаем только одну запись настроек
+        if not self.pk and SliderSettings.objects.exists():
+            # Если уже есть настройки, обновляем существующие
+            existing_settings = SliderSettings.objects.first()
+            existing_settings.delay = self.delay
+            existing_settings.loop = self.loop
+            existing_settings.navs = self.navs
+            existing_settings.pags = self.pags
+            existing_settings.auto = self.auto
+            existing_settings.stop_mouse_hover = self.stop_mouse_hover
+            existing_settings.save()
+            return
+        super().save(*args, **kwargs)
