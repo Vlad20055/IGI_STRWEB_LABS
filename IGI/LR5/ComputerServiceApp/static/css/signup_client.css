@@ -41,7 +41,7 @@ select:required {
     background-color: #fff9f9;
 }
 
-/* НЕОБЯЗАТЕЛЬНЫЕ поля */
+/* !Required */
 input:not([required]),
 textarea:not([required]),
 select:not([required]) {
@@ -49,7 +49,7 @@ select:not([required]) {
     background-color: #f8f9fa;
 }
 
-/* ДОСТУПНЫЕ поля в фокусе */
+/* Enabled */
 input:enabled:focus,
 textarea:enabled:focus,
 select:enabled:focus {

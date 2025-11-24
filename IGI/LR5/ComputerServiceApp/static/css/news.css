@@ -29,6 +29,7 @@ small {
     font-variant: small-caps;
     color: #666;
     letter-spacing: 0.5px;
+    text-transform: capitalize;
 }
 
 /* Интервал между словами и символами */

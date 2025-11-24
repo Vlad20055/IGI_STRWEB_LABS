@@ -9,10 +9,10 @@
 
 .company-header {
     display: flex;
-    align-items: flex-start;
-    gap: 30px;
+    align-items: flex-start; /* выравн. по верхнему краю */
+    gap: 30px; /* расстояние между flex эл-ми 30 */
     margin-bottom: 40px;
-    flex-wrap: wrap;
+    flex-wrap: wrap; /* разрешает перенос на новую строку при нехватке места */
 }
 
 /* Стили для логотипа с 3D эффектом */
@@ -28,7 +28,7 @@
 }
 
 .company-content {
-    flex: 1;
+    flex: 1; /* мы говорим эл-ту: сжимайся, растягивайся как хочешь после того, как всё остальное заполниться */
     min-width: 300px;
 }
 
@@ -119,7 +119,7 @@
     min-height: 400px; /* ← ЗАДАЁМ МИНИМАЛЬНУЮ ВЫСОТУ */
     height: auto; /* Автовысота по контенту */
     
-    /* ФОН - УПРОЩАЕМ */
+    /* ФОН */
     background: 
         url('/media/certificate/background.jpg') center/cover no-repeat;
     
@@ -129,7 +129,7 @@
     -moz-border-image: url('/media/certificate/border.jpeg') 30 stretch;
     -o-border-image: url('/media/certificate/border.jpeg') 30 stretch;
     border-image-slice: 30;
-    border-image-outset: 0; /* Важно! */
+    border-image-outset: 0;
     
     border-radius: 20px;
     box-shadow: 
@@ -165,7 +165,7 @@
     -moz-osx-font-smoothing: grayscale; /* Сглаживание для Firefox */
 
     color: #2c3e50;
-    width: 90%; /* Занимает всю ширину */
+    width: 90%; /* Занимает почти всю ширину */
 }
 
 /* Увеличиваем шрифты для большого сертификата */
