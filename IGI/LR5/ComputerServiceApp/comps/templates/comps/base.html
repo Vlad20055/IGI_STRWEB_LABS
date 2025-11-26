@@ -67,6 +67,15 @@
           {% endif %}
         </nav>
     </header>
+
+    <!-- Переключатель темы -->
+    <div class="theme-switcher">
+        <input type="checkbox" id="theme-toggle" class="theme-checkbox">
+        <label for="theme-toggle" class="theme-label">
+            <span class="theme-text">Тёмная тема</span>
+            <div class="theme-slider"></div>
+        </label>
+    </div>
     
     <main>
       {% block content %}
@@ -77,5 +86,7 @@
     <footer>
       <p>&copy; Computer Service</p>
     </footer>
+
+    <script src="{% static 'js/base.js' %}"></script>
 </body>
 </html>

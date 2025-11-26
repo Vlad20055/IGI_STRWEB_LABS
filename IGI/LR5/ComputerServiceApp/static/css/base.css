@@ -1,10 +1,99 @@
+/* CSS переменные для светлой темы */
+:root {
+    --bg-primary: #c6e8f7;
+    --bg-header: #2c3e50;
+    --bg-footer: #34495e;
+    --text-primary: #333333;
+    --text-inverse: #ffffff;
+    --accent-primary: #2809ef;
+    --accent-secondary: #7ae778;
+    --border-color: #36eb04;
+    --shadow-color: rgba(0,0,0,0.1);
+}
+
+/* CSS переменные для темной темы */
+body.dark-theme {
+    --bg-primary: #1a1a1a;
+    --bg-header: #0d1b2a;
+    --bg-footer: #1b263b;
+    --text-primary: #666666;
+    --text-inverse: #333333;
+    --accent-primary: #4a6ee0;
+    --accent-secondary: #5cd85a;
+    --border-color: #2d8d27;
+    --shadow-color: rgba(0,0,0,0.3);
+}
+
+/* === Theme switcher === */
+.theme-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 1000;
+}
+
+.theme-checkbox {
+    display: none;
+}
+
+.theme-label {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+    padding: 8px 16px;
+    background: var(--bg-primary);
+    color: var(--text-primary);
+    border-radius: 25px;
+    box-shadow: 0 2px 10px var(--shadow-color);
+    transition: all 0.3s ease;
+    border: 1px solid var(--border-color);
+}
+
+.theme-text {
+    font-size: 14px;
+    transition: color 0.3s ease;
+}
+
+.theme-slider {
+    width: 40px;
+    height: 20px;
+    background: #ccc;
+    border-radius: 20px;
+    position: relative;
+    transition: background 0.3s ease;
+}
+
+.theme-slider::before {
+    content: '';
+    position: absolute;
+    width: 16px;
+    height: 16px;
+    border-radius: 50%;
+    background: white;
+    top: 2px;
+    left: 2px;
+    transition: transform 0.3s ease;
+}
+
+.theme-checkbox:checked + .theme-label .theme-slider {
+    background: var(--accent-primary);
+}
+
+.theme-checkbox:checked + .theme-label .theme-slider::before {
+    transform: translateX(20px);
+}
+
+
 /* === Elements selectors === */
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     padding: 0;
-    background-color: #c6e8f7;
+    background-color: var(--bg-primary);
+    color: var(--text-primary);
     line-height: 1.6;
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 header {
@@ -12,22 +101,22 @@ header {
     top: 0;
     left: 0;
     width: 100%;
-    background: #2c3e50;
-    color: white;
+    background: var(--bg-header);
+    color: var(--text-inverse);
     padding: 1rem;
     z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    box-shadow: 0 2px 10px var(--shadow-color);
 }
 
 main {
     padding: 2rem;
     min-height: 70vh;
-    margin-top: 200px; /* Высота header + отступ */
+    margin-top: 200px;
 }
 
 footer {
-    background: #34495e;
-    color: white;
+    background: var(--bg-footer);
+    color: var(--text-inverse);
     text-align: center;
     padding: 1rem;
 }
@@ -35,8 +124,8 @@ footer {
 /* === Attributes selectors === */
 /* begins with # (якорные ссылки) */
 a[href^="#"] {
-    background: #7ae778;
-    color: white;
+    background: var(--accent-secondary);
+    color: var(--text-inverse);
     padding: 3px 8px;
     border-radius: 3px;
 }
@@ -52,8 +141,8 @@ a[href$="cart/"] {
 
 /* attribute with specific value */
 button[type="submit"] {
-    background: #2809ef;
-    color: white;
+    background: var(--accent-primary);
+    color: var(--text-inverse);
     border: none;
     padding: 8px 15px;
     cursor: pointer;
@@ -67,30 +156,27 @@ button[type="submit"] {
     margin-bottom: 10px;
 }
 
-/* === КОМБИНАЦИИ СЕЛЕКТОРОВ === */
 
-/* селекторы потомков */
+/* === КОМБИНАЦИИ СЕЛЕКТОРОВ === */
 header nav a {
     text-decoration: none;
-    color: white;
+    color: var(--text-inverse);
     margin: 0 10px;
     padding: 5px;
 }
 
-/* AND */
 nav.main_navigation {
-    border-bottom: 2px solid #36eb04;
+    border-bottom: 2px solid var(--border-color);
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
 }
 
-/* ДОБАВЛЕНО: Улучшим внешний вид фиксированной навигации */
 nav.main_navigation > a {
-    border-right: 1px solid rgb(241, 245, 3);
+    border-right: 1px solid var(--border-color);
     padding-right: 15px;
-    white-space: nowrap; /* Запрещаем перенос ссылок */
+    white-space: nowrap;
 }
 
 /* === ПСЕВДОКЛАССЫ ДЛЯ ССЫЛОК === */
