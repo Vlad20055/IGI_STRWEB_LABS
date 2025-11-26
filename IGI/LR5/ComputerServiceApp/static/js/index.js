@@ -313,3 +313,62 @@ document.addEventListener('DOMContentLoaded', function() {
         new Slider(sliderContainer);
     }
 });
+
+
+// Проверка возраста - показывается один раз при первом посещении сайта
+document.addEventListener('DOMContentLoaded', function() {
+    // Проверяем, проходил ли пользователь проверку когда-либо
+    if (!localStorage.getItem('ageVerified')) {
+        // Ждем 1 секунду чтобы страница загрузилась
+        setTimeout(() => {
+            checkAge();
+        }, 1000);
+    }
+});
+
+function checkAge() {
+    // Запрашиваем дату рождения
+    const birthdateInput = prompt('Для доступа к сайту введите вашу дату рождения в формате ГГГГ-ММ-ДД (например: 2000-01-15):');
+    
+    // Если пользователь нажал "Отмена" - просто выходим
+    if (birthdateInput === null) {
+        return;
+    }
+    
+    // Проверяем дату
+    const birthdate = new Date(birthdateInput);
+    const today = new Date();
+    
+    // Если дата некорректна - показываем ошибку и выходим
+    if (isNaN(birthdate.getTime()) || birthdate > today) {
+        alert('Неверная дата рождения. Проверьте формат (ГГГГ-ММ-ДД) и чтобы дата не была в будущем.');
+        return;
+    }
+    
+    // Вычисляем возраст
+    let age = today.getFullYear() - birthdate.getFullYear();
+    const monthDiff = today.getMonth() - birthdate.getMonth();
+    
+    if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthdate.getDate())) {
+        age--;
+    }
+    
+    // Определяем день недели рождения
+    const days = ['воскресенье', 'понедельник', 'вторник', 'среду', 'четверг', 'пятницу', 'субботу'];
+    const dayOfWeek = days[birthdate.getDay()];
+    
+    // Показываем результат
+    if (age >= 18) {
+        alert(`Вам ${age} лет. Вы родились в ${dayOfWeek}. Добро пожаловать на сайт!`);
+    } else {
+        alert(`Вам ${age} лет. Для использования сайта необходимо разрешение родителей.`);
+    }
+    
+    // Сохраняем, что проверка пройдена (навсегда для этого браузера)
+    localStorage.setItem('ageVerified', 'true');
+}
+
+/* ===================  ===================
+localStorage.removeItem('ageVerified');
+===================  =================== */
+
