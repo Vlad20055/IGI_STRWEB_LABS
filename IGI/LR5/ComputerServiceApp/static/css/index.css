@@ -324,6 +324,160 @@
     }
 }
 
+/* === 3D ЭФФЕКТ ПРИ НАВЕДЕНИИ === */
+/* 3D Card Effects */
+.card-wrapper {
+    min-height: 25ch;
+    position: relative;
+    perspective: 500em;
+    margin: 20px 0;
+}
+
+.card {
+    --rotateX: 0;
+    --rotateY: 0;
+    --posx: 50%;
+    --posy: 50%;
+    
+    position: absolute;
+    inset: 0;
+    border: 2px solid rgba(255, 255, 255, 0.1);
+    border-radius: 1em;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    transform: 
+        perspective(100em)
+        translateZ(0em)
+        rotateY(var(--rotateX)) 
+        rotateX(var(--rotateY));
+    transition: transform 0.1s ease;
+    display: grid;
+    grid-template-rows: auto 1fr;
+    overflow: hidden;
+}
+
+.card::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(45deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 50%);
+    opacity: 0.5;
+    pointer-events: none;
+    border-radius: inherit;
+}
+
+.card::after {
+    content: '';
+    position: absolute;
+    inset: 1rem;
+    background: rgba(255, 255, 255, 0.1);
+    opacity: 0.3;
+    transform: translateZ(-2em);
+    border-radius: inherit;
+    filter: blur(1.5rem);
+    z-index: -1;
+}
+
+/* Different colors for services and spareparts */
+.service-item .card {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+}
+
+.sparepart-item .card {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+/* Card content */
+.card h3 {
+    margin: 0;
+    color: white;
+    padding: 1.5rem 1.5rem 0.5rem;
+    font-weight: 600;
+    font-size: 1.4rem;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.card .content {
+    background: rgba(0, 0, 0, 0.3);
+    padding: 1rem 1.5rem 1.5rem;
+    color: white;
+    border-radius: inherit;
+    font-size: 1rem;
+    line-height: 1.5;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.card .content p {
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.card-links {
+    margin-top: 0.5rem;
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+}
+
+.card-links a {
+    color: #ffeb3b;
+    text-decoration: none;
+    font-weight: 500;
+    font-size: 0.9rem;
+    transition: color 0.3s ease;
+}
+
+.card-links a:hover {
+    color: #fff;
+    text-decoration: underline;
+}
+
+/* Reset animation */
+@keyframes reset-card {
+    to {
+        transform: 
+            perspective(100em)
+            translateZ(0em)
+            rotateY(0) 
+            rotateX(0);
+    }
+}
+
+/* Container layouts */
+#services-container,
+#spareparts-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    position: relative;
+    z-index: 1;
+}
+
+/* Catalog grid layout */
+.catalog-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2rem;
+    margin: 20px 0;
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .catalog-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    #services-container,
+    #spareparts-container {
+        grid-template-columns: 1fr;
+    }
+    
+    .card-wrapper {
+        min-height: 20ch;
+    }
+}
+
 /* === КРУГЛЫЕ БЛОКИ ДЛЯ ПАРТНЕРОВ === */
 
 /* Контейнер для партнеров */

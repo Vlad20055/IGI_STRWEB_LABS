@@ -60,16 +60,30 @@
             
             <div id="services-container">
                 {% for s in services %}
-                    <div class="catalog-item service-item">
-                        {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
-                        <a href="{% url 'detail_services_spareparts' 'service' s.pk %}">Подробнее</a>
-                        {% if user.is_authenticated and user|has_group:"Employees" %}
-                            [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
-                            [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
-                        {% endif %}
+                    <div class="card-wrapper service-item">
+                        <div class="card">
+                            <h3>{{ s.name }}</h3>
+                            <div class="content">
+                                <p><strong>Тип:</strong> {{ s.type.name }}</p>
+                                <p><strong>Цена:</strong> {{ s.price }} руб.</p>
+                                <div class="card-links">
+                                    <a href="{% url 'detail_services_spareparts' 'service' s.pk %}">Подробнее</a>
+                                    {% if user.is_authenticated and user|has_group:"Employees" %}
+                                        [<a href="{% url 'service_edit' s.pk %}">изменить</a>]
+                                        [<a href="{% url 'service_delete' s.pk %}">удалить</a>]
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 {% empty %}
-                    <div class="catalog-item">Услуг ещё нет.</div>
+                    <div class="card-wrapper">
+                        <div class="card">
+                            <div class="content">
+                                <p>Услуг ещё нет.</p>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 
@@ -87,16 +101,30 @@
             
             <div id="spareparts-container">
                 {% for p in spareparts %}
-                    <div class="catalog-item sparepart-item">
-                        {{ p.name }} ({{ p.type.name }}) — {{ p.price }} руб
-                        <a href="{% url 'detail_services_spareparts' 'sparepart' p.pk %}">Подробнее</a>
-                        {% if user.is_authenticated and user|has_group:"Employees" %}
-                            [<a href="{% url 'sparepart_edit' p.pk %}">изменить</a>]
-                            [<a href="{% url 'sparepart_delete' p.pk %}">удалить</a>]
-                        {% endif %}
+                    <div class="card-wrapper sparepart-item">
+                        <div class="card">
+                            <h3>{{ p.name }}</h3>
+                            <div class="content">
+                                <p><strong>Тип:</strong> {{ p.type.name }}</p>
+                                <p><strong>Цена:</strong> {{ p.price }} руб</p>
+                                <div class="card-links">
+                                    <a href="{% url 'detail_services_spareparts' 'sparepart' p.pk %}">Подробнее</a>
+                                    {% if user.is_authenticated and user|has_group:"Employees" %}
+                                        [<a href="{% url 'sparepart_edit' p.pk %}">изменить</a>]
+                                        [<a href="{% url 'sparepart_delete' p.pk %}">удалить</a>]
+                                    {% endif %}
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 {% empty %}
-                    <div class="catalog-item">Запчастей ещё нет.</div>
+                    <div class="card-wrapper">
+                        <div class="card">
+                            <div class="content">
+                                <p>Запчастей ещё нет.</p>
+                            </div>
+                        </div>
+                    </div>
                 {% endfor %}
             </div>
 

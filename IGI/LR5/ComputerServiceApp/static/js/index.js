@@ -174,9 +174,9 @@ class CatalogPagination {
     }
     
     init() {
-        // Собираем все элементы
-        this.services.items = Array.from(this.services.container.querySelectorAll('.service-item'));
-        this.spareparts.items = Array.from(this.spareparts.container.querySelectorAll('.sparepart-item'));
+        // Собираем все элементы (теперь это .card-wrapper)
+        this.services.items = Array.from(this.services.container.querySelectorAll('.card-wrapper'));
+        this.spareparts.items = Array.from(this.spareparts.container.querySelectorAll('.card-wrapper'));
         
         // Настройка пагинации
         this.setupPagination(this.services);
@@ -190,21 +190,18 @@ class CatalogPagination {
         this.render(this.spareparts);
     }
     
+    // ... остальные методы остаются без изменений ...
     setupPagination(section) {
         section.totalPages = Math.ceil(section.items.length / this.perPage);
         this.updatePaginationInfo(section);
     }
     
     bindEvents() {
-        // Кнопки пагинации услуг
         this.services.prevBtn.addEventListener('click', () => this.prevPage(this.services));
         this.services.nextBtn.addEventListener('click', () => this.nextPage(this.services));
-        
-        // Кнопки пагинации запчастей
         this.spareparts.prevBtn.addEventListener('click', () => this.prevPage(this.spareparts));
         this.spareparts.nextBtn.addEventListener('click', () => this.nextPage(this.spareparts));
         
-        // Выбор количества элементов
         document.getElementById('per-page-select').addEventListener('change', (e) => {
             this.perPage = parseInt(e.target.value);
             this.services.currentPage = 1;
@@ -242,7 +239,6 @@ class CatalogPagination {
             item.style.display = 'block';
         });
         
-        // Обновляем информацию и кнопки
         this.updatePaginationInfo(section);
         this.updatePaginationButtons(section);
     }
@@ -257,6 +253,54 @@ class CatalogPagination {
         section.nextBtn.disabled = section.currentPage === section.totalPages || section.totalPages === 0;
     }
 }
+
+class CardEffects {
+    constructor() {
+        this.cards = document.querySelectorAll(".card-wrapper");
+        this.init();
+    }
+    
+    init() {
+        this.cards.forEach(cardWrapper => {
+            const card = cardWrapper.querySelector(".card");
+            
+            cardWrapper.addEventListener('mousemove', (event) => {
+                const rect = cardWrapper.getBoundingClientRect();
+                const [x, y] = [event.offsetX, event.offsetY];
+                const [width, height] = [rect.width, rect.height];
+                const middleX = width / 2;
+                const middleY = height / 2;
+                
+                const offsetX = ((x - middleX) / middleX) * 15;
+                const offsetY = ((y - middleY) / middleY) * 15;
+                
+                const offX = 50 + ((x - middleX) / middleX) * 10;
+                const offY = 50 - ((y - middleY) / middleY) * 10;
+                
+                card.style.setProperty("--rotateX", (1 * offsetX) + "deg");
+                card.style.setProperty("--rotateY", (-1 * offsetY) + "deg");
+                card.style.setProperty("--posx", offX + "%");
+                card.style.setProperty("--posy", offY + "%");
+            });
+            
+            cardWrapper.addEventListener('mouseleave', () => {
+                card.style.animation = 'reset-card 0.5s ease';
+                card.addEventListener("animationend", () => {
+                    card.style.animation = '';
+                    card.style.setProperty("--rotateX", "0deg");
+                    card.style.setProperty("--rotateY", "0deg");
+                    card.style.setProperty("--posx", "50%");
+                    card.style.setProperty("--posy", "50%");
+                }, { once: true });
+            });
+        });
+    }
+}
+
+// Инициализация при загрузке страницы
+document.addEventListener('DOMContentLoaded', function() {
+    new CardEffects();
+});
 
 // Инициализация при загрузке страницы
 document.addEventListener('DOMContentLoaded', function() {
