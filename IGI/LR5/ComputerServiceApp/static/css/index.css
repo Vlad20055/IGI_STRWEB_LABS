@@ -244,43 +244,83 @@
 }
 
 /* === CSS GRID LAYOUT ДЛЯ КАТАЛОГА === */
-
-/* Контейнер для услуг и запчастей */
+/* Каталог */
 .catalog-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Две колонки */
-    gap: 20px;
-    border: 2px solid #3498db; /* Добавить границу чтобы видеть контейнер */
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin: 20px 0;
+}
+
+.catalog-item {
+    background: #f8f9fa;
     padding: 15px;
+    margin: 10px 0;
+    border-radius: 8px;
+    border-left: 4px solid #007bff;
 }
 
-/* Сетка для списков услуг и запчастей */
-.services-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+/* Пагинация */
+.pagination {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: #e9ecef;
+    border-radius: 8px;
 }
 
-.spareparts-grid {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 10px;
+.page-info {
+    font-weight: bold;
+    color: #495057;
 }
 
-/* ДОБАВИТЬ: Стили для элементов внутри сетки */
-.services-grid > div,
-.spareparts-grid > div {
-    background: #bff1c0;
-    padding: 10px;
-    border-radius: 5px;
-    border-left: 3px solid #3498db;
+.pagination-btn {
+    padding: 8px 16px;
+    background: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.pagination-btn:hover:not(:disabled) {
+    background: #0056b3;
+}
+
+.pagination-btn:disabled {
+    background: #6c757d;
+    cursor: not-allowed;
+}
+
+/* Выбор количества элементов */
+.per-page-selector {
+    text-align: center;
+    margin: 20px 0;
+    padding: 15px;
+    background: #dee2e6;
+    border-radius: 8px;
+}
+
+.per-page-selector select {
+    padding: 5px 10px;
+    border: 1px solid #ced4da;
+    border-radius: 4px;
+    margin-left: 10px;
 }
 
 /* Адаптивность */
 @media (max-width: 768px) {
     .catalog-grid {
-        grid-template-columns: 1fr; /* Одна колонка на мобильных */
-        border-color: #e74c3c; /* Другой цвет для мобильных */
+        grid-template-columns: 1fr;
+    }
+    
+    .pagination {
+        flex-direction: column;
+        gap: 10px;
+        text-align: center;
     }
 }
 

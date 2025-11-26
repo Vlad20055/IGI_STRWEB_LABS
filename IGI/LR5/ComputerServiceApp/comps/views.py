@@ -37,30 +37,6 @@ def index(request):
     spareparts = SparePart.objects.select_related('type').all()
     sparepart_types = SparePartType.objects.all()
 
-    # Обработка фильтров для услуг (если есть)
-    selected_service_type = request.GET.get('service_type')
-    service_sort = request.GET.get('service_sort')
-    
-    if selected_service_type:
-        services = services.filter(type_id=selected_service_type)
-    
-    if service_sort == 'price_asc':
-        services = services.order_by('price')
-    elif service_sort == 'price_desc':
-        services = services.order_by('-price')
-
-    # Обработка фильтров для запчастей (если есть)
-    selected_sparepart_type = request.GET.get('sparepart_type')
-    sparepart_sort = request.GET.get('sparepart_sort')
-    
-    if selected_sparepart_type:
-        spareparts = spareparts.filter(type_id=selected_sparepart_type)
-    
-    if sparepart_sort == 'price_asc':
-        spareparts = spareparts.order_by('price')
-    elif sparepart_sort == 'price_desc':
-        spareparts = spareparts.order_by('-price')
-
     partners = Partner.objects.all()
 
     slides = Slide.objects.filter(active=True).order_by('order')
@@ -70,12 +46,8 @@ def index(request):
         'article': latest_article,
         'services': services,
         'service_types': service_types,
-        'selected_service_type': selected_service_type,
-        'service_sort': service_sort,
         'spareparts': spareparts,
         'sparepart_types': sparepart_types,
-        'selected_sparepart_type': selected_sparepart_type,
-        'sparepart_sort': sparepart_sort,
         'partners': partners,
         'slides': slides,
         'slider_settings': slider_settings

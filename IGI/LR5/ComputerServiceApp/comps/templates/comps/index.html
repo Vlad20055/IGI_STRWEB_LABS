@@ -52,44 +52,15 @@
 
     <a accesskey="p" href="#partners">Наши партнеры</a>
 
-    <!-- Services -->
+    <!-- Каталог -->
     <div class="catalog-grid">
+        <!-- Услуги -->
         <div>
             <h2>Услуги</h2>
-
-            {# Форма фильтрации услуг #}
-            <form method="get">
-                <label>
-                    Тип услуги:
-                    <select name="service_type">
-                        <option value="" {% if not selected_service_type %}selected{% endif %}>Все</option>
-                        {% for t in service_types %}
-                            <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_service_type %}selected{% endif %}>
-                                {{ t.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </label>
-        
-                <label>
-                    Сортировка по цене:
-                    <select name="service_sort">
-                        <option value="" {% if not service_sort %}selected{% endif %}>Без сортировки</option>
-                        <option value="price_asc" {% if service_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
-                        <option value="price_desc" {% if service_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
-                    </select>
-                </label>
-        
-                <button type="submit" name="filter_services">Применить к услугам</button>
-            </form>
-
-            {% if user.is_authenticated and user|has_group:"Employees" %}
-                <p><a href="{% url 'service_add' %}">Добавить услугу</a></p>
-            {% endif %}
-
-            <div class="services-grid">
+            
+            <div id="services-container">
                 {% for s in services %}
-                    <div>
+                    <div class="catalog-item service-item">
                         {{ s.name }} ({{ s.type.name }}) — {{ s.price }} руб.
                         <a href="{% url 'detail_services_spareparts' 'service' s.pk %}">Подробнее</a>
                         {% if user.is_authenticated and user|has_group:"Employees" %}
@@ -98,48 +69,25 @@
                         {% endif %}
                     </div>
                 {% empty %}
-                    <div>Услуг ещё нет.</div>
+                    <div class="catalog-item">Услуг ещё нет.</div>
                 {% endfor %}
+            </div>
+
+            <!-- Пагинация услуг -->
+            <div class="pagination">
+                <button id="services-prev" class="pagination-btn" disabled>← Назад</button>
+                <span id="services-info" class="page-info">Страница 1 из 1</span>
+                <button id="services-next" class="pagination-btn" disabled>Вперёд →</button>
             </div>
         </div>
 
+        <!-- Запчасти -->
         <div>
-            <!-- Spareparts -->
             <h2>Запчасти</h2>
-
-            {# Форма фильтрации запчастей #}
-            <form method="get">
-                <label>
-                    Тип запчасти:
-                    <select name="sparepart_type">
-                        <option value="" {% if not selected_sparepart_type %}selected{% endif %}>Все</option>
-                        {% for t in sparepart_types %}
-                            <option value="{{ t.pk }}" {% if t.pk|stringformat:"s" == selected_sparepart_type %}selected{% endif %}>
-                                {{ t.name }}
-                            </option>
-                        {% endfor %}
-                    </select>
-                </label>
-        
-                <label>
-                    Сортировка по цене:
-                    <select name="sparepart_sort">
-                        <option value="" {% if not sparepart_sort %}selected{% endif %}>Без сортировки</option>
-                        <option value="price_asc" {% if sparepart_sort == 'price_asc' %}selected{% endif %}>По возрастанию</option>
-                        <option value="price_desc" {% if sparepart_sort == 'price_desc' %}selected{% endif %}>По убыванию</option>
-                    </select>
-                </label>
-        
-                <button type="submit" name="filter_parts">Применить к запчастям</button>
-            </form>
-
-            {% if user.is_authenticated and user|has_group:"Employees" %}
-                <p><a href="{% url 'sparepart_add' %}">Добавить запчасть</a></p>
-            {% endif %}
-
-            <div class="spareparts-grid">
+            
+            <div id="spareparts-container">
                 {% for p in spareparts %}
-                    <div>
+                    <div class="catalog-item sparepart-item">
                         {{ p.name }} ({{ p.type.name }}) — {{ p.price }} руб
                         <a href="{% url 'detail_services_spareparts' 'sparepart' p.pk %}">Подробнее</a>
                         {% if user.is_authenticated and user|has_group:"Employees" %}
@@ -148,10 +96,35 @@
                         {% endif %}
                     </div>
                 {% empty %}
-                    <div>Запчастей ещё нет.</div>
+                    <div class="catalog-item">Запчастей ещё нет.</div>
                 {% endfor %}
             </div>
+
+            <!-- Пагинация запчастей -->
+            <div class="pagination">
+                <button id="spareparts-prev" class="pagination-btn" disabled>← Назад</button>
+                <span id="spareparts-info" class="page-info">Страница 1 из 1</span>
+                <button id="spareparts-next" class="pagination-btn" disabled>Вперёд →</button>
+            </div>
         </div>
+    </div>
+
+    <!-- Выбор количества элементов -->
+    <div class="per-page-selector">
+        <label>Элементов на странице:
+            <select id="per-page-select">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+        </label>
     </div>
 
     <!-- work hours -->
@@ -249,17 +222,6 @@
             <p>Информация о партнерах скоро появится...</p>
         {% endfor %}
     </div>
-
-    <!-- Code -->
-    <p>
-        <code>
-            var fruits = ["apples", "oranges", "mangoes", "cherries"];<br>
-            document.writeln("I like " + fruits.length + " fruits");
-        </code>
-    </p>
-    <p>The variable in this example is <var>fruits</var></p>
-    <p>The output from the code is: <samp>I like 4 fruits</samp></p>
-    <p>When prompted for my favorite fruit, I typed: <kbd>cherries</kbd></p>
 
     <!-- Слайдер -->
     <div id="slider-container">
