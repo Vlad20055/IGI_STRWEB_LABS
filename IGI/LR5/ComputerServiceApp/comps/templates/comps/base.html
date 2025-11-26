@@ -13,11 +13,12 @@
   <title>{% block title %}Computer Service{% endblock %}</title>
   <link rel="icon" href="{{ '/media/index/logo.jpg' }}">
   <link rel="stylesheet" href="{% static 'css/base.css' %}">
+  <script src="{% static 'js/base.js' %}"></script>
 
   <!-- This block is for .css files in other .html pages -->
   {% block extra_css %} {% endblock %}
-
-  <!-- here it is possible to add CSS, for example Bootstrap -->
+  <!-- This block is for .js files in other .html pages -->
+  {% block extra_js %} {% endblock %}
 </head>
 <body>
     <header>
@@ -33,6 +34,10 @@
             <a href="{% url 'calendar' %}">Календарь</a> |
             <a href="{% url 'review_list' %}">Отзывы</a> |
             <a href="{% url 'coupon_list' %}">Промокоды и купоны</a> |
+
+            {% if user.is_authenticated and user.is_staff %}
+            | <a href="{% url 'contacts_admin' %}">Управление сотрудниками</a>
+            {% endif %}
         </nav>
         <nav>
           <li>Справочники:
@@ -86,7 +91,5 @@
     <footer>
       <p>&copy; Computer Service</p>
     </footer>
-
-    <script src="{% static 'js/base.js' %}"></script>
 </body>
 </html>

@@ -4,9 +4,6 @@
 
 {% block title %}Главная — Computer Service{% endblock %}
 
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/index.css' %}"
-{% endblock %}
 
 {% block content %}
 
@@ -310,8 +307,12 @@
         {% endif %}
     </div>
 
-    <script src="{% static 'js/index.js' %}"></script>
-
 {% endblock %}
 
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/index.css' %}"
+{% endblock %}
 
+{% block extra_js %}
+    <script src="{% static 'js/index.js' %}"></script>
+{% endblock %}

@@ -103,6 +103,16 @@ class Specialization(models.Model):
 class Employee(models.Model):
     profile = models.OneToOneField(Profile, on_delete=models.CASCADE)
     specializations = models.ManyToManyField(Specialization, related_name='employees')
+
+    # ДОБАВЛЕНО НАЧАЛО
+    university_site = models.URLField(
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name='Сайт университета',
+        help_text='Ссылка на сайт учебного заведения'
+    )
+    # ДОБАВЛЕНО КОНЕЦ
     
     class Meta:
         verbose_name = 'Мастер'

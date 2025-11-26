@@ -18,6 +18,7 @@ from .models import CompanyInfo
 from .models import News
 from .models import FAQ
 from .models import Employee
+from .models import Specialization
 from .models import Vacancy
 from .models import Review
 from .models import DeviceType
@@ -698,3 +699,31 @@ def clear_cart(request):
     messages.success(request, 'Корзина очищена!')
     return redirect('cart_view')
 
+# Для admin
+def is_admin(user):
+    return user.is_authenticated and user.is_staff
+
+@login_required
+@user_passes_test(is_admin)
+def contacts_admin(request):
+    # Получаем всех сотрудников с связанными данными
+    employees = Employee.objects.select_related('profile', 'profile__user').prefetch_related('specializations').all()
+    specializations = Specialization.objects.all()  
+    
+    # Преобразуем в удобный формат для шаблона
+    employees_data = []
+    for employee in employees:
+        employees_data.append({
+            'id': employee.id,
+            'full_name': f"{employee.profile.user.last_name} {employee.profile.user.first_name}",
+            'photo': employee.profile.photo,
+            'specializations': [spec.name for spec in employee.specializations.all()],
+            'phone': employee.profile.phone,
+            'email': employee.profile.user.email,
+            'university_site': employee.university_site,
+        })
+    
+    return render(request, 'comps/contacts_admin.html', {
+        'employees': employees_data,
+        'specializations': specializations,
+    })
