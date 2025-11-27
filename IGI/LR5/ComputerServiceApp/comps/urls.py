@@ -25,6 +25,7 @@ urlpatterns = [
     path('login/', auth_views.LoginView.as_view(template_name='comps/login.html'), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='home'), name='logout'),
     path('contacts_admin/', views.contacts_admin, name='contacts_admin'),
+    path('tsnt/', views.tsnt, name='tsnt'),
     path('orders/employee/', views.order_list_employee, name='order_list_employee'),
     path('orders/create/', views.order_create, name='order_create'),
     re_path(r'^orders/(?P<number>ORD-[A-F0-9]{8})/$', views.order_detail_by_number, name='order_detail_by_number'),

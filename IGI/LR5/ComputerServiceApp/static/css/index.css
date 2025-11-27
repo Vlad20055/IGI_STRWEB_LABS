@@ -377,7 +377,6 @@
     z-index: -1;
 }
 
-/* Different colors for services and spareparts */
 .service-item .card {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
 }
@@ -433,7 +432,6 @@
     text-decoration: underline;
 }
 
-/* Reset animation */
 @keyframes reset-card {
     to {
         transform: 
@@ -537,7 +535,7 @@
 /* Таблица */
 table {
     width: 100%;
-    border-collapse: collapse; /* убрать двойные линии */
+    border-collapse: collapse;
     margin: 1rem 0;
     border: 2px solid #34495e;
     box-shadow: 0 4px 6px rgba(0,0,0,0.1);
@@ -556,15 +554,13 @@ caption {
     border-radius: 5px 5px 0 0;
 }
 
-/* Ячейки таблицы */
 th, td {
-    border: 1px solid #bdc3c7; /* одинарные линии */
+    border: 1px solid #bdc3c7; 
     padding: 12px;
-    text-align: center; /* горизонтальное выравнивание */
-    vertical-align: middle; /* вертикальное выравнивание */
+    text-align: center; 
+    vertical-align: middle; 
 }
 
-/* Заголовки столбцов */
 thead th {
     background: #34495e;
     color: white;
@@ -573,54 +569,46 @@ thead th {
     letter-spacing: 1px;
 }
 
-/* Заголовки строк (дни недели) */
 tbody th {
     background: #ecf0f1;
     font-weight: bold;
     text-align: left;
 }
 
-/* Пустые ячейки (если бы были) */
 td:empty {
-    background: #f8f9fa; /* фон пустых ячеек */
+    background: #f8f9fa; 
     font-style: italic;
     color: #95a5a6;
 }
 
-/* Строки таблицы */
 tr:nth-child(even) {
-    background: #f8f9fa; /* четные строки */
+    background: #f8f9fa;
 }
 
 tr:nth-child(odd) {
-    background: white; /* нечетные строки */
+    background: white;
 }
 
-/* Первая строка (заголовки) */
 tr:first-child {
     background: #34495e;
     color: white;
 }
 
-/* Последняя строка (воскресенье) */
 tr:last-child {
-    background: #e74c3c; /* красный для выходного */
+    background: #e74c3c;
     color: white;
     font-weight: bold;
 }
 
-/* Суббота - сокращенный день */
 tr:nth-last-child(2) {
-    background: #fff3cd; /* желтый для сокращенного дня */
+    background: #fff3cd; 
 }
 
-/* Первый столбец (дни недели) */
 th:first-child, td:first-child {
     font-weight: bold;
     background: #7bfac5;
 }
 
-/* Расположение таблицы на странице */
 .work-schedule {
     margin: 2rem auto;
     max-width: 800px;
@@ -631,16 +619,12 @@ th:first-child, td:first-child {
 }
 
 /* === СТАТЬЯ === */
-
-/* псевдоэлементы для статьи */
-/* Стили для контента внутри details */
 .article-content {
     margin-top: 10px;
     padding-top: 10px;
     border-top: 1px solid #67ef6c;
 }
 
-/* Стили для текста статьи внутри details */
 .article-content p:first-of-type::first-letter {
     font-size: 2em;
     color: #f99b2f;
@@ -650,15 +634,12 @@ th:first-child, td:first-child {
     font-weight: bold;
 }
 
-/* Первая строка текста */
 .article-content p:first-of-type::first-line {
     font-weight: bold;
     color: #2c3e50;
 }
 
 /* === ПОЗИЦИОНИРОВАНИЕ ДЛЯ ПОСЛЕДНЕЙ СТАТЬИ === */
-
-/* Контейнер для статьи с позиционированием */
 .article-featured {
     position: relative;
     background: white;
@@ -668,7 +649,6 @@ th:first-child, td:first-child {
     border: 2px solid #3498db;
 }
 
-/* Абсолютное позиционирование для даты */
 .article-date {
     position: absolute;
     top: 10px;
@@ -680,7 +660,6 @@ th:first-child, td:first-child {
     font-size: 0.8rem;
 }
 
-/* Фиксированная кнопка "Читать далее" */
 .article-read-more {
     position: sticky;
     bottom: 20px;
@@ -692,7 +671,6 @@ th:first-child, td:first-child {
     margin-top: 15px;
 }
 
-/* Относительное позиционирование для заголовка */
 .article-title {
     position: relative;
     padding-left: 20px;

@@ -17,8 +17,7 @@
 
   <!-- This block is for .css files in other .html pages -->
   {% block extra_css %} {% endblock %}
-  <!-- This block is for .js files in other .html pages -->
-  {% block extra_js %} {% endblock %}
+  
 </head>
 <body>
     <header>
@@ -37,6 +36,7 @@
 
             {% if user.is_authenticated and user.is_staff %}
             | <a href="{% url 'contacts_admin' %}">Управление сотрудниками</a>
+            | <a href="{% url 'tsnt' %}">ТСНТ</a>
             {% endif %}
         </nav>
         <nav>
@@ -91,5 +91,8 @@
     <footer>
       <p>&copy; Computer Service</p>
     </footer>
+
+    <!-- This block is for .js files in other .html pages -->
+    {% block extra_js %} {% endblock %}
 </body>
 </html>

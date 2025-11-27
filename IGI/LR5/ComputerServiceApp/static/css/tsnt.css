@@ -1,0 +1,38 @@
+.tsnt-simple {
+    max-width: 600px;
+    margin: 20px auto;
+    padding: 20px;
+}
+
+.form {
+    margin: 20px 0;
+}
+
+.form input {
+    padding: 8px;
+    margin: 5px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+button {
+    padding: 8px 15px;
+    margin: 5px;
+    border: 1px solid #007bff;
+    background: #007bff;
+    color: white;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+button:hover {
+    background: #0056b3;
+}
+
+#output {
+    margin-top: 20px;
+    padding: 15px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    background: #f9f9f9;
+}

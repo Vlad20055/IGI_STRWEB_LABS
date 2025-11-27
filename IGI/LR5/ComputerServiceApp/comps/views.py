@@ -699,3 +699,8 @@ def contacts_admin(request):
         'employees': employees_data,
         'specializations': specializations,
     })
+
+@login_required
+@user_passes_test(is_admin)
+def tsnt(request):
+    return render(request, 'comps/tsnt.html', {})

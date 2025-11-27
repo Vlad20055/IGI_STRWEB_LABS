@@ -1,0 +1,27 @@
+{% extends 'comps/base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="tsnt-simple">
+    <h2>Дачные участки</h2>
+    
+    <div class="form">
+        <input type="text" id="surname" placeholder="Фамилия">
+        <input type="number" id="tsntNumber" placeholder="Номер участка">
+        <input type="number" id="square" placeholder="Площадь">
+        <button>Добавить</button>
+    </div>
+
+    <div class="controls">
+        <button>Показать всех</button>
+        <button>Найти с несколькими участками</button>
+        <button>Очистить</button>
+    </div>
+
+    <div id="output"></div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/tsnt.js' %}"></script>
+{% endblock %}
