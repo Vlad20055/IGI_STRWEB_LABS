@@ -44,7 +44,7 @@ class TsntHolder extends Person {
     }
 }
 
-/*
+
 // ВАРИАНТ 1: Прототипное наследование (функциональный стиль)
 
 // Конструктор Person
@@ -112,8 +112,10 @@ Object.defineProperty(TsntHolder.prototype, 'square', {
     get: function() { return this.getSquare(); },
     set: function(value) { this.setSquare(value); }
 });
-*/
 
+
+// ВАРИАНТ 2 //
+/*
 class TsntApp {
     constructor() {
         this.holders = [];
@@ -225,3 +227,4 @@ class TsntApp {
 document.addEventListener('DOMContentLoaded', () => {
     new TsntApp();
 });
+*/

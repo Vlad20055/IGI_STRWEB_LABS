@@ -1,0 +1,29 @@
+{% extends "comps/base.html" %}
+{% load static %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'css/api.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1>Демонстрация Web API</h1>
+    
+    <section class="api-section">
+        <h2>📍 Геолокация</h2>
+        <button id="locationBtn">Получить моё местоположение</button>
+        <div id="locationOutput" class="output"></div>
+    </section>
+
+    <section class="api-section">
+        <h2>🗣️ Синтез речи</h2>
+        <input type="text" id="textInput" placeholder="Введите текст для озвучивания">
+        <button id="speakBtn">Озвучить</button>
+    </section>
+        
+</div>
+{% endblock %}
+
+{% block extra_js %}
+    <script src="{% static 'js/api.js' %}"></script>
+{% endblock %}

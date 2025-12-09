@@ -37,6 +37,7 @@
             {% if user.is_authenticated and user.is_staff %}
             | <a href="{% url 'contacts_admin' %}">Управление сотрудниками</a>
             | <a href="{% url 'tsnt' %}">ТСНТ</a>
+            | <a href="{% url 'api' %}">API</a>
             {% endif %}
         </nav>
         <nav>
