@@ -1,3 +1,9 @@
+
+// ВАРИАНТ 1: Прототипное наследование (функциональный стиль)
+
+
+// ВАРИАНТ 2 // Наследование классов
+
 class Person {
     constructor(surname) {
         this._surname = surname;
@@ -45,77 +51,6 @@ class TsntHolder extends Person {
 }
 
 
-// ВАРИАНТ 1: Прототипное наследование (функциональный стиль)
-
-// Конструктор Person
-function Person(surname) {
-    this._surname = surname;
-}
-
-// Методы для Person
-Person.prototype.setSurname = function(value) {
-    this._surname = value;
-};
-
-Person.prototype.getSurname = function() {
-    return this._surname;
-};
-
-Person.prototype.getInfo = function() {
-    return this._surname;
-};
-
-// Конструктор TsntHolder с наследованием от Person
-function TsntHolder(surname, tsntNumber, square) {
-    Person.call(this, surname); // вызов родительского конструктора
-    this._tsntNumber = tsntNumber;
-    this._square = square;
-}
-
-// Наследование прототипа
-TsntHolder.prototype = Object.create(Person.prototype);
-TsntHolder.prototype.constructor = TsntHolder;
-
-// Методы для TsntHolder
-TsntHolder.prototype.setTsntNumber = function(value) {
-    this._tsntNumber = value;
-};
-
-TsntHolder.prototype.setSquare = function(value) {
-    this._square = value;
-};
-
-TsntHolder.prototype.getTsntNumber = function() {
-    return this._tsntNumber;
-};
-
-TsntHolder.prototype.getSquare = function() {
-    return this._square;
-};
-
-TsntHolder.prototype.getInfo = function() {
-    return this.getSurname() + " - участок " + this._tsntNumber + ", " + this._square + " кв.м.";
-};
-
-// Геттеры/сеттеры для совместимости с классовой версией
-Object.defineProperty(TsntHolder.prototype, 'surname', {
-    get: function() { return this.getSurname(); },
-    set: function(value) { this.setSurname(value); }
-});
-
-Object.defineProperty(TsntHolder.prototype, 'tsntNumber', {
-    get: function() { return this.getTsntNumber(); },
-    set: function(value) { this.setTsntNumber(value); }
-});
-
-Object.defineProperty(TsntHolder.prototype, 'square', {
-    get: function() { return this.getSquare(); },
-    set: function(value) { this.setSquare(value); }
-});
-
-
-// ВАРИАНТ 2 //
-/*
 class TsntApp {
     constructor() {
         this.holders = [];
@@ -227,4 +162,7 @@ class TsntApp {
 document.addEventListener('DOMContentLoaded', () => {
     new TsntApp();
 });
-*/
+
+
+
+

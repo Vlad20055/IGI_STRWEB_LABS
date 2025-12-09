@@ -1,0 +1,45 @@
+{% extends 'comps/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/graphik.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h1>arcsin(x): ряд (n=10) и Math.asin(x)</h1>
+  <canvas id="chart" width="1600" height="800" style="display:block; margin:0 auto;"></canvas>
+
+  <!-- ===== parallax top (с нормальными id) ===== -->
+    <section id="top" class="parallax">
+        <!-- фон — обязательно ПЕРВЫМ в DOM, но z-index управляет слоями -->
+        <img id="layer-bg" src="/media/scroll_animation/bg.jpg" class="layer layer-bg" alt="фон" loading="lazy">
+
+        <!-- средний/передний план -->
+        <img id="layer-mountain-left"  src="/media/scroll_animation/Shit.jpeg"   class="layer layer-mountain" alt="гора слева" loading="lazy">
+        <img id="layer-mountain-right" src="/media/scroll_animation/logo.jpg"   class="layer layer-mountain" alt="логотип" loading="lazy">
+
+        <img id="layer-cloud-1" src="/media/scroll_animation/Oblako.jpeg" class="layer layer-cloud" alt="облако1" loading="lazy">
+        <img id="layer-cloud-2" src="/media/scroll_animation/Otvertka.jpeg" class="layer layer-cloud" alt="облако2" loading="lazy">
+
+        <!-- герой (монитор) -->
+        <img id="layer-hero" src="/media/scroll_animation/Monitor.jpeg" class="layer layer-hero" alt="монитор" loading="lazy">
+
+        <!-- заголовок поверх всего -->
+        <h2 id="layer-title" class="layer layer-title">Наш сервис</h2>
+    </section>
+
+
+  <section id="sec" class="content-section">
+    <h2>Добро пожаловать в наш сервис</h2>
+    <p>
+      Здесь можно много текста — описание услуг, контакты, преимущества. Прокрути вверх/вниз чтобы увидеть параллакс.
+    </p>
+  </section>
+{% endblock %}
+
+{% block extra_js %}
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chartjs-plugin-annotation@2"></script>
+  <script src="{% static 'js/graphik.js' %}"></script>
+  <script src="{% static 'js/scroll_icons.js' %}"></script>
+{% endblock %}

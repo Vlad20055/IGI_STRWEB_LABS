@@ -709,3 +709,8 @@ def tsnt(request):
 @user_passes_test(is_admin)
 def api(request):
     return render(request, 'comps/api.html', {})
+
+@login_required
+@user_passes_test(is_admin)
+def graphik(request):
+    return render(request, 'comps/graphik.html', {})

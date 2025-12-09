@@ -22,22 +22,23 @@
 <body>
     <header>
         <nav class="main_navigation">
-            <a href="{% url 'home' %}">Главная</a> |
-            <a href="{% url 'about' %}">О компании</a> |
-            <a href="{% url 'news_list' %}">Новости</a> |
-            <a href="{% url 'faq_list' %}">Словарь</a> |
-            <a href="{% url 'contacts' %}">Контакты</a> |
-            <a href="{% url 'vacancy_list' %}">Вакансии</a> |
-            <a href="{% url 'privacy_policy' %}">Политика</a> |
-            <a href="{% url 'statistic' %}">Статистика</a> |
-            <a href="{% url 'calendar' %}">Календарь</a> |
-            <a href="{% url 'review_list' %}">Отзывы</a> |
-            <a href="{% url 'coupon_list' %}">Промокоды и купоны</a> |
+            <a href="{% url 'home' %}">Главная</a>
+            <a href="{% url 'about' %}">О компании</a>
+            <a href="{% url 'news_list' %}">Новости</a>
+            <a href="{% url 'faq_list' %}">Словарь</a>
+            <a href="{% url 'contacts' %}">Контакты</a>
+            <a href="{% url 'vacancy_list' %}">Вакансии</a>
+            <a href="{% url 'privacy_policy' %}">Политика</a>
+            <a href="{% url 'statistic' %}">Статистика</a>
+            <a href="{% url 'calendar' %}">Календарь</a>
+            <a href="{% url 'review_list' %}">Отзывы</a>
+            <a href="{% url 'coupon_list' %}">Промокоды и купоны</a>
 
             {% if user.is_authenticated and user.is_staff %}
-            | <a href="{% url 'contacts_admin' %}">Управление сотрудниками</a>
-            | <a href="{% url 'tsnt' %}">ТСНТ</a>
-            | <a href="{% url 'api' %}">API</a>
+            <a href="{% url 'contacts_admin' %}">Управление сотрудниками</a>
+            <a href="{% url 'tsnt' %}">ТСНТ</a>
+            <a href="{% url 'api' %}">API</a>
+            <a href="{% url 'graphik' %}">График</a>
             {% endif %}
         </nav>
         <nav>
