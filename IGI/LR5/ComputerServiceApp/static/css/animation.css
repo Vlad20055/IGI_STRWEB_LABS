@@ -1,0 +1,130 @@
+* { box-sizing: border-box; }
+
+html {
+  background-image: linear-gradient(135deg, rgba(102, 126, 234, 0.9) 0%, rgba(118, 75, 162, 0.9) 100%);
+  background-attachment: fixed !important;
+  background-size: cover !important;
+  background-position: center !important;
+  background-repeat: no-repeat !important;
+}
+
+body {
+  background: transparent !important;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  min-height: 200vh;
+  padding: 40px 20px;
+}
+
+#content {
+  background: transparent !important;
+}
+
+h2 {
+  text-align: center;
+  font-size: 2.5rem;
+  color: white;
+  margin: 40px 0 80px 0;
+  will-change: opacity, transform;
+}
+
+/* Container for scattered images */
+.animation-container {
+  position: relative;
+  width: 100%;
+  max-width: 1000px;
+  height: 500px;
+  margin: 0 auto 150px auto;
+  background: rgba(255, 255, 255, 0.1);
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  border-radius: 15px;
+  overflow: visible;
+  perspective: 1200px;
+}
+
+/* Base styles for all images */
+.animation-container img {
+  position: absolute;
+  object-fit: cover;
+  will-change: transform, opacity;
+  opacity: 0;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.3));
+  border-radius: 10px;
+}
+
+/* Position images scattered around the container */
+.animation-container img:nth-child(1) {
+  width: 180px;
+  height: 160px;
+  top: 20px;
+  left: 40px;
+}
+
+.animation-container img:nth-child(2) {
+  width: 160px;
+  height: 160px;
+  top: 40px;
+  right: 50px;
+}
+
+.animation-container img:nth-child(3) {
+  width: 140px;
+  height: 120px;
+  top: 50%;
+  left: 30px;
+  transform: translateY(-50%);
+}
+
+.animation-container img:nth-child(4) {
+  width: 130px;
+  height: 130px;
+  top: 50%;
+  right: 40px;
+  transform: translateY(-50%);
+}
+
+.animation-container img:nth-child(5) {
+  width: 220px;
+  height: 180px;
+  bottom: 30px;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+@media (max-width: 768px) {
+  .animation-container {
+    height: 400px;
+  }
+
+  .animation-container img {
+    filter: drop-shadow(0 5px 10px rgba(0, 0, 0, 0.3));
+  }
+
+  .animation-container img:nth-child(1) {
+    width: 120px;
+    height: 100px;
+  }
+
+  .animation-container img:nth-child(2) {
+    width: 110px;
+    height: 110px;
+  }
+
+  .animation-container img:nth-child(3) {
+    width: 100px;
+    height: 80px;
+  }
+
+  .animation-container img:nth-child(4) {
+    width: 100px;
+    height: 100px;
+  }
+
+  .animation-container img:nth-child(5) {
+    width: 150px;
+    height: 120px;
+  }
+
+  h2 {
+    font-size: 1.8rem;
+  }
+}

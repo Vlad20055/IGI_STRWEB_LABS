@@ -28,6 +28,7 @@ urlpatterns = [
     path('tsnt/', views.tsnt, name='tsnt'),
     path('api/', views.api, name='api'),
     path('graphik/', views.graphik, name='graphik'),
+    path('animation/', views.animation, name='animation'),
     path('orders/employee/', views.order_list_employee, name='order_list_employee'),
     path('orders/create/', views.order_create, name='order_create'),
     re_path(r'^orders/(?P<number>ORD-[A-F0-9]{8})/$', views.order_detail_by_number, name='order_detail_by_number'),

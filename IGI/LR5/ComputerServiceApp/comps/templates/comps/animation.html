@@ -1,0 +1,22 @@
+{% extends 'comps/base.html' %}
+{% load static %}
+
+{% block css %}
+  <link rel="stylesheet" href="{% static 'css/animation.css' %}">
+{% endblock %}
+
+{% block content %}
+  <h2>Добро пожаловать в наш сервис</h2>
+  <div class="animation-container">
+    <img src="/media/scroll/Shit.jpeg" alt="image 1">
+    <img src="/media/scroll/logo.jpg" alt="image 2">
+    <img src="/media/scroll/Oblako.jpeg" alt="image 3">
+    <img src="/media/scroll/Otvertka.png" alt="image 4">
+    <img src="/media/scroll/Monitor.jpeg" alt="image 5">
+  </div>
+
+{% endblock %}
+
+{% block extra_js %}
+  <script src="{% static 'js/animation.js' %}"></script>
+{% endblock %}
